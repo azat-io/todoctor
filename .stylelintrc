@@ -1,0 +1,10 @@
+{
+  "extends": "@azat-io/stylelint-config",
+  "ignoreFiles": ["dist/**/*"],
+  "overrides": [
+    {
+      "files": ["**/*.svelte"],
+      "customSyntax": "postcss-html"
+    }
+  ]
+}

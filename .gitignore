@@ -1,0 +1,18 @@
+# Node.js
+node_modules/
+.nvmrc
+
+# Rust
+target/
+
+# Build
+dist/
+bin/
+
+# Editor
+.vscode/
+.vim/
+.idea/
+
+# Misc
+.DS_Store

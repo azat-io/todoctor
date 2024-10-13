@@ -1,0 +1,38 @@
+{
+  "dictionaries": ["css", "html", "node", "npm", "typescript"],
+  "useGitignore": true,
+  "language": "en",
+  "ignorePaths": [
+    ".github",
+    "Cargo.lock",
+    "changelog.md",
+    "license",
+    "pnpm-lock.yaml",
+    "preview/elements/avatar.svelte",
+    "preview/mock/api.mock.ts",
+    "tsconfig.json"
+  ],
+  "words": [
+    "azat",
+    "browserslistrc",
+    "chrono",
+    "combak",
+    "dicebear",
+    "docme",
+    "docmeup",
+    "docu",
+    "docup",
+    "docus",
+    "docyou",
+    "hexdigit",
+    "lightningcss",
+    "mockall",
+    "replacen",
+    "ropey",
+    "serde",
+    "singlefile",
+    "todoctor",
+    "todos",
+    "trivias"
+  ]
+}

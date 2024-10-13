@@ -1,0 +1,18 @@
+[package]
+name = "todoctor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { version = "0.4.38", features = ["serde"] }
+futures = "0.3.31"
+open = "5.3.0"
+oxc = "0.31.0"
+regex = "1.11.0"
+ropey = "1.6.1"
+serde = { version = "1.0.128", features = ["derive"] }
+serde_json = "1.0.128"
+tokio = { version = "1.40.0", features = ["full"] }
+
+[dev-dependencies]
+mockall = "0.13.0"
