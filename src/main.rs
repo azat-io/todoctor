@@ -139,88 +139,95 @@ async fn main() {
     let temp_file = File::create("todo_history_temp.json").expect("Failed to create temp file");
     let mut writer = BufWriter::new(temp_file);
 
-    if !history.is_empty() {
+    if history.len() > 1 {
         history.remove(0);
     }
 
     let history_len = history.len();
     let semaphore = Arc::new(Semaphore::new(5));
 
-    for (index, (commit_hash, date)) in history.into_iter().enumerate() {
-        if index % 10 == 0 || index == history_len - 1 {
-            print!("\rProcessed {}/{} commits", index, history_len);
-            io::stdout().flush().unwrap();
-        }
+    for (index, (commit_hash, date)) in history.iter().enumerate() {
+        print!("\rProcessed {}/{} commits", index, history_len);
+        io::stdout().flush().unwrap();
 
-        if let Ok(diff_stat_output) = exec(&["git", "diff", "--stat", &commit_hash]).await {
-            let mut supported_files = Vec::new();
+        if index + 1 < history.len() {
+            let prev_commit = &history[index + 1].0;
 
-            for line in diff_stat_output.lines() {
-                let file_path = line.split_whitespace().next().unwrap_or("");
-                if identify_supported_file(file_path) {
-                    supported_files.push(file_path.to_string());
-                }
-            }
+            if let Ok(diff_stat_output) =
+                exec(&["git", "diff", "--stat", prev_commit, commit_hash]).await
+            {
+                let supported_files: Vec<_> = diff_stat_output
+                    .lines()
+                    .filter_map(|line| {
+                        let file_path = line.split_whitespace().next()?;
+                        if identify_supported_file(file_path) {
+                            Some(file_path.to_string())
+                        } else {
+                            None
+                        }
+                    })
+                    .collect();
 
-            let file_tasks: Vec<_> = supported_files
-                .into_iter()
-                .map(|file_path| {
-                    let semaphore = semaphore.clone();
-                    let commit_hash = commit_hash.clone();
-                    tokio::spawn(async move {
-                        let permit = semaphore.acquire_owned().await.unwrap();
-                        if let Ok(diff_output) =
-                            exec(&["git", "diff", &commit_hash, "--", &file_path]).await
-                        {
-                            for line in diff_output.lines() {
-                                if line.starts_with("+") || line.starts_with("-") {
-                                    let line_uppercase = line.to_uppercase();
+                let file_tasks: Vec<_> = supported_files
+                    .into_iter()
+                    .map(|file_path| {
+                        let semaphore = semaphore.clone();
+                        let commit_hash = commit_hash.clone();
+                        tokio::spawn(async move {
+                            let permit = semaphore.acquire_owned().await.unwrap();
+                            if let Ok(diff_output) =
+                                exec(&["git", "diff", commit_hash.as_str(), "--", &file_path]).await
+                            {
+                                for line in diff_output.lines() {
+                                    if line.starts_with("+") || line.starts_with("-") {
+                                        let line_uppercase = line.to_uppercase();
 
-                                    let added = line.starts_with("+")
-                                        && TODO_KEYWORDS.iter().any(|keyword| {
-                                            line_uppercase.contains(&keyword.to_uppercase())
-                                        });
-                                    let removed = line.starts_with("-")
-                                        && TODO_KEYWORDS.iter().any(|keyword| {
-                                            line_uppercase.contains(&keyword.to_uppercase())
-                                        });
+                                        let added = line.starts_with("+")
+                                            && TODO_KEYWORDS.iter().any(|keyword| {
+                                                line_uppercase.contains(&keyword.to_uppercase())
+                                            });
+                                        let removed = line.starts_with("-")
+                                            && TODO_KEYWORDS.iter().any(|keyword| {
+                                                line_uppercase.contains(&keyword.to_uppercase())
+                                            });
 
-                                    if added {
-                                        return Some((true, file_path));
-                                    }
+                                        if added {
+                                            return Some((true, file_path));
+                                        }
 
-                                    if removed {
-                                        return Some((false, file_path));
+                                        if removed {
+                                            return Some((false, file_path));
+                                        }
                                     }
                                 }
                             }
-                        }
-                        drop(permit);
-                        None
+                            drop(permit);
+                            None
+                        })
                     })
-                })
-                .collect();
+                    .collect();
 
-            let results = join_all(file_tasks).await;
+                let results = join_all(file_tasks).await;
 
-            for result in results {
-                if let Ok(Some((added, _file_path))) = result {
-                    if added {
-                        todo_count += 1;
-                    } else {
-                        todo_count -= 1;
+                for result in results {
+                    if let Ok(Some((added, _file_path))) = result {
+                        if added {
+                            todo_count += 1;
+                        } else {
+                            todo_count -= 1;
+                        }
                     }
                 }
+
+                let todo_history = TodoHistory {
+                    commit: commit_hash.clone(),
+                    todos_count: todo_count,
+                    date: date.clone(),
+                };
+
+                let json_entry = serde_json::to_string(&todo_history).expect("Failed to serialize");
+                writeln!(writer, "{}", json_entry).expect("Failed to write to temp file");
             }
-
-            let todo_history = TodoHistory {
-                commit: commit_hash.clone(),
-                todos_count: todo_count,
-                date: date.clone(),
-            };
-
-            let json_entry = serde_json::to_string(&todo_history).expect("Failed to serialize");
-            writeln!(writer, "{}", json_entry).expect("Failed to write to temp file");
         }
     }
 
