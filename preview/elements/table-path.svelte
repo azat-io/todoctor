@@ -4,8 +4,6 @@
   export let value = ''
   export let currentPath = ''
   export let line = 0
-
-  console.log('currentPath', currentPath)
 </script>
 
 <a href={`${currentPath}/${value}`}>

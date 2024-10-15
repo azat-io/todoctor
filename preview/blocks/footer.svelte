@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Container from '~/elements/container.svelte'
   import Typography from '~/elements/typography.svelte'
+  import Container from '~/elements/container.svelte'
 </script>
 
 <footer class="footer">

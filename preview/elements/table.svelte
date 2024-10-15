@@ -1,4 +1,6 @@
-<script lang="ts" generics="T extends Object">
+<script generics="T extends Object" lang="ts">
+  /* global T */
+
   import type {
     TableOptions,
     SortingState,
@@ -6,13 +8,9 @@
     ColumnDef,
   } from '@tanstack/svelte-table'
 
+  import { getSortedRowModel, getCoreRowModel } from '@tanstack/table-core'
+  import { createTable, FlexRender } from '@tanstack/svelte-table'
   import { writable } from 'svelte/store'
-  import {
-    getSortedRowModel,
-    getCoreRowModel,
-    createTable,
-    FlexRender,
-  } from '@tanstack/svelte-table'
 
   export let data: T[] = []
   export let columns: ColumnDef<T>[] = []
@@ -35,26 +33,26 @@
   }
 
   let options = writable<TableOptions<T>>({
-    data,
-    columns,
+    getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
     },
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     debugTable: true,
+    columns,
+    data,
   })
 
   $: options.set({
-    data,
-    columns,
+    getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
     state: {
       sorting,
     },
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
+    columns,
+    data,
   })
 
   $: table = createTable($options)
@@ -65,20 +63,20 @@
     <thead>
       {#each table.getHeaderGroups() as headerGroup}
         <tr class="tr">
-          <th class="th" style="inline-size: 40px">#</th>
+          <th style="inline-size: 40px" class="th">#</th>
           {#each headerGroup.headers as header}
             <th
-              class="th"
               style={header.getSize()
                 ? `inline-size: ${header.getSize()}px`
                 : ''}
+              class="th"
             >
               {#if !header.isPlaceholder}
                 <button
-                  class="button"
+                  on:click={header.column.getToggleSortingHandler()}
                   class:cursor-pointer={header.column.getCanSort()}
                   class:select-none={header.column.getCanSort()}
-                  on:click={header.column.getToggleSortingHandler()}
+                  class="button"
                 >
                   <FlexRender
                     content={header.column.columnDef.header}
@@ -99,7 +97,7 @@
     <tbody>
       {#each table.getRowModel().rows as row, index}
         <tr class="tr">
-          <td class="td td-index" style="inline-size: 40px">{index + 1}</td>
+          <td style="inline-size: 40px" class="td td-index">{index + 1}</td>
           {#each row.getVisibleCells() as cell}
             <td style={`inline-size: ${cell.column.getSize()}px`} class="td">
               <FlexRender

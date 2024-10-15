@@ -6,12 +6,10 @@
 
   export let data: string = ''
 
-  openPeeps.schema.properties!.face
-
   let transformToCode = (string: string, length: number): number => {
     let hash = 0
 
-    for (let i = 0, len = string.length; i < len; i++) {
+    for (let len = string.length, i = 0; i < len; i++) {
       let chr = string.charCodeAt(i)
       hash = (hash << 5) - hash + chr
       hash |= 0

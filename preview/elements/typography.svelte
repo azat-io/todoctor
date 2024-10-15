@@ -1,9 +1,9 @@
 <script lang="ts">
   export let color: 'secondary' | 'primary' | 'inherit' | 'brand' = 'inherit'
   export let size: '2xl' | '2xs' | 'xl' | 'xs' | 'l' | 'm' | 's' = 'm'
-  export let mbs: '2xs' | 'xs' | 'xl' | 's' | 'm' | 'l' | null = null
-  export let mbe: '2xs' | 'xs' | 'xl' | 's' | 'm' | 'l' | null = null
-  export let align: 'left' | 'center' | 'right' = 'left'
+  export let mbs: '2xs' | 'xs' | 'xl' | null | 's' | 'm' | 'l' = null
+  export let mbe: '2xs' | 'xs' | 'xl' | null | 's' | 'm' | 'l' = null
+  export let align: 'center' | 'right' | 'left' = 'left'
   export let noWrap: boolean = false
   export let bold: boolean = false
   export let tag = 'p'

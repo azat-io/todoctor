@@ -5,6 +5,7 @@
   import Logo from '~/elements/logo.svelte'
   import { data } from '~/stores/data'
 
+  // eslint-disable-next-line no-unused-expressions
   $theme
 </script>
 
@@ -28,11 +29,11 @@
         </div>
       </div>
       <div class="links">
-        <button class="button" on:click={toggleTheme}>
-          <Typography size="s" color="brand">Toggle Theme</Typography>
+        <button on:click={toggleTheme} class="button">
+          <Typography color="brand" size="s">Toggle Theme</Typography>
         </button>
         <a href="https://github.com/azat-io/todoctor" target="_blank">
-          <Typography size="s" color="brand">GitHub</Typography>
+          <Typography color="brand" size="s">GitHub</Typography>
         </a>
       </div>
     </div>

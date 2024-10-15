@@ -5,7 +5,7 @@
   export let summary = ''
 </script>
 
-<Tooltip content={summary} theme="custom-tooltip">
+<Tooltip theme="custom-tooltip" content={summary}>
   <code class="code">
     {value}
   </code>

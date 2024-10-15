@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { ColumnDef } from '@tanstack/svelte-table'
 
-  import TableComment from '~/elements/table-comment.svelte'
   import { renderComponent } from '@tanstack/svelte-table'
-  import Container from '~/elements/container.svelte'
+
+  import TableComment from '~/elements/table-comment.svelte'
   import TableCode from '~/elements/table-code.svelte'
   import TableUser from '~/elements/table-user.svelte'
   import TablePath from '~/elements/table-path.svelte'
   import TableDate from '~/elements/table-date.svelte'
+  import Container from '~/elements/container.svelte'
   import Table from '~/elements/table.svelte'
   import { data } from '~/stores/data'
 
@@ -28,60 +29,60 @@
       ...rest,
     })) ?? []
 
-  $: currentPath = $data.currentPath
+  $: ({ currentPath } = $data)
 
   let columns: ColumnDef<Column>[] = [
     {
-      accessorKey: 'author',
-      header: 'Author',
       cell: props =>
         renderComponent(TableUser, {
           author: props.getValue() as string,
           email: props.row.original.email,
         }),
+      accessorKey: 'author',
+      header: 'Author',
       size: 280,
     },
     {
-      accessorKey: 'path',
-      header: 'Path',
       cell: props =>
         renderComponent(TablePath, {
           value: props.getValue() as string,
           line: props.row.original.line,
-          currentPath: currentPath,
+          currentPath,
         }),
+      accessorKey: 'path',
+      header: 'Path',
       size: 250,
     },
     {
-      accessorKey: 'commit',
-      header: 'Commit',
       cell: props =>
         renderComponent(TableCode, {
           summary: props.row.original.summary,
           value: props.getValue() as string,
         }),
+      accessorKey: 'commit',
+      header: 'Commit',
       size: 80,
     },
     {
-      accessorKey: 'comment',
-      header: 'Comment',
-      size: 380,
       cell: props =>
         renderComponent(TableComment, {
           value: props.getValue() as string,
         }),
+      accessorKey: 'comment',
+      header: 'Comment',
+      size: 380,
     },
     {
-      accessorKey: 'date',
-      header: 'Added',
+      sortingFn: (a, b) =>
+        new Date(a.original.date).getTime() -
+        new Date(b.original.date).getTime(),
       cell: props =>
         renderComponent(TableDate, {
           value: props.getValue() as string,
         }),
+      accessorKey: 'date',
+      header: 'Added',
       size: 130,
-      sortingFn: (a, b) =>
-        new Date(a.original.date).getTime() -
-        new Date(b.original.date).getTime(),
     },
   ]
 </script>
