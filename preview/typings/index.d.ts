@@ -9,6 +9,7 @@ export interface DataItem {
   comment: string
   line: number
   path: string
+  kind: string
 }
 
 export interface Data {

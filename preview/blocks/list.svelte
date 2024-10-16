@@ -4,6 +4,7 @@
   import { renderComponent } from '@tanstack/svelte-table'
 
   import TableComment from '~/elements/table-comment.svelte'
+  import Typography from '~/elements/typography.svelte'
   import TableCode from '~/elements/table-code.svelte'
   import TableUser from '~/elements/table-user.svelte'
   import TablePath from '~/elements/table-path.svelte'
@@ -89,6 +90,7 @@
 
 <div class="list">
   <Container>
+    <Typography size="l" tag="h2" mbe="l">List of commits</Typography>
     <Table data={preparedData} {columns} />
   </Container>
 </div>

@@ -38,6 +38,7 @@ pub struct TodoData {
 pub struct TodoWithBlame {
     pub blame: PreparedBlameData,
     pub comment: String,
+    pub kind: String,
     pub path: String,
     pub line: u32,
 }
@@ -76,13 +77,18 @@ async fn main() {
                         let comments = get_comments(&source, &source_file_name);
                         comments
                             .into_iter()
-                            .filter(|comment| identify_todo_comment(&comment.text))
-                            .map(move |comment| TodoData {
-                                path: source_file_name.clone(),
-                                comment: comment.text.clone(),
-                                start: comment.start,
-                                end: comment.end,
-                                kind: format!("{:?}", comment.kind),
+                            .filter_map(|comment| {
+                                if let Some(comment_kind) = identify_todo_comment(&comment.text) {
+                                    Some(TodoData {
+                                        path: source_file_name.clone(),
+                                        comment: comment.text.clone(),
+                                        start: comment.start,
+                                        kind: comment_kind,
+                                        end: comment.end,
+                                    })
+                                } else {
+                                    None
+                                }
                             })
                             .collect::<Vec<TodoData>>()
                     }
@@ -114,6 +120,7 @@ async fn main() {
                                 comment: todo.comment.trim().to_string(),
                                 path: todo.path.clone(),
                                 blame: prepared_blame,
+                                kind: todo.kind,
                                 line,
                             });
                         }

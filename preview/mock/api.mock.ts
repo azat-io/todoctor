@@ -15,6 +15,7 @@ export default defineMock({
         },
         comment: 'TODO: Add integration with external lab result APIs',
         path: 'src/modules/labResults/labResults.ts',
+        kind: 'TODO',
         line: 45,
       },
       {
@@ -28,6 +29,7 @@ export default defineMock({
         comment:
           'TODO: Add test coverage for edge cases in prescription reminders',
         path: 'src/services/reminders/prescriptionReminders.ts',
+        kind: 'TODO',
         line: 59,
       },
       {
@@ -40,6 +42,7 @@ export default defineMock({
         },
         path: 'src/modules/patientData/exportPatientData.ts',
         comment: 'TODO: Implement secure PDF export',
+        kind: 'TODO',
         line: 67,
       },
       {
@@ -52,6 +55,7 @@ export default defineMock({
         },
         comment: 'TODO: Implement backup codes for 2FA',
         path: 'src/modules/auth/twoFactorAuth.ts',
+        kind: 'TODO',
         line: 65,
       },
       {
@@ -64,6 +68,7 @@ export default defineMock({
         },
         comment: 'TODO: Refactor appointment notifications to support SMS',
         path: 'src/services/appointments/bookingFlow.ts',
+        kind: 'TODO',
         line: 47,
       },
       {
@@ -76,6 +81,7 @@ export default defineMock({
         },
         comment: 'TODO: Update payment methods to include Apple Pay',
         path: 'src/services/billing/billingSystem.ts',
+        kind: 'TODO',
         line: 89,
       },
       {
@@ -88,6 +94,7 @@ export default defineMock({
         },
         comment: 'TODO: Add priority levels for urgent notifications',
         path: 'src/services/notifications/appointmentReminders.ts',
+        kind: 'TODO',
         line: 49,
       },
       {
@@ -100,6 +107,7 @@ export default defineMock({
         },
         comment: 'TODO: Add screen reader support for calendar view',
         path: 'src/components/appointments/calendarView.ts',
+        kind: 'TODO',
         line: 39,
       },
       {
@@ -112,6 +120,7 @@ export default defineMock({
         },
         comment: 'TODO: Ensure patient history is encrypted before storage',
         path: 'src/modules/patientData/patientHistory.ts',
+        kind: 'TODO',
         line: 34,
       },
       {
@@ -124,6 +133,7 @@ export default defineMock({
         },
         comment: 'TODO: Add customizable metrics for patient health stats',
         path: 'src/components/analytics/doctorDashboard.ts',
+        kind: 'TODO',
         line: 128,
       },
       {
@@ -136,6 +146,7 @@ export default defineMock({
         },
         comment: 'TODO: Improve responsive design for mobile devices',
         path: 'src/components/dashboard/patientDashboard.ts',
+        kind: 'TODO',
         line: 102,
       },
       {
@@ -148,6 +159,7 @@ export default defineMock({
         },
         comment: 'TODO: Support video call recording for patient consultations',
         path: 'src/modules/telemedicine/videoConsultation.ts',
+        kind: 'TODO',
         line: 95,
       },
       {
@@ -158,8 +170,9 @@ export default defineMock({
           author: 'Sarah Lee',
           commit: 'b9c8d7e',
         },
-        comment: 'TODO: Add additional checks for drug interactions',
+        comment: 'FIXME: Add additional checks for drug interactions',
         path: 'src/modules/prescriptions/validatePrescription.ts',
+        kind: 'FIXME',
         line: 90,
       },
       {
@@ -172,6 +185,7 @@ export default defineMock({
         },
         comment: 'TODO: Add notification system for upcoming vaccines',
         path: 'src/modules/vaccineTracking/vaccineReminder.ts',
+        kind: 'TODO',
         line: 120,
       },
       {
@@ -184,6 +198,7 @@ export default defineMock({
         },
         comment: 'TODO: Implement backup codes for 2FA',
         path: 'src/modules/auth/twoFactorAuth.ts',
+        kind: 'TODO',
         line: 65,
       },
       {
@@ -197,6 +212,7 @@ export default defineMock({
         comment:
           'TODO: Ensure encrypted backups for sensitive patient information',
         path: 'src/modules/dataBackup/dataBackup.ts',
+        kind: 'TODO',
         line: 78,
       },
       {
@@ -207,8 +223,9 @@ export default defineMock({
           author: 'Daniel Davis',
           commit: 't1r2y3a',
         },
-        comment: 'TODO: Optimize database queries for large datasets',
+        comment: 'FIXME: Optimize database queries for large datasets',
         path: 'src/services/patientHistory/patientDataLoader.ts',
+        kind: 'FIXME',
         line: 155,
       },
       {
@@ -221,6 +238,7 @@ export default defineMock({
         },
         comment: 'TODO: Add support for fuzzy search in patient database',
         path: 'src/services/search/patientSearch.ts',
+        kind: 'TODO',
         line: 150,
       },
       {
@@ -231,8 +249,9 @@ export default defineMock({
           author: 'Emily Smith',
           commit: 'i1t2g5h',
         },
-        comment: 'TODO: Validate insurance details before submission',
+        comment: 'FIXME: Validate insurance details before submission',
         path: 'src/services/insurance/insuranceProvider.ts',
+        kind: 'FIXME',
         line: 97,
       },
       {
@@ -244,8 +263,9 @@ export default defineMock({
           commit: 'a8f9d1k',
         },
         comment:
-          'TODO: Ensure encrypted backups for sensitive patient information',
+          'DEPRECATED: Ensure encrypted backups for sensitive patient information',
         path: 'src/modules/dataBackup/dataBackup.ts',
+        kind: 'DEPRECATED',
         line: 78,
       },
     ],
