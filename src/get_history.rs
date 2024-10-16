@@ -1,10 +1,14 @@
 use crate::exec::exec;
 
-pub async fn get_history() -> Vec<(String, String)> {
+pub async fn get_history(months: Option<u32>) -> Vec<(String, String)> {
+    let since_period = months
+        .map(|m| format!("{} months ago", m))
+        .unwrap_or_else(|| "3 month ago".to_string());
+
     let git_log_command = [
         "git",
         "log",
-        "--since=1 year ago",
+        &format!("--since={}", since_period),
         "--pretty=format:%H %ad",
         "--date=short",
     ];

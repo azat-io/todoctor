@@ -133,7 +133,7 @@ async fn main() {
 
     todos_with_blame.sort_by(|a, b| a.blame.date.cmp(&b.blame.date));
 
-    let mut history: Vec<(String, String)> = get_history().await;
+    let mut history: Vec<(String, String)> = get_history(Some(3)).await;
     let mut todo_count: usize = todos_with_blame.len();
 
     let temp_file = File::create("todo_history_temp.json").expect("Failed to create temp file");
