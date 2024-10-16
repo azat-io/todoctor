@@ -90,7 +90,7 @@
 
 <div class="list">
   <Container>
-    <Typography size="l" tag="h2" mbe="l">List of commits</Typography>
+    <Typography size="l" tag="h2" mbe="l">List of Commits</Typography>
     <Table data={preparedData} {columns} />
   </Container>
 </div>

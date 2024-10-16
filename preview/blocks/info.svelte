@@ -44,9 +44,9 @@
   <div class="wrapper">
     <div></div>
     <div class="chart">
-      <Typography size="l" tag="h2" mbe="l" align="center"
-        >Todos by kind</Typography
-      >
+      <Typography size="l" tag="h2" mbe="l" align="center">
+        Todos by Kind
+      </Typography>
       {#if values.length}
         <ChartDoughnut {values} />
       {/if}
