@@ -6,6 +6,7 @@ pub mod get_comments;
 pub mod get_current_directory;
 pub mod get_current_exe_path;
 pub mod get_diff;
+pub mod get_files_list;
 pub mod get_history;
 pub mod get_line_from_position;
 pub mod get_project_name;

@@ -14,6 +14,7 @@ use todoctor::exec::exec;
 use todoctor::get_comments::get_comments;
 use todoctor::get_current_directory::get_current_directory;
 use todoctor::get_current_exe_path::get_current_exe_path;
+use todoctor::get_files_list::get_files_list;
 use todoctor::get_history::get_history;
 use todoctor::get_line_from_position::get_line_from_position;
 use todoctor::get_project_name::get_project_name;
@@ -60,12 +61,11 @@ async fn main() {
         process::exit(1);
     }
 
-    let file_list = exec(&["git", "ls-files"]).await.unwrap();
+    let files_list = get_files_list(None).await.unwrap();
 
-    let files: Vec<String> = file_list
-        .lines()
-        .filter(|file: &&str| identify_supported_file(file))
-        .map(|file: &str| file.to_string())
+    let files: Vec<String> = files_list
+        .into_iter()
+        .filter(|file| identify_supported_file(file))
         .collect();
 
     let todo_data_tasks: Vec<_> = files
