@@ -22,7 +22,8 @@ pub fn prepare_blame_data(data: BlameData) -> PreparedBlameData {
 
     let timezone_offset_hours: i32 = data.author_tz[0..3].parse().unwrap();
     let timezone_offset_minutes: i32 = data.author_tz[3..5].parse().unwrap();
-    let total_offset_minutes = timezone_offset_hours * 60 + timezone_offset_minutes;
+    let total_offset_minutes =
+        timezone_offset_hours * 60 + timezone_offset_minutes;
 
     date = date + Duration::minutes(total_offset_minutes as i64);
 

@@ -1,5 +1,5 @@
-use todoctor::check_git_repository::check_git_repository;
 use std::path::Path;
+use todoctor::check_git_repository::check_git_repository;
 
 #[tokio::test]
 async fn test_is_git_repository_true() {

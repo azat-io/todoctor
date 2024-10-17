@@ -21,15 +21,17 @@ pub async fn get_todoctor_version() -> Option<String> {
 
     let package_json_path = parent_dir.join("package.json");
 
-    let package_json_content = match fs::read_to_string(&package_json_path).await {
-        Ok(content) => content,
-        Err(e) => {
-            eprintln!("Error reading package.json: {:?}", e);
-            return None;
-        }
-    };
+    let package_json_content =
+        match fs::read_to_string(&package_json_path).await {
+            Ok(content) => content,
+            Err(e) => {
+                eprintln!("Error reading package.json: {:?}", e);
+                return None;
+            }
+        };
 
-    let package_json: Value = match serde_json::from_str(&package_json_content) {
+    let package_json: Value = match serde_json::from_str(&package_json_content)
+    {
         Ok(json) => json,
         Err(e) => {
             eprintln!("Error parsing package.json: {:?}", e);

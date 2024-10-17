@@ -10,6 +10,7 @@ pub async fn get_files_list(
     };
 
     let output = exec(&git_command).await?;
-    let files: Vec<String> = output.lines().map(|line| line.to_string()).collect();
+    let files: Vec<String> =
+        output.lines().map(|line| line.to_string()).collect();
     Ok(files)
 }

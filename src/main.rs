@@ -78,7 +78,9 @@ async fn main() {
                         comments
                             .into_iter()
                             .filter_map(|comment| {
-                                if let Some(comment_kind) = identify_todo_comment(&comment.text) {
+                                if let Some(comment_kind) =
+                                    identify_todo_comment(&comment.text)
+                                {
                                     Some(TodoData {
                                         path: source_file_name.clone(),
                                         comment: comment.text.clone(),
@@ -93,7 +95,10 @@ async fn main() {
                             .collect::<Vec<TodoData>>()
                     }
                     Err(e) => {
-                        eprintln!("Error reading file {}: {:?}", source_file_name, e);
+                        eprintln!(
+                            "Error reading file {}: {:?}",
+                            source_file_name, e
+                        );
                         vec![]
                     }
                 }
@@ -113,9 +118,13 @@ async fn main() {
         .map(|todo| {
             tokio::spawn(async move {
                 if let Ok(source_code) = fs::read_to_string(&todo.path).await {
-                    if let Some(line) = get_line_from_position(todo.start, &source_code) {
-                        if let Some(blame_data) = blame(&todo.path, line).await {
-                            let prepared_blame: PreparedBlameData = prepare_blame_data(blame_data);
+                    if let Some(line) =
+                        get_line_from_position(todo.start, &source_code)
+                    {
+                        if let Some(blame_data) = blame(&todo.path, line).await
+                        {
+                            let prepared_blame: PreparedBlameData =
+                                prepare_blame_data(blame_data);
                             return Some(TodoWithBlame {
                                 comment: todo.comment.trim().to_string(),
                                 path: todo.path.clone(),
@@ -143,7 +152,8 @@ async fn main() {
     let mut history: Vec<(String, String)> = get_history(Some(3)).await;
     let mut todo_count: usize = todos_with_blame.len();
 
-    let temp_file = File::create("todo_history_temp.json").expect("Failed to create temp file");
+    let temp_file = File::create("todo_history_temp.json")
+        .expect("Failed to create temp file");
     let mut writer = BufWriter::new(temp_file);
 
     if history.len() > 1 {
@@ -181,22 +191,40 @@ async fn main() {
                         let semaphore = semaphore.clone();
                         let commit_hash = commit_hash.clone();
                         tokio::spawn(async move {
-                            let permit = semaphore.acquire_owned().await.unwrap();
-                            if let Ok(diff_output) =
-                                exec(&["git", "diff", commit_hash.as_str(), "--", &file_path]).await
+                            let permit =
+                                semaphore.acquire_owned().await.unwrap();
+                            if let Ok(diff_output) = exec(&[
+                                "git",
+                                "diff",
+                                commit_hash.as_str(),
+                                "--",
+                                &file_path,
+                            ])
+                            .await
                             {
                                 for line in diff_output.lines() {
-                                    if line.starts_with("+") || line.starts_with("-") {
-                                        let line_uppercase = line.to_uppercase();
+                                    if line.starts_with("+")
+                                        || line.starts_with("-")
+                                    {
+                                        let line_uppercase =
+                                            line.to_uppercase();
 
                                         let added = line.starts_with("+")
-                                            && TODO_KEYWORDS.iter().any(|keyword| {
-                                                line_uppercase.contains(&keyword.to_uppercase())
-                                            });
+                                            && TODO_KEYWORDS.iter().any(
+                                                |keyword| {
+                                                    line_uppercase.contains(
+                                                        &keyword.to_uppercase(),
+                                                    )
+                                                },
+                                            );
                                         let removed = line.starts_with("-")
-                                            && TODO_KEYWORDS.iter().any(|keyword| {
-                                                line_uppercase.contains(&keyword.to_uppercase())
-                                            });
+                                            && TODO_KEYWORDS.iter().any(
+                                                |keyword| {
+                                                    line_uppercase.contains(
+                                                        &keyword.to_uppercase(),
+                                                    )
+                                                },
+                                            );
 
                                         if added {
                                             return Some((true, file_path));
@@ -232,8 +260,10 @@ async fn main() {
                     date: date.clone(),
                 };
 
-                let json_entry = serde_json::to_string(&todo_history).expect("Failed to serialize");
-                writeln!(writer, "{}", json_entry).expect("Failed to write to temp file");
+                let json_entry = serde_json::to_string(&todo_history)
+                    .expect("Failed to serialize");
+                writeln!(writer, "{}", json_entry)
+                    .expect("Failed to write to temp file");
             }
         }
     }
@@ -242,12 +272,14 @@ async fn main() {
 
     println!("\nFound {} todos", todo_count);
 
-    let temp_file = File::open("todo_history_temp.json").expect("Failed to open temp file");
+    let temp_file =
+        File::open("todo_history_temp.json").expect("Failed to open temp file");
     let reader = BufReader::new(temp_file);
 
     for line in reader.lines() {
-        let entry: TodoHistory = serde_json::from_str(&line.expect("Error reading line"))
-            .expect("Error deserializing JSON");
+        let entry: TodoHistory =
+            serde_json::from_str(&line.expect("Error reading line"))
+                .expect("Error deserializing JSON");
         println!(
             "Date: {}, TODO count: {}, Commit {}",
             entry.date, entry.todos_count, entry.commit
@@ -263,9 +295,10 @@ async fn main() {
         .await
         .expect("Error creating directory");
 
-    let current_directory =
-        get_current_directory().expect("Error: Could not get current directory.");
-    let project_name = get_project_name().unwrap_or_else(|| "Unknown Project".to_string());
+    let current_directory = get_current_directory()
+        .expect("Error: Could not get current directory.");
+    let project_name =
+        get_project_name().unwrap_or_else(|| "Unknown Project".to_string());
     let version = get_todoctor_version()
         .await
         .unwrap_or_else(|| "Unknown Version".to_string());
@@ -277,7 +310,8 @@ async fn main() {
         "version": version,
     });
 
-    let json_string: String = serde_json::to_string(&json_data).expect("Error serializing data");
+    let json_string: String =
+        serde_json::to_string(&json_data).expect("Error serializing data");
 
     let current_exe_path: PathBuf =
         get_current_exe_path().expect("Error: Could not get current exe path.");
@@ -297,7 +331,8 @@ async fn main() {
             .expect("Error reading index.html");
 
         if let Some(pos) = index_content.find("</head>") {
-            let script_tag: String = format!("<script>window.data = {};</script>", json_string);
+            let script_tag: String =
+                format!("<script>window.data = {};</script>", json_string);
             index_content.insert_str(pos, &script_tag);
 
             fs::write(&index_path, index_content)

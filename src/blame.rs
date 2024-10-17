@@ -40,7 +40,8 @@ pub async fn blame(path: &str, line: u32) -> Option<BlameData> {
         author: String::new(),
     };
 
-    let mut key_map: HashMap<&str, Box<dyn FnMut(&mut BlameData, String)>> = HashMap::new();
+    let mut key_map: HashMap<&str, Box<dyn FnMut(&mut BlameData, String)>> =
+        HashMap::new();
     key_map.insert("author-mail ", Box::new(|b, v| b.author_mail = v));
     key_map.insert("author-time ", Box::new(|b, v| b.author_time = v));
     key_map.insert("author-tz ", Box::new(|b, v| b.author_tz = v));
@@ -50,14 +51,17 @@ pub async fn blame(path: &str, line: u32) -> Option<BlameData> {
     for current_line in lines {
         for (key, setter) in &mut key_map {
             if current_line.starts_with(key) {
-                let value = current_line.replacen(key, "", 1).trim().to_string();
+                let value =
+                    current_line.replacen(key, "", 1).trim().to_string();
                 setter(&mut blame_data, value);
             }
         }
 
-        if current_line.len() >= 40 && current_line.chars().take(40).all(|c| c.is_ascii_hexdigit())
+        if current_line.len() >= 40
+            && current_line.chars().take(40).all(|c| c.is_ascii_hexdigit())
         {
-            blame_data.commit = current_line.split_whitespace().next().unwrap().to_string();
+            blame_data.commit =
+                current_line.split_whitespace().next().unwrap().to_string();
         }
     }
 

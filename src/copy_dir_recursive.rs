@@ -23,6 +23,9 @@ pub async fn copy_dir_recursive(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
-fn copy_dir_recursive_boxed<'a>(src: &'a Path, dst: &'a Path) -> BoxFuture<'a, io::Result<()>> {
+fn copy_dir_recursive_boxed<'a>(
+    src: &'a Path,
+    dst: &'a Path,
+) -> BoxFuture<'a, io::Result<()>> {
     Box::pin(copy_dir_recursive(src, dst))
 }

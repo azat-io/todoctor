@@ -1,0 +1,5 @@
+hard_tabs = false
+max_width = 80
+newline_style = "Unix"
+tab_spaces = 4
+use_field_init_shorthand = true
