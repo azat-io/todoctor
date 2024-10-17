@@ -1,12 +1,12 @@
 use futures::future::join_all;
 use open;
-use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::process;
 use std::sync::Arc;
+use todoctor::add_missing_days::add_missing_days;
 use todoctor::blame::blame;
 use todoctor::check_git_repository::check_git_repository;
 use todoctor::copy_dir_recursive::copy_dir_recursive;
@@ -22,37 +22,15 @@ use todoctor::get_todoctor_version::get_todoctor_version;
 use todoctor::identify_supported_file::identify_supported_file;
 use todoctor::identify_todo_comment::identify_todo_comment;
 use todoctor::prepare_blame_data::{prepare_blame_data, PreparedBlameData};
-use todoctor::todo_keywords::TODO_KEYWORDS;
+use todoctor::remove_duplicate_dates::remove_duplicate_dates;
+use todoctor::types::{TodoData, TodoHistory, TodoWithBlame};
 use tokio::fs;
 use tokio::sync::Semaphore;
 
-#[derive(Debug, Serialize)]
-pub struct TodoData {
-    pub comment: String,
-    pub path: String,
-    pub start: usize,
-    pub end: usize,
-    pub kind: String,
-}
-
-#[derive(Debug, Serialize)]
-pub struct TodoWithBlame {
-    pub blame: PreparedBlameData,
-    pub comment: String,
-    pub kind: String,
-    pub path: String,
-    pub line: u32,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TodoHistory {
-    pub todos_count: usize,
-    pub commit: String,
-    pub date: String,
-}
-
 const TODOCTOR_DIR: &str = "todoctor";
 const TODO_JSON_FILE: &str = "todoctor/data.json";
+const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
+const MONTHS: u32 = 3;
 
 #[tokio::main]
 async fn main() {
@@ -96,7 +74,7 @@ async fn main() {
                     }
                     Err(e) => {
                         eprintln!(
-                            "Error reading file {}: {:?}",
+                            "Error: Cannot read file {}: {:?}",
                             source_file_name, e
                         );
                         vec![]
@@ -149,11 +127,11 @@ async fn main() {
 
     todos_with_blame.sort_by(|a, b| a.blame.date.cmp(&b.blame.date));
 
-    let mut history: Vec<(String, String)> = get_history(Some(3)).await;
-    let mut todo_count: usize = todos_with_blame.len();
+    let mut history: Vec<(String, String)> = get_history(Some(MONTHS)).await;
+    history = remove_duplicate_dates(history);
 
-    let temp_file = File::create("todo_history_temp.json")
-        .expect("Failed to create temp file");
+    let temp_file =
+        File::create(HISTORY_TEMP_FILE).expect("Failed to create temp file");
     let mut writer = BufWriter::new(temp_file);
 
     if history.len() > 1 {
@@ -161,130 +139,75 @@ async fn main() {
     }
 
     let history_len = history.len();
-    let semaphore = Arc::new(Semaphore::new(5));
+    let semaphore = Arc::new(Semaphore::new(24));
 
     for (index, (commit_hash, date)) in history.iter().enumerate() {
-        print!("\rProcessed {}/{} commits", index, history_len);
+        let percentage =
+            ((index + 1) as f64 / history_len as f64 * 100.0).round() as i32;
+
+        print!("\rProcessed {:.2}% of commits", percentage);
         io::stdout().flush().unwrap();
 
-        if index + 1 < history.len() {
-            let prev_commit = &history[index + 1].0;
+        let files_list =
+            get_files_list(Some(commit_hash.as_str())).await.unwrap();
 
-            if let Ok(diff_stat_output) =
-                exec(&["git", "diff", "--stat", prev_commit, commit_hash]).await
-            {
-                let supported_files: Vec<_> = diff_stat_output
-                    .lines()
-                    .filter_map(|line| {
-                        let file_path = line.split_whitespace().next()?;
-                        if identify_supported_file(file_path) {
-                            Some(file_path.to_string())
-                        } else {
-                            None
-                        }
-                    })
-                    .collect();
+        let supported_files: Vec<_> = files_list
+            .into_iter()
+            .filter(|file| identify_supported_file(file))
+            .collect();
 
-                let file_tasks: Vec<_> = supported_files
-                    .into_iter()
-                    .map(|file_path| {
-                        let semaphore = semaphore.clone();
-                        let commit_hash = commit_hash.clone();
-                        tokio::spawn(async move {
-                            let permit =
-                                semaphore.acquire_owned().await.unwrap();
-                            if let Ok(diff_output) = exec(&[
-                                "git",
-                                "diff",
-                                commit_hash.as_str(),
-                                "--",
-                                &file_path,
-                            ])
-                            .await
-                            {
-                                for line in diff_output.lines() {
-                                    if line.starts_with("+")
-                                        || line.starts_with("-")
-                                    {
-                                        let line_uppercase =
-                                            line.to_uppercase();
+        let file_tasks: Vec<_> = supported_files
+            .into_iter()
+            .map(|file_path| {
+                let semaphore = semaphore.clone();
+                let commit_hash = commit_hash.clone();
+                tokio::spawn(async move {
+                    let permit = semaphore.acquire_owned().await.unwrap();
 
-                                        let added = line.starts_with("+")
-                                            && TODO_KEYWORDS.iter().any(
-                                                |keyword| {
-                                                    line_uppercase.contains(
-                                                        &keyword.to_uppercase(),
-                                                    )
-                                                },
-                                            );
-                                        let removed = line.starts_with("-")
-                                            && TODO_KEYWORDS.iter().any(
-                                                |keyword| {
-                                                    line_uppercase.contains(
-                                                        &keyword.to_uppercase(),
-                                                    )
-                                                },
-                                            );
+                    if let Ok(file_content) = exec(&[
+                        "git",
+                        "show",
+                        &format!("{}:{}", commit_hash, file_path),
+                    ])
+                    .await
+                    {
+                        let comments = get_comments(&file_content, &file_path);
+                        let todos: Vec<_> = comments
+                            .into_iter()
+                            .filter(|comment| {
+                                identify_todo_comment(&comment.text).is_some()
+                            })
+                            .collect();
 
-                                        if added {
-                                            return Some((true, file_path));
-                                        }
-
-                                        if removed {
-                                            return Some((false, file_path));
-                                        }
-                                    }
-                                }
-                            }
-                            drop(permit);
-                            None
-                        })
-                    })
-                    .collect();
-
-                let results = join_all(file_tasks).await;
-
-                for result in results {
-                    if let Ok(Some((added, _file_path))) = result {
-                        if added {
-                            todo_count += 1;
-                        } else {
-                            todo_count -= 1;
-                        }
+                        drop(permit);
+                        Some(todos.len())
+                    } else {
+                        drop(permit);
+                        None
                     }
-                }
+                })
+            })
+            .collect();
 
-                let todo_history = TodoHistory {
-                    commit: commit_hash.clone(),
-                    todos_count: todo_count,
-                    date: date.clone(),
-                };
+        let results = join_all(file_tasks).await;
 
-                let json_entry = serde_json::to_string(&todo_history)
-                    .expect("Failed to serialize");
-                writeln!(writer, "{}", json_entry)
-                    .expect("Failed to write to temp file");
-            }
-        }
+        let todo_count: usize = results
+            .into_iter()
+            .filter_map(|res| res.ok().flatten())
+            .sum();
+
+        let todo_history = TodoHistory {
+            date: date.clone(),
+            count: todo_count,
+        };
+
+        let json_entry =
+            serde_json::to_string(&todo_history).expect("Failed to serialize");
+        writeln!(writer, "{}", json_entry)
+            .expect("Failed to write to temp file");
     }
 
     writer.flush().expect("Failed to flush writer");
-
-    println!("\nFound {} todos", todo_count);
-
-    let temp_file =
-        File::open("todo_history_temp.json").expect("Failed to open temp file");
-    let reader = BufReader::new(temp_file);
-
-    for line in reader.lines() {
-        let entry: TodoHistory =
-            serde_json::from_str(&line.expect("Error reading line"))
-                .expect("Error deserializing JSON");
-        println!(
-            "Date: {}, TODO count: {}, Commit {}",
-            entry.date, entry.todos_count, entry.commit
-        );
-    }
 
     if fs::metadata(TODOCTOR_DIR).await.is_ok() {
         fs::remove_dir_all(TODOCTOR_DIR)
@@ -303,15 +226,33 @@ async fn main() {
         .await
         .unwrap_or_else(|| "Unknown Version".to_string());
 
+    let file = File::open(HISTORY_TEMP_FILE).expect("Failed to open file");
+    let reader = BufReader::new(file);
+
+    let mut todo_history_data: Vec<TodoHistory> = Vec::new();
+    for line in reader.lines() {
+        let entry: TodoHistory =
+            serde_json::from_str(&line.expect("Error reading line"))
+                .expect("Error deserializing JSON");
+        todo_history_data.push(entry);
+    }
+    todo_history_data =
+        add_missing_days(todo_history_data, MONTHS, todos_with_blame.len());
+
+    fs::remove_file(HISTORY_TEMP_FILE)
+        .await
+        .expect("Error: Failed to remove temporary file");
+
     let json_data = json!({
         "currentPath": current_directory,
+        "history": todo_history_data,
         "data": todos_with_blame,
         "name": project_name,
         "version": version,
     });
 
-    let json_string: String =
-        serde_json::to_string(&json_data).expect("Error serializing data");
+    let json_string: String = serde_json::to_string(&json_data)
+        .expect("Error: Could not serialize data");
 
     let current_exe_path: PathBuf =
         get_current_exe_path().expect("Error: Could not get current exe path.");
