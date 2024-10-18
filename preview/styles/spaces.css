@@ -1,10 +1,11 @@
 :root {
-  --space-2xs: clamp(0.25rem, 0.1667rem + 0.2778vi, 0.375rem);
-  --space-xs: clamp(0.5rem, 0.3333rem + 0.5556vi, 0.75rem);
-  --space-s: clamp(0.75rem, 0.5833rem + 0.5556vi, 1rem);
-  --space-m: clamp(1rem, 0.8333rem + 0.5556vi, 1.25rem);
-  --space-l: clamp(1.5rem, 1.3333rem + 0.5556vi, 1.75rem);
-  --space-xl: clamp(2rem, 1.3333rem + 2.2222vi, 3rem);
+  --space-2xs: clamp(0.25rem, 0.125rem + 0.5vi, 0.375rem);
+  --space-xs: clamp(0.5rem, 0.25rem + 1vi, 0.75rem);
+  --space-s: clamp(0.75rem, 0.5rem + 1vi, 1rem);
+  --space-m: clamp(1rem, 0.75rem + 1vi, 1.25rem);
+  --space-l: clamp(1.5rem, 1.25rem + 1vi, 1.75rem);
+  --space-xl: clamp(2rem, 1rem + 4vi, 3rem);
+  --space-2xl: clamp(3rem, 2rem + 4vi, 4rem);
 
   --border-radius: 8px;
 }

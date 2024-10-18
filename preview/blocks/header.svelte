@@ -42,7 +42,8 @@
 
 <style>
   .header {
-    padding-block: var(--space-xl);
+    padding-block: var(--space-xl) var(--space-xs);
+    margin-block-end: var(--space-xl);
   }
 
   .wrapper {

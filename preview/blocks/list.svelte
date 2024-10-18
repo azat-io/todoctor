@@ -90,13 +90,13 @@
 
 <div class="list">
   <Container>
-    <Typography size="l" tag="h2" mbe="l">List of Commits</Typography>
+    <Typography size="l" tag="h2" mbe="l">List of Todos</Typography>
     <Table data={preparedData} {columns} />
   </Container>
 </div>
 
 <style>
   .list {
-    margin-block: var(--space-xl);
+    margin-block: var(--space-2xl);
   }
 </style>

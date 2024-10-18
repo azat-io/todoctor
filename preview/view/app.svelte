@@ -1,6 +1,7 @@
 <script lang="ts">
   import Header from '~/blocks/header.svelte'
   import Footer from '~/blocks/footer.svelte'
+  import Graph from '~/blocks/graph.svelte'
   import Info from '~/blocks/info.svelte'
   import List from '~/blocks/list.svelte'
   import { data } from '~/stores/data'
@@ -11,6 +12,7 @@
 </script>
 
 <Header />
+<Graph />
 <Info />
 <List />
 <Footer />

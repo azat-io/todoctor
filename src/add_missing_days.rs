@@ -1,5 +1,5 @@
 use crate::types::TodoHistory;
-use chrono::{Datelike, Duration, NaiveDate};
+use chrono::{Duration, NaiveDate};
 use std::collections::HashSet;
 
 pub fn add_missing_days(
@@ -9,14 +9,14 @@ pub fn add_missing_days(
 ) -> Vec<TodoHistory> {
     if todo_history_data.is_empty() {
         let current_date = chrono::Utc::now().naive_utc().date();
-        let last_date = current_date
-            .checked_add_signed(Duration::days(30 * months as i64))
+        let start_date = current_date
+            .checked_sub_signed(Duration::days(30 * months as i64))
             .unwrap_or(current_date);
 
-        let mut current_date_iter = current_date;
+        let mut current_date_iter = start_date;
         let mut updated_history = Vec::new();
 
-        while current_date_iter <= last_date {
+        while current_date_iter <= current_date {
             updated_history.push(TodoHistory {
                 date: current_date_iter.format("%Y-%m-%d").to_string(),
                 count: current_todo_count,
@@ -30,7 +30,6 @@ pub fn add_missing_days(
     }
 
     let mut existing_dates = HashSet::new();
-
     for entry in &todo_history_data {
         let date = NaiveDate::parse_from_str(&entry.date, "%Y-%m-%d")
             .expect("Invalid date format in history");
@@ -39,18 +38,13 @@ pub fn add_missing_days(
 
     todo_history_data.sort_by(|a, b| a.date.cmp(&b.date));
 
-    let first_date = NaiveDate::parse_from_str(
-        &todo_history_data.first().unwrap().date,
-        "%Y-%m-%d",
-    )
-    .expect("Invalid date format in history");
+    let last_date = chrono::Utc::now().naive_utc().date();
+    let start_date = last_date
+        .checked_sub_signed(Duration::days(30 * months as i64))
+        .unwrap_or(last_date);
 
-    let last_date = first_date
-        .checked_add_signed(Duration::days(30 * months as i64))
-        .unwrap_or(first_date);
-
-    let mut current_date = first_date;
-    let mut previous_commit_count = todo_history_data.first().unwrap().count;
+    let mut current_date = start_date;
+    let mut previous_commit_count = current_todo_count;
 
     while current_date <= last_date {
         if !existing_dates.contains(&current_date) {
@@ -59,13 +53,11 @@ pub fn add_missing_days(
                 count: previous_commit_count,
             });
         } else {
-            let matching_entry = todo_history_data.iter().find(|e| {
+            if let Some(entry) = todo_history_data.iter().find(|e| {
                 let date =
                     NaiveDate::parse_from_str(&e.date, "%Y-%m-%d").unwrap();
-                date.year() == current_date.year()
-                    && date.month() == current_date.month()
-            });
-            if let Some(entry) = matching_entry {
+                date == current_date
+            }) {
                 previous_commit_count = entry.count;
             }
         }
@@ -74,7 +66,12 @@ pub fn add_missing_days(
             current_date.checked_add_signed(Duration::days(1)).unwrap();
     }
 
-    todo_history_data.sort_by(|a, b| b.date.cmp(&a.date));
-
     todo_history_data
+        .into_iter()
+        .filter(|entry| {
+            let entry_date = NaiveDate::parse_from_str(&entry.date, "%Y-%m-%d")
+                .expect("Invalid date format in history");
+            entry_date >= start_date && entry_date <= last_date
+        })
+        .collect()
 }

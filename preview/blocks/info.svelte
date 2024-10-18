@@ -18,11 +18,11 @@
 
   $: finalTodosEntries = (() => {
     if (todosEntries.length > 5) {
-      let topFive = todosEntries.slice(0, 4)
+      let topFive = todosEntries.slice(0, 5)
       let remainingSum = todosEntries
-        .slice(4)
+        .slice(5)
         .reduce((sum, [, value]) => sum + value, 0)
-      topFive.push(['TOTAL', remainingSum])
+      topFive.push(['OTHER', remainingSum])
       return topFive
     }
     return todosEntries
@@ -40,41 +40,49 @@
   ]
 </script>
 
-<Container>
-  <div class="wrapper">
-    <div></div>
-    <div class="chart">
-      <Typography size="l" tag="h2" mbe="l" align="center">
-        Todos by Kind
-      </Typography>
-      {#if values.length}
-        <ChartDoughnut {values} />
-      {/if}
-    </div>
-  </div>
-  <div class="legend">
-    {#each finalTodosEntries as [kind], index}
-      <div class="legend-element">
-        <div
-          style={`--color: var(--color-additional-${colors[index]});`}
-          class="legend-color"
-        ></div>
-        <Typography size="s" tag="span">{kind}</Typography>
+<div class="wrapper">
+  <Container>
+    <div class="grid">
+      <div>
+        <Typography size="l" tag="h2" mbe="l">Did You Know That?</Typography>
       </div>
-    {/each}
-  </div>
-</Container>
+      <div class="chart">
+        <Typography size="l" tag="h2" mbe="l" align="center">
+          Todos by Kind
+        </Typography>
+        {#if values.length}
+          <ChartDoughnut {values} />
+        {/if}
+      </div>
+    </div>
+    <div class="legend">
+      {#each finalTodosEntries as [kind], index}
+        <div class="legend-element">
+          <div
+            style={`--color: var(--color-additional-${colors[index]});`}
+            class="legend-color"
+          ></div>
+          <Typography size="s" tag="span">{kind}</Typography>
+        </div>
+      {/each}
+    </div>
+  </Container>
+</div>
 
 <style>
   .wrapper {
+    margin-block: var(--space-2xl);
+  }
+
+  .grid {
     display: grid;
     grid-template-columns: 1fr 420px;
     gap: var(--space-l);
-    margin-block-end: var(--space-xl);
   }
 
   .legend {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-xl);
     justify-content: center;
     max-inline-size: 800px;

@@ -19,7 +19,7 @@
 
 <style>
   .footer {
-    margin-block: var(--space-xl);
+    margin-block: var(--space-2xl) var(--space-xl);
   }
 
   .wrapper {

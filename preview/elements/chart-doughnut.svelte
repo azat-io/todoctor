@@ -31,14 +31,46 @@
     computedStyles = getComputedStyle(document.body)
   })
 
-  let options: ChartOptions<'doughnut'> = {
+  $: options = {
     plugins: {
+      tooltip: {
+        callbacks: {
+          labelColor: context => ({
+            backgroundColor: (context.dataset.backgroundColor as string[])[
+              context.dataIndex
+            ],
+            borderColor: computedStyles.getPropertyValue(
+              '--color-border-primary',
+            ),
+            borderRadius: 2,
+            borderWidth: 0,
+          }),
+        },
+        titleFont: {
+          family: computedStyles.getPropertyValue('--font-family-base'),
+          size: 16,
+        },
+        bodyFont: {
+          family: computedStyles.getPropertyValue('--font-family-base'),
+          size: 16,
+        },
+        backgroundColor: computedStyles.getPropertyValue(
+          '--color-background-secondary',
+        ),
+        footerFont: {
+          family: computedStyles.getPropertyValue('--font-family-base'),
+        },
+        borderColor: computedStyles.getPropertyValue('--color-border-primary'),
+        titleColor: computedStyles.getPropertyValue('--color-content-primary'),
+        bodyColor: computedStyles.getPropertyValue('--color-content-primary'),
+        borderWidth: 1,
+      },
       legend: {
         display: false,
       },
     },
     responsive: true,
-  }
+  } as ChartOptions<'doughnut'>
 </script>
 
-<Chart type="doughnut" {options} {data} />
+<Chart type="doughnut" height={null} {options} {data} />

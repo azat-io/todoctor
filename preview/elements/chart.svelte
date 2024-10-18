@@ -12,6 +12,13 @@
   export let type: T
   export let data: ChartData<T>
   export let options: ChartOptions<T>
+  export let height: number | null
+
+  let props: Record<string, unknown> = {}
+
+  if (height) {
+    props = { height }
+  }
 
   let canvasRef: HTMLCanvasElement
 
@@ -49,4 +56,4 @@
   })
 </script>
 
-<canvas bind:this={canvasRef}></canvas>
+<canvas bind:this={canvasRef} {...props}></canvas>
