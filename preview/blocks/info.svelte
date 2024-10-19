@@ -180,7 +180,7 @@
     flex-wrap: wrap;
     gap: var(--space-xl);
     justify-content: center;
-    max-inline-size: 800px;
+    max-inline-size: 900px;
     margin-block-start: var(--space-xl);
     margin-inline: auto;
   }

@@ -71,3 +71,9 @@ p {
     widows: 2;
   }
 }
+
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-block-size: 100dvb;
+}

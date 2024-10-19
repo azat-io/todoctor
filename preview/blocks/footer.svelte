@@ -1,6 +1,8 @@
 <script lang="ts">
   import Typography from '~/elements/typography.svelte'
   import Container from '~/elements/container.svelte'
+
+  let currentYear = new Date().getFullYear()
 </script>
 
 <footer class="footer">
@@ -8,7 +10,7 @@
     <div class="wrapper">
       <div>
         <Typography size="m">Released under the MIT License</Typography>
-        <Typography size="m">Copyright © 2024 Azat S.</Typography>
+        <Typography size="m">Copyright © {currentYear} Azat S.</Typography>
       </div>
       <a href="https://github.com/azat-io/todoctor" target="_blank">
         <Typography size="m">Source code on GitHub</Typography>
