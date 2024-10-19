@@ -20,6 +20,12 @@ jobs:
       - name: Install Tools
         uses: ./.github/actions/install-tools
 
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: Build Package
+        run: pnpm run build
+
       - name: Create GitHub Release
         run: pnpx changelogithub
         env:
