@@ -11,10 +11,10 @@
 </script>
 
 <div class="date">
-  <Typography size="s">
+  <Typography size="m">
     {`${relativeValue} ago`}
   </Typography>
-  <Typography color="secondary" size="xs">
+  <Typography color="secondary" size="s">
     {formattedValue}
   </Typography>
 </div>

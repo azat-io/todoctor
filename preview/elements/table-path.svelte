@@ -7,5 +7,5 @@
 </script>
 
 <a href={`${currentPath}/${value}`}>
-  <Typography size="s">{`${value}:${line}`}</Typography>
+  <Typography size="m">{`${value}:${line}`}</Typography>
 </a>

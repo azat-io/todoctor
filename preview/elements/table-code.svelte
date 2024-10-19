@@ -13,8 +13,10 @@
 
 <style>
   .code {
-    margin: 0;
-    font-size: var(--font-size-2xs);
+    display: block;
+    margin: calc(var(--space-2xs) + 2px) 0;
+    font-family: Courier, monospace;
+    font-size: var(--font-size-m);
     color: var(--color-content-brand);
     text-decoration: underline;
     cursor: help;
@@ -26,7 +28,7 @@
     --tooltip-font-family: var(--font-family-base);
     --tooltip-color: var(--color-content-primary);
     --tooltip-border-radius: var(--border-radius);
-    --tooltip-font-size: var(--font-size-xs);
-    --tooltip-line-height: 1.35rem;
+    --tooltip-font-size: var(--font-size-m);
+    --tooltip-line-height: 1.75rem;
   }
 </style>

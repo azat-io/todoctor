@@ -9,9 +9,9 @@
 <div class="user">
   <Avatar data={`${email}__${author}`} />
   <div class="info">
-    <Typography size="s" noWrap>{author}</Typography>
+    <Typography size="m" noWrap>{author}</Typography>
     <a href="mailto:{email}">
-      <Typography size="xs" color="inherit" noWrap>{email}</Typography>
+      <Typography size="s" color="inherit" noWrap>{email}</Typography>
     </a>
   </div>
 </div>

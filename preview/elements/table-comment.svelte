@@ -7,7 +7,7 @@
   let formattedValue = value.replace(new RegExp(kind, 'i'), '<i>$&</i>')
 </script>
 
-<Typography size="s">
+<Typography size="m">
   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html formattedValue}
 </Typography>

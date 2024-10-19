@@ -7,11 +7,11 @@
   <Container>
     <div class="wrapper">
       <div>
-        <Typography size="s">Released under the MIT License</Typography>
-        <Typography size="s">Copyright © 2024 Azat S.</Typography>
+        <Typography size="m">Released under the MIT License</Typography>
+        <Typography size="m">Copyright © 2024 Azat S.</Typography>
       </div>
       <a href="https://github.com/azat-io/todoctor" target="_blank">
-        <Typography size="s">Source code on GitHub</Typography>
+        <Typography size="m">Source code on GitHub</Typography>
       </a>
     </div>
   </Container>
