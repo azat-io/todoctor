@@ -11,6 +11,7 @@ pub mod get_history;
 pub mod get_line_from_position;
 pub mod get_project_name;
 pub mod get_todoctor_version;
+pub mod identify_not_ignored_file;
 pub mod identify_supported_file;
 pub mod identify_todo_comment;
 pub mod prepare_blame_data;

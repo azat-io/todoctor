@@ -61,6 +61,16 @@ Example:
 todoctor --months 6
 ```
 
+### --ignore
+
+Allows you to specify files or directories to ignore during the analysis. This option can be used multiple times.
+
+Example:
+
+```sh
+todoctor --ignore src/deprecated/ --ignore tests/legacy.test.js
+```
+
 ### --help
 
 Displays this help message with available options.

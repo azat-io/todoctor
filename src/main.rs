@@ -1,4 +1,4 @@
-use clap::{CommandFactory, Parser};
+use clap::{ArgAction, CommandFactory, Parser};
 use futures::future::join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use open;
@@ -21,6 +21,7 @@ use todoctor::get_history::get_history;
 use todoctor::get_line_from_position::get_line_from_position;
 use todoctor::get_project_name::get_project_name;
 use todoctor::get_todoctor_version::get_todoctor_version;
+use todoctor::identify_not_ignored_file::identify_not_ignored_file;
 use todoctor::identify_supported_file::identify_supported_file;
 use todoctor::identify_todo_comment::identify_todo_comment;
 use todoctor::prepare_blame_data::{prepare_blame_data, PreparedBlameData};
@@ -39,6 +40,10 @@ struct Cli {
     /// Number of months to process
     #[arg(short, long, default_value_t = 3, value_parser = clap::value_parser!(u32).range(1..))]
     month: u32,
+
+    /// Paths to ignore (can be used multiple times)
+    #[arg(short, long, action = ArgAction::Append)]
+    ignore: Vec<String>,
 }
 
 #[tokio::main]
@@ -54,6 +59,10 @@ async fn main() {
     let args = Cli::command().version(version_static).get_matches();
 
     let months = args.get_one::<u32>("month").unwrap();
+    let ignores: Vec<String> = args
+        .get_many::<String>("ignore")
+        .map(|values| values.map(String::from).collect())
+        .unwrap_or_else(Vec::new);
 
     if !check_git_repository(".").await {
         eprintln!("Error: This is not a Git repository.");
@@ -64,7 +73,10 @@ async fn main() {
 
     let files: Vec<String> = files_list
         .into_iter()
-        .filter(|file| identify_supported_file(file))
+        .filter(|file| {
+            identify_not_ignored_file(file, &ignores)
+                && identify_supported_file(file)
+        })
         .collect();
 
     let todo_data_tasks: Vec<_> = files
@@ -180,7 +192,10 @@ async fn main() {
 
         let supported_files: Vec<_> = files_list
             .into_iter()
-            .filter(|file| identify_supported_file(file))
+            .filter(|file| {
+                identify_not_ignored_file(file, &ignores)
+                    && identify_supported_file(file)
+            })
             .collect();
 
         let file_tasks: Vec<_> = supported_files
