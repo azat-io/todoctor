@@ -16,5 +16,4 @@ pub mod identify_supported_file;
 pub mod identify_todo_comment;
 pub mod prepare_blame_data;
 pub mod remove_duplicate_dates;
-pub mod todo_keywords;
 pub mod types;
