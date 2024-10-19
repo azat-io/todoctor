@@ -12,48 +12,63 @@
   export let type: T
   export let data: ChartData<T>
   export let options: ChartOptions<T>
-  export let height: number | null
-
-  let props: Record<string, unknown> = {}
-
-  if (height) {
-    props = { height }
-  }
+  export let height: number | null = null
 
   let canvasRef: HTMLCanvasElement
+  let chart: Chart<T> | null = null
 
-  export let chart: Chart<T> | null = null
+  let resizeObserver: ResizeObserver
 
-  onMount(() => {
+  let createChart = () => {
+    if (chart) {
+      chart.destroy()
+    }
+
     chart = new Chart(canvasRef, {
       options: {
         ...options,
-        animation: {
-          duration: 1000,
-        },
+        maintainAspectRatio: false,
+        responsive: true,
       },
-      data,
       type,
+      data,
     })
+  }
+
+  onMount(() => {
+    createChart()
+
+    resizeObserver = new ResizeObserver(() => {
+      chart?.resize()
+    })
+
+    if (canvasRef.parentElement) {
+      resizeObserver.observe(canvasRef.parentElement)
+    }
   })
 
   $: if (chart) {
     chart.data = data
-    chart.options = {
-      ...options,
-      animation: {
-        duration: 0,
-      },
-    }
+    chart.options = options
     chart.update()
   }
 
   onDestroy(() => {
     if (chart) {
       chart.destroy()
-      chart = null
+    }
+    if (resizeObserver) {
+      resizeObserver.disconnect()
     }
   })
 </script>
 
-<canvas bind:this={canvasRef} {...props}></canvas>
+<canvas class="canvas" bind:this={canvasRef} {height}></canvas>
+
+<style>
+  .canvas {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+</style>

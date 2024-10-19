@@ -125,7 +125,7 @@
 <div class="wrapper">
   <Container>
     <div class="grid">
-      <div>
+      <div class="notes-wrapper">
         <Typography size="xl" tag="h2" mbe="l">Did You Know That?</Typography>
         <div class="notes">
           {#each notes as { content, title }}
@@ -198,11 +198,29 @@
     border-radius: var(--border-radius);
   }
 
+  .notes-wrapper {
+    container-type: inline-size;
+  }
+
   .notes {
     display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-l);
     min-block-size: var(--size-chart);
+
+    @container (inline-size >= 600px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart :global(.canvas) {
+    max-inline-size: calc(var(--size-chart) * 1.25);
+    max-block-size: calc(var(--size-chart) * 1.25);
   }
 </style>

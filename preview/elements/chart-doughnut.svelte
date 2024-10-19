@@ -69,7 +69,6 @@
         display: false,
       },
     },
-    responsive: true,
   } as ChartOptions<'doughnut'>
 </script>
 

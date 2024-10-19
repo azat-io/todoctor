@@ -48,8 +48,15 @@
 
   .wrapper {
     display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-l);
     align-items: start;
-    justify-content: space-between;
+    align-items: center;
+
+    @container (inline-size >= 520px) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 
   .start-wrapper {
@@ -89,6 +96,6 @@
 
   .links {
     display: flex;
-    gap: var(--space-m);
+    gap: var(--space-l);
   }
 </style>

@@ -132,9 +132,7 @@
         display: false,
       },
     },
-    maintainAspectRatio: false,
-    responsive: true,
   } as ChartOptions<'line'>
 </script>
 
-<Chart type="line" height={600} {options} {data} />
+<Chart type="line" height={null} {options} {data} />

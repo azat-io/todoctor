@@ -15,7 +15,7 @@
 <div class="graph-wrapper">
   <Container>
     <Typography size="xl" tag="h2" mbe="l">Todos Graph</Typography>
-    <div>
+    <div class="chart-wrapper">
       {#if values.length && labels.length}
         <ChartLine {values} {labels} />
       {/if}
@@ -26,5 +26,10 @@
 <style>
   .graph-wrapper {
     margin-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .chart-wrapper :global(.canvas) {
+    inline-size: 100%;
+    block-size: 600px !important;
   }
 </style>
