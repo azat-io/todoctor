@@ -15,7 +15,7 @@ use todoctor::copy_dir_recursive::copy_dir_recursive;
 use todoctor::exec::exec;
 use todoctor::get_comments::get_comments;
 use todoctor::get_current_directory::get_current_directory;
-use todoctor::get_current_exe_path::get_current_exe_path;
+use todoctor::get_dist_path::get_dist_path;
 use todoctor::get_files_list::get_files_list;
 use todoctor::get_history::get_history;
 use todoctor::get_line_from_position::get_line_from_position;
@@ -31,7 +31,6 @@ use tokio::fs;
 use tokio::sync::Semaphore;
 
 const TODOCTOR_DIR: &str = "todoctor";
-const TODO_JSON_FILE: &str = "todoctor/data.json";
 const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
 
 #[derive(Parser, Debug)]
@@ -295,12 +294,8 @@ async fn main() {
     let json_string: String = serde_json::to_string(&json_data)
         .expect("Error: Could not serialize data");
 
-    let current_exe_path: PathBuf =
-        get_current_exe_path().expect("Error: Could not get current exe path.");
-    let script_dir: &Path = current_exe_path
-        .parent()
-        .expect("Error: Could not get script directory.");
-    let dist_path: PathBuf = script_dir.join("../dist");
+    let dist_path: PathBuf =
+        get_dist_path().expect("Error: Could not get current dist path.");
 
     copy_dir_recursive(&dist_path, Path::new(TODOCTOR_DIR))
         .await
@@ -328,6 +323,4 @@ async fn main() {
     if let Err(e) = open::that(&index_path) {
         eprintln!("Error: Cannot open index.html: {:?}", e);
     }
-
-    println!("Data successfully written to {}", TODO_JSON_FILE);
 }

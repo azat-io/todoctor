@@ -1,25 +1,31 @@
-use crate::get_current_exe_path::get_current_exe_path;
+use crate::get_dist_path::get_dist_path;
 use serde_json::Value;
 use tokio::fs;
 
 pub async fn get_todoctor_version() -> Option<String> {
-    let current_exe_path = match get_current_exe_path() {
+    let dist_path = match get_dist_path() {
         Some(path) => path,
         None => {
-            eprintln!("Error: could not get current exe path.");
+            eprintln!("Error: could not get dist directory path.");
             return None;
         }
     };
 
-    let parent_dir = match current_exe_path.parent().and_then(|p| p.parent()) {
-        Some(path) => path,
+    let package_json_path = match dist_path.parent() {
+        Some(parent_dir) => parent_dir.join("package.json"),
         None => {
-            eprintln!("Error: could not get parent directory.");
+            eprintln!("Error: could not get parent directory of dist.");
             return None;
         }
     };
 
-    let package_json_path = parent_dir.join("package.json");
+    if !package_json_path.exists() {
+        eprintln!(
+            "Error: package.json not found at {}",
+            package_json_path.display()
+        );
+        return None;
+    }
 
     let package_json_content =
         match fs::read_to_string(&package_json_path).await {
