@@ -14,7 +14,7 @@
 
 <div class="graph-wrapper">
   <Container>
-    <Typography size="l" tag="h2" mbe="l">Todos Graph</Typography>
+    <Typography size="xl" tag="h2" mbe="l">Todos Graph</Typography>
     <div>
       {#if values.length && labels.length}
         <ChartLine {values} {labels} />

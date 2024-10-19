@@ -185,10 +185,6 @@
   }
 
   tr:nth-child(even) {
-    background: color-mix(
-      in lab,
-      var(--color-background-primary),
-      var(--color-background-secondary) 30%
-    );
+    background: var(--color-background-tertiary);
   }
 </style>

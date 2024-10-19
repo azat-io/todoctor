@@ -90,7 +90,7 @@
 
 <div class="list">
   <Container>
-    <Typography size="l" tag="h2" mbe="l">List of Todos</Typography>
+    <Typography size="xl" tag="h2" mbe="l">List of Todos</Typography>
     <Table data={preparedData} {columns} />
   </Container>
 </div>

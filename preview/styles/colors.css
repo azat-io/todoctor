@@ -4,6 +4,7 @@
   --color-background-brand: oklch(68% 0.15 150);
   --color-background-primary: oklch(99% 0.025 155);
   --color-background-secondary: oklch(90% 0.035 155);
+  --color-background-tertiary: oklch(96% 0.025 155);
 
   --color-content-brand: oklch(48% 0.15 150);
   --color-content-primary: oklch(35% 0.01 196);
@@ -29,6 +30,7 @@
   --color-background-brand: oklch(78% 0.15 150);
   --color-background-primary: oklch(35% 0.01 196);
   --color-background-secondary: oklch(30% 0.01 155);
+  --color-background-tertiary: oklch(33% 0.01 196);
 
   --color-content-brand: oklch(78% 0.15 150);
   --color-content-primary: oklch(99% 0.025 155);

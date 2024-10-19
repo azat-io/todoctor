@@ -30,10 +30,10 @@
       </div>
       <div class="links">
         <button on:click={toggleTheme} class="button">
-          <Typography color="brand" size="s">Toggle Theme</Typography>
+          <Typography color="brand" size="m">Toggle Theme</Typography>
         </button>
         <a href="https://github.com/azat-io/todoctor" target="_blank">
-          <Typography color="brand" size="s">GitHub</Typography>
+          <Typography color="brand" size="m">GitHub</Typography>
         </a>
       </div>
     </div>
