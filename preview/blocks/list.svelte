@@ -22,6 +22,7 @@
     path: string
     line: number
     date: string
+    kind: string
   }
 
   $: preparedData =
@@ -68,6 +69,7 @@
       cell: props =>
         renderComponent(TableComment, {
           value: props.getValue() as string,
+          kind: props.row.original.kind,
         }),
       accessorKey: 'comment',
       header: 'Comment',
