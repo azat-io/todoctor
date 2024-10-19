@@ -1,4 +1,5 @@
 use futures::future::join_all;
+use indicatif::{ProgressBar, ProgressStyle};
 use open;
 use serde_json::json;
 use std::fs::File;
@@ -141,11 +142,17 @@ async fn main() {
     let history_len = history.len();
     let semaphore = Arc::new(Semaphore::new(24));
 
-    for (index, (commit_hash, date)) in history.iter().enumerate() {
-        let percentage =
-            ((index + 1) as f64 / history_len as f64 * 100.0).round() as i32;
+    let progress_bar = ProgressBar::new(history_len as u64);
 
-        print!("\rProcessed {:.2}% of commits", percentage);
+    let progress_style = ProgressStyle::default_bar()
+        .template("{bar:40.cyan/blue} {pos}/{len} ({percent}%)")
+        .expect("Failed to create progress bar template")
+        .progress_chars("▇▇ ");
+    progress_bar.set_style(progress_style);
+
+    for (_index, (commit_hash, date)) in history.iter().enumerate() {
+        progress_bar.inc(1);
+
         io::stdout().flush().unwrap();
 
         let files_list =
@@ -206,6 +213,8 @@ async fn main() {
         writeln!(writer, "{}", json_entry)
             .expect("Failed to write to temp file");
     }
+
+    progress_bar.finish_with_message("All commits processed!");
 
     writer.flush().expect("Failed to flush writer");
 
