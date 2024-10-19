@@ -1,3 +1,4 @@
+use clap::{CommandFactory, Parser};
 use futures::future::join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use open;
@@ -31,10 +32,29 @@ use tokio::sync::Semaphore;
 const TODOCTOR_DIR: &str = "todoctor";
 const TODO_JSON_FILE: &str = "todoctor/data.json";
 const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
-const MONTHS: u32 = 3;
+
+#[derive(Parser, Debug)]
+#[command(name = "todoctor", about = "Tracks TODO comments in code")]
+struct Cli {
+    /// Number of months to process
+    #[arg(short, long, default_value_t = 3, value_parser = clap::value_parser!(u32).range(1..))]
+    month: u32,
+}
 
 #[tokio::main]
 async fn main() {
+    let version = get_todoctor_version()
+        .await
+        .unwrap_or_else(|| "Unknown version".to_string());
+
+    let version_for_cli = version.clone();
+    let version_static: &'static str =
+        Box::leak(version_for_cli.into_boxed_str());
+
+    let args = Cli::command().version(version_static).get_matches();
+
+    let months = args.get_one::<u32>("month").unwrap();
+
     if !check_git_repository(".").await {
         eprintln!("Error: This is not a Git repository.");
         process::exit(1);
@@ -128,7 +148,7 @@ async fn main() {
 
     todos_with_blame.sort_by(|a, b| a.blame.date.cmp(&b.blame.date));
 
-    let mut history: Vec<(String, String)> = get_history(Some(MONTHS)).await;
+    let mut history: Vec<(String, String)> = get_history(Some(*months)).await;
     history = remove_duplicate_dates(history);
 
     let temp_file =
@@ -231,9 +251,6 @@ async fn main() {
         .expect("Error: Could not get current directory.");
     let project_name =
         get_project_name().unwrap_or_else(|| "Unknown Project".to_string());
-    let version = get_todoctor_version()
-        .await
-        .unwrap_or_else(|| "Unknown Version".to_string());
 
     let file = File::open(HISTORY_TEMP_FILE).expect("Failed to open file");
     let reader = BufReader::new(file);
@@ -246,7 +263,7 @@ async fn main() {
         todo_history_data.push(entry);
     }
     todo_history_data =
-        add_missing_days(todo_history_data, MONTHS, todos_with_blame.len());
+        add_missing_days(todo_history_data, *months, todos_with_blame.len());
 
     fs::remove_file(HISTORY_TEMP_FILE)
         .await

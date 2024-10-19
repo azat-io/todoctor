@@ -6,6 +6,16 @@
   "repository": "azat-io/todoctor",
   "author": "Azat S. <to@azat.io>",
   "license": "MIT",
+  "keywords": [
+    "analysis",
+    "fixme",
+    "git-analysis",
+    "source-code-analysis",
+    "technical-debt",
+    "todo-comment",
+    "todo",
+    "visualization"
+  ],
   "bin": {
     "todoctor": "./bin/todoctor"
   },
@@ -30,6 +40,13 @@
     "test:types": "tsc --noEmit --pretty",
     "test:unit": "cargo test"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "./bin",
+    "./dist"
+  ],
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",
     "@azat-io/stylelint-config": "^0.1.1",
