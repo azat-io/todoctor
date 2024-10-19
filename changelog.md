@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.1...v0.1.2)
+
+### 🐞 Bug Fixes
+
+- Fix getting dist dir ([1c707a0](https://github.com/azat-io/todoctor/commit/1c707a0))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.1
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.0...v0.1.1)
