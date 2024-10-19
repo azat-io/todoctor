@@ -2,15 +2,15 @@
 
 <picture>
   <source
-    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-dark.webp"
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-light.webp"
     media="(prefers-color-scheme: light)"
   />
   <source
-    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-light.webp"
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-dark.webp"
     media="(prefers-color-scheme: dark)"
   />
   <img
-    src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-dark.webp"
+    src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-light.webp"
     alt="Todoctor Logo"
     align="right"
     height="160"
@@ -46,6 +46,71 @@ npx todoctor
 ```
 
 The program will automatically collect data and display the history of `TODO` / `FIXME` comments across commits.
+
+After running the tool, it generates a detailed graph showing the evolution of TODO comments over time. The graph visualizes how many todo comments were added, resolved, or modified across the project's history.
+
+This helps you track the technical debt and maintenance progress at a glance.
+
+<picture>
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/graph-light.webp"
+    media="(prefers-color-scheme: light)"
+  />
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/graph-dark.webp"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img
+    src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/graph-light.webp"
+    alt="Todoctor Graph Example"
+    style="margin: 24px 0"
+  />
+</picture>
+
+In addition to the graph, the tool provides insightful statistics, such as:
+
+- The total number of todo comments.
+- The age of the oldest todo.
+- The average age of all todos.
+- The author with the highest number of todo comments.
+
+These insights help you better understand the state of your codebase and prioritize refactoring efforts.
+
+<picture>
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/info-light.webp"
+    media="(prefers-color-scheme: light)"
+  />
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/info-dark.webp"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img
+    src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/info-light.webp"
+    alt="Todoctor Info Example"
+    style="margin: 24px 0"
+  />
+</picture>
+
+Finally, the tool generates a detailed list of all todo comments in your project in a tabular format.
+
+The list includes the comment text, the file path, and additional metadata, such as line numbers and authorship information. This list helps you identify, review, and manage unresolved tasks more effectively.
+
+<picture>
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/list-light.webp"
+    media="(prefers-color-scheme: light)"
+  />
+  <source
+    srcset="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/list-dark.webp"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img
+    src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/list-light.webp"
+    alt="Todoctor List Example"
+    style="margin: 24px 0"
+  />
+</picture>
 
 ## Options
 
