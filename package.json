@@ -23,14 +23,14 @@
     "start": "pnpm run /^start:/",
     "start:preview": "vite",
     "build": "pnpm run /^build:/",
-    "build:lib": "cargo build --release && mkdir -p ./bin && cp target/release/todoctor ./bin/",
+    "build:lib": "cargo build --release && cp target/release/todoctor ./bin/",
     "build:preview": "vite build",
+    "postinstall": "node ./scripts/install.js",
     "release": "pnpm release:check && pnpm release:version",
     "release:check": "pnpm test && pnpm run build",
     "release:version": "changelogen --output changelog.md --release --push",
     "ci:changelog": "changelogithub",
     "ci:clear": "clear-package-json package.json --output package.json",
-    "ci:publish": "pnpm publish --access public --provenance",
     "test": "pnpm run /^test:/",
     "test:format": "pnpm run /^test:format:/",
     "test:format:js": "prettier --check \"**/*.{svelte,js,ts,css,json,md,yml}\"",
@@ -47,7 +47,9 @@
   },
   "files": [
     "./bin",
-    "./dist"
+    "./build",
+    "./dist",
+    "./scripts"
   ],
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",

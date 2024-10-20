@@ -6,6 +6,7 @@ node_modules/
 target/
 
 # Build
+build/
 dist/
 bin/
 

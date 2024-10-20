@@ -6,10 +6,127 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: write
+  packages: write
+
 jobs:
+  build-binaries:
+    name: Build Binaries
+    runs-on: ${{ matrix.platform }}
+
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+        arch:
+          - x64
+          - arm64
+        exclude:
+          - platform: windows-latest
+            arch: arm64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Tools
+        uses: ./.github/actions/install-tools
+
+      - name: Set up MSVC Environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Remove Git link.exe from PATH
+        if: runner.os == 'Windows'
+        run: |
+          echo "Original PATH: %PATH%"
+          set PATH=%PATH:"C:\Program Files\Git\usr\bin";=%
+          echo "Modified PATH: %PATH%"
+        shell: cmd
+
+      - name: Check for Correct link.exe
+        if: runner.os == 'Windows'
+        run: where link
+
+      - name: Install Cross
+        if: runner.os != 'Windows'
+        run: cargo install cross --locked
+
+      - name: Build Binaries (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          echo "Building for ${{ matrix.platform }} on architecture ${{ matrix.arch }}"
+          if [[ "${{ matrix.platform }}" == "ubuntu-latest" ]]; then
+            if [[ "${{ matrix.arch }}" == "x64" ]]; then
+              cross build --release --target x86_64-unknown-linux-gnu
+            elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              cross build --release --target aarch64-unknown-linux-gnu
+            fi
+          elif [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
+            if [[ "${{ matrix.arch }}" == "x64" ]]; then
+              cross build --release --target x86_64-apple-darwin
+            elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              cross build --release --target aarch64-apple-darwin
+            fi
+          fi
+        shell: bash
+
+      - name: Build Binaries (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "Building for ${{ matrix.platform }} on architecture ${{ matrix.arch }}"
+          cargo build --release --target x86_64-pc-windows-msvc
+        shell: cmd
+
+      - name: Move Binaries to Bin Folder (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          if [[ "${{ matrix.platform }}" == "ubuntu-latest" ]]; then
+            if [[ "${{ matrix.arch }}" == "x64" ]]; then
+              mkdir -p ./build/linux/x64
+              cp target/x86_64-unknown-linux-gnu/release/todoctor ./build/linux/x64/todoctor
+            elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              mkdir -p ./build/linux/arm64
+              cp target/aarch64-unknown-linux-gnu/release/todoctor ./build/linux/arm64/todoctor
+            fi
+          elif [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
+            if [[ "${{ matrix.arch }}" == "x64" ]]; then
+              mkdir -p ./build/macos/x64
+              cp target/x86_64-apple-darwin/release/todoctor ./build/macos/x64/todoctor
+            elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              mkdir -p ./build/macos/arm64
+              cp target/aarch64-apple-darwin/release/todoctor ./build/macos/arm64/todoctor
+            fi
+          fi
+        shell: bash
+
+      - name: Move Binaries to Bin Folder (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          mkdir build\windows\x64
+          copy target\x86_64-pc-windows-msvc\release\todoctor.exe build\windows\x64\todoctor.exe
+        shell: cmd
+
+      - name: Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: todoctor-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            ./build/windows/x64/
+            ./build/linux/x64/
+            ./build/linux/arm64/
+            ./build/macos/x64/
+            ./build/macos/arm64/
+
   release:
     name: Release
     runs-on: ubuntu-latest
+    needs: build-binaries
 
     steps:
       - name: Checkout
@@ -23,8 +140,38 @@ jobs:
       - name: Install Dependencies
         uses: ./.github/actions/install-dependencies
 
-      - name: Build Package
-        run: pnpm run build
+      - name: Build Static Assets
+        run: pnpm run build:preview
+
+      - name: Download Binaries for Linux x64
+        uses: actions/download-artifact@v4
+        with:
+          name: todoctor-ubuntu-latest-x64
+          path: ./build/linux/x64/
+
+      - name: Download Binaries for Linux arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: todoctor-ubuntu-latest-arm64
+          path: ./build/linux/arm64/
+
+      - name: Download Binaries for macOS x64
+        uses: actions/download-artifact@v4
+        with:
+          name: todoctor-macos-latest-x64
+          path: ./build/macos/x64/
+
+      - name: Download Binaries for macOS arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: todoctor-macos-latest-arm64
+          path: ./build/macos/arm64/
+
+      - name: Download Binaries for Windows x64
+        uses: actions/download-artifact@v4
+        with:
+          name: todoctor-windows-latest-x64
+          path: ./build/windows/x64/
 
       - name: Create GitHub Release
         run: pnpm run ci:changelog
@@ -38,4 +185,4 @@ jobs:
         run: pnpm run ci:clear
 
       - name: Publish to NPM
-        run: pnpm run ci:publish
+        run: pnpm publish --access public --no-git-checks --provenance
