@@ -34,5 +34,8 @@ jobs:
       - name: Configure NPM Auth
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
+      - name: Clear Package JSON
+        run: pnpm run ci:clear
+
       - name: Publish to NPM
         run: pnpm run ci:publish
