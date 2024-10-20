@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.2...v0.1.3)
+
+### 🐞 Bug Fixes
+
+- Fix todo comments identification ([d8a9cc6](https://github.com/azat-io/todoctor/commit/d8a9cc6))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.2
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.1...v0.1.2)
