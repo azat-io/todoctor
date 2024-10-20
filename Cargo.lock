@@ -1222,6 +1222,7 @@ dependencies = [
  "clap",
  "futures",
  "indicatif",
+ "lazy_static",
  "mockall",
  "open",
  "oxc",

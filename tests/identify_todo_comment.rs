@@ -25,9 +25,15 @@ async fn test_primary_keyword_lowercase() {
 }
 
 #[tokio::test]
-async fn test_secondary_keyword_at_start() {
-    let comment = "// FIXME: There is a bug.";
-    assert_eq!(identify_todo_comment(comment), Some("FIXME".to_string()));
+async fn test_secondary_keyword_at_start_with_colon() {
+    let comment = "// NB: There is a nota bene.";
+    assert_eq!(identify_todo_comment(comment), Some("NB".to_string()));
+}
+
+#[tokio::test]
+async fn test_secondary_keyword_at_start_with_no_colon() {
+    let comment = "// DEBUG: There is a debug.";
+    assert_eq!(identify_todo_comment(comment), Some("DEBUG".to_string()));
 }
 
 #[tokio::test]
@@ -69,5 +75,17 @@ async fn test_secondary_keyword_with_case_variation() {
 #[tokio::test]
 async fn test_no_keyword_found() {
     let comment = "// This is just a comment without anything.";
+    assert_eq!(identify_todo_comment(comment), None);
+}
+
+#[tokio::test]
+async fn test_no_keyword_found_with_similar_primary_word() {
+    let comment = "// I love todoctor";
+    assert_eq!(identify_todo_comment(comment), None);
+}
+
+#[tokio::test]
+async fn test_no_keyword_found_with_similar_secondary_word() {
+    let comment = "// Dangerous stuff";
     assert_eq!(identify_todo_comment(comment), None);
 }
