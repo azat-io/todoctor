@@ -8,6 +8,7 @@ target/
 # Build
 dist/
 bin/
+!bin/install.js
 
 # Editor
 .vscode/
