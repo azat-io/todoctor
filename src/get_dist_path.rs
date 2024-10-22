@@ -10,16 +10,18 @@ pub fn get_dist_path() -> Option<PathBuf> {
             return None;
         }
     };
+    let real_exe_path = fs::canonicalize(&exe_path).unwrap_or(exe_path);
 
-    if let Ok(real_path) = fs::read_link(&exe_path) {
-        let project_root = real_path.parent()?.parent()?.to_path_buf();
-        let dist_path = project_root.join("dist");
-        if dist_path.exists() {
-            return Some(dist_path);
+    fn ascend_path(mut path: PathBuf, levels: usize) -> Option<PathBuf> {
+        for _ in 0..levels {
+            path = path.parent()?.to_path_buf();
         }
+        Some(path)
     }
 
-    let project_root = exe_path.parent()?.parent()?.to_path_buf();
+    let levels_up = 4;
+
+    let project_root = ascend_path(real_exe_path, levels_up)?;
     let dist_path = project_root.join("dist");
     if dist_path.exists() {
         return Some(dist_path);

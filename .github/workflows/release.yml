@@ -88,19 +88,19 @@ jobs:
         run: |
           if [[ "${{ matrix.platform }}" == "ubuntu-latest" ]]; then
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
-              mkdir -p ./build/linux/x64
-              cp target/x86_64-unknown-linux-gnu/release/todoctor ./build/linux/x64/todoctor
+              mkdir -p ./bin/linux/x64
+              cp target/x86_64-unknown-linux-gnu/release/todoctor ./bin/linux/x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              mkdir -p ./build/linux/arm64
-              cp target/aarch64-unknown-linux-gnu/release/todoctor ./build/linux/arm64/todoctor
+              mkdir -p ./bin/linux/arm64
+              cp target/aarch64-unknown-linux-gnu/release/todoctor ./bin/linux/arm64/todoctor
             fi
           elif [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
-              mkdir -p ./build/macos/x64
-              cp target/x86_64-apple-darwin/release/todoctor ./build/macos/x64/todoctor
+              mkdir -p ./bin/macos/x64
+              cp target/x86_64-apple-darwin/release/todoctor ./bin/macos/x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              mkdir -p ./build/macos/arm64
-              cp target/aarch64-apple-darwin/release/todoctor ./build/macos/arm64/todoctor
+              mkdir -p ./bin/macos/arm64
+              cp target/aarch64-apple-darwin/release/todoctor ./bin/macos/arm64/todoctor
             fi
           fi
         shell: bash
@@ -108,8 +108,8 @@ jobs:
       - name: Move Binaries to Bin Folder (Windows)
         if: runner.os == 'Windows'
         run: |
-          mkdir build\windows\x64
-          copy target\x86_64-pc-windows-msvc\release\todoctor.exe build\windows\x64\todoctor.exe
+          mkdir bin\windows\x64
+          copy target\x86_64-pc-windows-msvc\release\todoctor.exe bin\windows\x64\todoctor.exe
         shell: cmd
 
       - name: Upload Binaries

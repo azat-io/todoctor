@@ -6,7 +6,7 @@ node_modules/
 target/
 
 # Build
-build/
+!bin/todoctor.js
 dist/
 bin/
 
