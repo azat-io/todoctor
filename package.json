@@ -25,7 +25,6 @@
     "build": "pnpm run /^build:/",
     "build:lib": "cargo build --release && node ./scripts/build.js",
     "build:preview": "vite build",
-    "postinstall": "node ./scripts/postinstall.js",
     "release": "pnpm release:check && pnpm release:version",
     "release:check": "pnpm test && pnpm run build",
     "release:version": "changelogen --output changelog.md --release --push",
@@ -57,8 +56,7 @@
   "files": [
     "./bin",
     "./build",
-    "./dist",
-    "./scripts"
+    "./dist"
   ],
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",

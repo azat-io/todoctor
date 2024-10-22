@@ -90,17 +90,21 @@ jobs:
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
               mkdir -p ./bin/linux/x64
               cp target/x86_64-unknown-linux-gnu/release/todoctor ./bin/linux/x64/todoctor
+              chmod +x ./bin/linux/x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
               mkdir -p ./bin/linux/arm64
               cp target/aarch64-unknown-linux-gnu/release/todoctor ./bin/linux/arm64/todoctor
+              chmod +x ./bin/linux/arm64/todoctor
             fi
           elif [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
               mkdir -p ./bin/macos/x64
               cp target/x86_64-apple-darwin/release/todoctor ./bin/macos/x64/todoctor
+              chmod +x ./bin/macos/x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
               mkdir -p ./bin/macos/arm64
               cp target/aarch64-apple-darwin/release/todoctor ./bin/macos/arm64/todoctor
+              chmod +x ./bin/macos/arm64/todoctor
             fi
           fi
         shell: bash
@@ -167,6 +171,20 @@ jobs:
         with:
           name: todoctor-windows-latest-x64
           path: .
+
+      - name: Set Execute Permissions on Binaries
+        run: |
+          chmod +x ./bin/linux/x64/todoctor || true
+          chmod +x ./bin/linux/arm64/todoctor || true
+          chmod +x ./bin/macos/x64/todoctor || true
+          chmod +x ./bin/macos/arm64/todoctor || true
+
+      - name: Verify Binary Permissions
+        run: |
+          ls -l ./bin/linux/x64/todoctor || true
+          ls -l ./bin/linux/arm64/todoctor || true
+          ls -l ./bin/macos/x64/todoctor || true
+          ls -l ./bin/macos/arm64/todoctor || true
 
       - name: Create GitHub Release
         run: pnpm run ci:changelog

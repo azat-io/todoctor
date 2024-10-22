@@ -31,7 +31,7 @@ if (!platformName || !archName) {
 let binaryName = platform === 'win32' ? 'todoctor.exe' : 'todoctor'
 
 let sourcePath = path.join(dirname, '..', 'target', 'release', binaryName)
-let destDir = path.join(dirname, platformName, archName)
+let destDir = path.join(dirname, '../bin/', platformName, archName)
 let destPath = path.join(destDir, binaryName)
 
 if (!fs.existsSync(destDir)) {
@@ -40,10 +40,7 @@ if (!fs.existsSync(destDir)) {
 
 try {
   fs.copyFileSync(sourcePath, destPath)
-
-  if (platform !== 'win32') {
-    fs.chmodSync(destPath, 0o755)
-  }
+  fs.chmodSync(destPath, 0o755)
 } catch (error) {
   console.error(`Error copying file: ${error.message}`)
   process.exit(1)

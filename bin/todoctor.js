@@ -32,9 +32,6 @@ let binaryPath = path.join(dirname, relativePath)
 
 if (!fs.existsSync(binaryPath)) {
   console.error(`Binary not found: ${binaryPath}`)
-  console.error(
-    'Please ensure that the postinstall script has run successfully.',
-  )
   process.exit(1)
 }
 
