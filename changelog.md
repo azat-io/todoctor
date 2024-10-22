@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.5...v0.1.6)
+
+### 🐞 Bug Fixes
+
+- Fix binary installation ([2fbdaf1](https://github.com/azat-io/todoctor/commit/2fbdaf1))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.5
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.4...v0.1.5)
