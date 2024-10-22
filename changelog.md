@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.3...v0.1.4)
+
+### 🐞 Bug Fixes
+
+- Build bin for different arch ([e1e8394](https://github.com/azat-io/todoctor/commit/e1e8394))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.3
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.2...v0.1.3)
