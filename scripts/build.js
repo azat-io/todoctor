@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import fs from 'node:fs'
 import os from 'node:os'
@@ -16,6 +17,9 @@ let archMap = {
   x64: 'x64',
 }
 
+let filename = fileURLToPath(import.meta.url)
+let dirname = path.dirname(filename)
+
 let platformName = platformMap[platform]
 let archName = archMap[arch]
 
@@ -26,20 +30,8 @@ if (!platformName || !archName) {
 
 let binaryName = platform === 'win32' ? 'todoctor.exe' : 'todoctor'
 
-let sourcePath = path.join(
-  import.meta.dirname,
-  '..',
-  'target',
-  'release',
-  binaryName,
-)
-let destDir = path.join(
-  import.meta.dirname,
-  '..',
-  'bin',
-  platformName,
-  archName,
-)
+let sourcePath = path.join(dirname, '..', 'target', 'release', binaryName)
+let destDir = path.join(dirname, platformName, archName)
 let destPath = path.join(destDir, binaryName)
 
 if (!fs.existsSync(destDir)) {

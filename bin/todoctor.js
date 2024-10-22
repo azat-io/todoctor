@@ -7,12 +7,13 @@ import os from 'node:os'
 import fs from 'node:fs'
 
 let filename = fileURLToPath(import.meta.url)
-let dirname = path.dirname(filename)
 
 let platform = os.platform()
 let arch = os.arch()
 
-let binaries = {
+export let dirname = path.dirname(filename)
+
+export let binaries = {
   'win32:x64': 'windows/x64/todoctor.exe',
   'darwin:arm64': 'macos/arm64/todoctor',
   'linux:arm64': 'linux/arm64/todoctor',
