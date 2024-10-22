@@ -17,7 +17,7 @@
     "visualization"
   ],
   "bin": {
-    "todoctor": "./bin/todoctor"
+    "todoctor": "./bin/todoctor.js"
   },
   "scripts": {
     "start": "pnpm run /^start:/",
@@ -56,8 +56,7 @@
   "files": [
     "./bin",
     "./build",
-    "./dist",
-    "./scripts"
+    "./dist"
   ],
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",
