@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.11
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.10...v0.1.11)
+
+### 🐞 Bug Fixes
+
+- Set access rights when building package ([e4197a5](https://github.com/azat-io/todoctor/commit/e4197a5))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.10
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.9...v0.1.10)
