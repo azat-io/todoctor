@@ -57,7 +57,8 @@
   "files": [
     "./bin",
     "./build",
-    "./dist"
+    "./dist",
+    "./scripts"
   ],
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",
