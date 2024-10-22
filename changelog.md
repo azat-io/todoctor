@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.10
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.9...v0.1.10)
+
+### 🐞 Bug Fixes
+
+- Add missed bin script extension ([40a45f5](https://github.com/azat-io/todoctor/commit/40a45f5))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.9
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.8...v0.1.9)
