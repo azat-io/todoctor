@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.8
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.7...v0.1.8)
+
+### 🐞 Bug Fixes
+
+- Ensure binaries are executable ([76eae0d](https://github.com/azat-io/todoctor/commit/76eae0d))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.7
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.6...v0.1.7)
