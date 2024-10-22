@@ -116,12 +116,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: todoctor-${{ matrix.platform }}-${{ matrix.arch }}
-          path: |
-            ./build/windows/x64/
-            ./build/linux/x64/
-            ./build/linux/arm64/
-            ./build/macos/x64/
-            ./build/macos/arm64/
+          path: '**/*'
 
   release:
     name: Release
@@ -147,36 +142,36 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: todoctor-ubuntu-latest-x64
-          path: ./build/linux/x64/
+          path: .
 
       - name: Download Binaries for Linux arm64
         uses: actions/download-artifact@v4
         with:
           name: todoctor-ubuntu-latest-arm64
-          path: ./build/linux/arm64/
+          path: .
 
       - name: Download Binaries for macOS x64
         uses: actions/download-artifact@v4
         with:
           name: todoctor-macos-latest-x64
-          path: ./build/macos/x64/
+          path: .
 
       - name: Download Binaries for macOS arm64
         uses: actions/download-artifact@v4
         with:
           name: todoctor-macos-latest-arm64
-          path: ./build/macos/arm64/
+          path: .
 
       - name: Download Binaries for Windows x64
         uses: actions/download-artifact@v4
         with:
           name: todoctor-windows-latest-x64
-          path: ./build/windows/x64/
+          path: .
 
       - name: Create GitHub Release
         run: pnpm run ci:changelog
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure NPM Auth
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
