@@ -149,7 +149,7 @@
             style={`--color: var(--color-additional-${colors[index]});`}
             class="legend-color"
           ></div>
-          <Typography size="s" tag="span">{kind}</Typography>
+          <Typography size="s" tag="span">{kind.toUpperCase()}</Typography>
         </div>
       {/each}
     </div>

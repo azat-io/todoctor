@@ -47,6 +47,10 @@ npx todoctor
 
 The program will automatically collect data and display the history of `TODO` / `FIXME` comments across commits.
 
+## Report
+
+### Todos Graph
+
 After running the tool, it generates a detailed graph showing the evolution of TODO comments over time. The graph visualizes how many todo comments were added, resolved, or modified across the project's history.
 
 This helps you track the technical debt and maintenance progress at a glance.
@@ -66,6 +70,8 @@ This helps you track the technical debt and maintenance progress at a glance.
     style="margin: 24px 0"
   />
 </picture>
+
+### Additional Information
 
 In addition to the graph, the tool provides insightful statistics, such as:
 
@@ -91,6 +97,8 @@ These insights help you better understand the state of your codebase and priorit
     style="margin: 24px 0"
   />
 </picture>
+
+### List of Todos
 
 Finally, the tool generates a detailed list of all todo comments in your project in a tabular format.
 
@@ -134,6 +142,49 @@ Example:
 
 ```sh
 todoctor --ignore src/deprecated/ --ignore tests/legacy.test.js
+```
+
+### --include-keywords
+
+Allows you to specify additional keywords in comments that will be treated as technical debt. This option can be used multiple times.
+
+Example:
+
+```sh
+todoctor --include-keywords eslint-disable-next-line
+```
+
+### --exclude-keywords
+
+Allows you to exclude keywords from the report. By default, the following keywords are used to define the technical debt comment:
+
+- `TODO`
+- `FIXME`
+- `XXX`
+- `HACK`
+- `BUG`
+- `OPTIMIZE`
+- `REFACTOR`
+- `TEMP`
+- `CHANGED`
+- `IDEA`
+- `NOTE`
+- `REVIEW`
+- `NB`
+- `QUESTION`
+- `DEBUG`
+- `KLUDGE`
+- `COMPAT`
+- `WARNING`
+- `DANGER`
+- `INFO`
+- `DEPRECATED`
+- `COMBAK`
+
+Example:
+
+```sh
+todoctor --exclude-keywords WARNING --exclude-keywords DEPRECATED
 ```
 
 ### --help

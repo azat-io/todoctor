@@ -34,7 +34,13 @@ const TODOCTOR_DIR: &str = "todoctor";
 const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
 
 #[derive(Parser, Debug)]
-#[command(name = "todoctor", about = "Tracks TODO comments in code")]
+#[command(
+    name = "todoctor",
+    about = "
+Todoctor is a powerful tool for analyzing, tracking, and visualizing technical
+debt in your codebase using Git. It collects and monitors TODO/FIXME comments
+in your code, allowing you to observe changes over time."
+)]
 struct Cli {
     /// Number of months to process
     #[arg(short, long, default_value_t = 3, value_parser = clap::value_parser!(u32).range(1..))]
@@ -43,6 +49,14 @@ struct Cli {
     /// Paths to ignore (can be used multiple times)
     #[arg(short, long, action = ArgAction::Append)]
     ignore: Vec<String>,
+
+    /// Keywords to track for TODO comments (can be used multiple times)
+    #[arg(short = 'I', long, action = ArgAction::Append)]
+    include_keywords: Vec<String>,
+
+    /// Keywords to exclude from tracking (can be used multiple times)
+    #[arg(short = 'E', long, action = ArgAction::Append)]
+    exclude_keywords: Vec<String>,
 }
 
 #[tokio::main]
@@ -60,6 +74,16 @@ async fn main() {
     let months = args.get_one::<u32>("month").unwrap();
     let ignores: Vec<String> = args
         .get_many::<String>("ignore")
+        .map(|values| values.map(String::from).collect())
+        .unwrap_or_else(Vec::new);
+
+    let include_keywords: Vec<String> = args
+        .get_many::<String>("include_keywords")
+        .map(|values| values.map(String::from).collect())
+        .unwrap_or_else(Vec::new);
+
+    let exclude_keywords: Vec<String> = args
+        .get_many::<String>("exclude_keywords")
         .map(|values| values.map(String::from).collect())
         .unwrap_or_else(Vec::new);
 
@@ -81,6 +105,9 @@ async fn main() {
     let todo_data_tasks: Vec<_> = files
         .into_iter()
         .map(|source_file_name: String| {
+            let include_keywords = include_keywords.clone();
+            let exclude_keywords = exclude_keywords.clone();
+
             tokio::spawn(async move {
                 match fs::read_to_string(&source_file_name).await {
                     Ok(source) => {
@@ -88,8 +115,23 @@ async fn main() {
                         comments
                             .into_iter()
                             .filter_map(|comment| {
+                                let include_keywords_refs: Vec<&str> =
+                                    include_keywords
+                                        .iter()
+                                        .map(|s| s.as_str())
+                                        .collect();
+                                let exclude_keywords_refs: Vec<&str> =
+                                    exclude_keywords
+                                        .iter()
+                                        .map(|s| s.as_str())
+                                        .collect();
+
                                 if let Some(comment_kind) =
-                                    identify_todo_comment(&comment.text)
+                                    identify_todo_comment(
+                                        &comment.text,
+                                        Some(&include_keywords_refs),
+                                        Some(&exclude_keywords_refs),
+                                    )
                                 {
                                     Some(TodoData {
                                         path: source_file_name.clone(),
@@ -202,6 +244,10 @@ async fn main() {
             .map(|file_path| {
                 let semaphore = semaphore.clone();
                 let commit_hash = commit_hash.clone();
+
+                let include_keywords = include_keywords.clone();
+                let exclude_keywords = exclude_keywords.clone();
+
                 tokio::spawn(async move {
                     let permit = semaphore.acquire_owned().await.unwrap();
 
@@ -213,10 +259,25 @@ async fn main() {
                     .await
                     {
                         let comments = get_comments(&file_content, &file_path);
+
+                        let include_keywords_refs: Vec<&str> = include_keywords
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect();
+                        let exclude_keywords_refs: Vec<&str> = exclude_keywords
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect();
+
                         let todos: Vec<_> = comments
                             .into_iter()
                             .filter(|comment| {
-                                identify_todo_comment(&comment.text).is_some()
+                                identify_todo_comment(
+                                    &comment.text,
+                                    Some(&include_keywords_refs),
+                                    Some(&exclude_keywords_refs),
+                                )
+                                .is_some()
                             })
                             .collect();
 
