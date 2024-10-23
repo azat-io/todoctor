@@ -50,11 +50,11 @@
     display: flex;
     flex-direction: column-reverse;
     gap: var(--space-l);
-    align-items: start;
     align-items: center;
 
     @container (inline-size >= 520px) {
       flex-direction: row;
+      align-items: start;
       justify-content: space-between;
     }
   }
