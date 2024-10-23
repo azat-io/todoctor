@@ -21,7 +21,9 @@
 [![Version](https://img.shields.io/npm/v/todoctor.svg?color=2c7f50&labelColor=353c3c)](https://npmjs.com/package/todoctor)
 [![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=2c7f50&labelColor=353c3c)](https://github.com/azat-io/todoctor/blob/main/license)
 
-Todoctor is a powerful tool for analyzing, tracking, and visualizing technical debt in your codebase using Git. It collects and monitors `TODO`/`FIXME` comments in your code, allowing you to observe changes over time.
+Todoctor is a powerful tool for analyzing, tracking, and visualizing technical debt in your codebase using Git.
+
+It collects and monitors `TODO`/`FIXME` comments in your code, allowing you to observe changes over time.
 
 ## Why
 
@@ -136,7 +138,7 @@ todoctor --months 6
 
 ### --ignore
 
-Allows you to specify files or directories to ignore during the analysis. This option can be used multiple times.
+Allows you to specify files or directories to ignore during the analysis. The files in your `.gitignore` are ignored by default, you don't need to ignore them additionally. This option can be used multiple times.
 
 Example:
 
@@ -185,6 +187,16 @@ Example:
 
 ```sh
 todoctor --exclude-keywords WARNING --exclude-keywords DEPRECATED
+```
+
+### --output
+
+You can define the folder where the report file will be saved. By default it is `todoctor` folder in the project root.
+
+Example:
+
+```sh
+todoctor --output report
 ```
 
 ### --help

@@ -30,7 +30,6 @@ use todoctor::types::{TodoData, TodoHistory, TodoWithBlame};
 use tokio::fs;
 use tokio::sync::Semaphore;
 
-const TODOCTOR_DIR: &str = "todoctor";
 const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
 
 #[derive(Parser, Debug)]
@@ -57,6 +56,10 @@ struct Cli {
     /// Keywords to exclude from tracking (can be used multiple times)
     #[arg(short = 'E', long, action = ArgAction::Append)]
     exclude_keywords: Vec<String>,
+
+    /// Output directory
+    #[arg(short, long, default_value = "todoctor")]
+    output: String,
 }
 
 #[tokio::main]
@@ -86,6 +89,8 @@ async fn main() {
         .get_many::<String>("exclude_keywords")
         .map(|values| values.map(String::from).collect())
         .unwrap_or_else(Vec::new);
+
+    let output_directory = args.get_one::<String>("output").unwrap();
 
     if !check_git_repository(".").await {
         eprintln!("Error: This is not a Git repository.");
@@ -313,12 +318,12 @@ async fn main() {
 
     writer.flush().expect("Failed to flush writer");
 
-    if fs::metadata(TODOCTOR_DIR).await.is_ok() {
-        fs::remove_dir_all(TODOCTOR_DIR)
+    if fs::metadata(output_directory).await.is_ok() {
+        fs::remove_dir_all(output_directory)
             .await
             .expect("Error: Failed to remove directory");
     }
-    fs::create_dir_all(TODOCTOR_DIR)
+    fs::create_dir_all(output_directory)
         .await
         .expect("Error creating directory");
 
@@ -358,11 +363,11 @@ async fn main() {
     let dist_path: PathBuf =
         get_dist_path().expect("Error: Could not get current dist path.");
 
-    copy_dir_recursive(&dist_path, Path::new(TODOCTOR_DIR))
+    copy_dir_recursive(&dist_path, Path::new(output_directory))
         .await
         .expect("Error copying directory");
 
-    let index_path = Path::new(TODOCTOR_DIR).join("index.html");
+    let index_path = Path::new(output_directory).join("index.html");
     if fs::metadata(&index_path).await.is_ok() {
         let mut index_content = fs::read_to_string(&index_path)
             .await
