@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.12
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.11...v0.1.12)
+
+### 🐞 Bug Fixes
+
+- Replace pnpm with npm for package publish ([e84be4d](https://github.com/azat-io/todoctor/commit/e84be4d))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.11
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.10...v0.1.11)

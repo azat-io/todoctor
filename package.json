@@ -2,7 +2,7 @@
   "name": "todoctor",
   "description": "CLI tool to track and visualize TODO comments in Git repositories",
   "type": "module",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "repository": "azat-io/todoctor",
   "author": "Azat S. <to@azat.io>",
   "license": "MIT",
