@@ -12,6 +12,7 @@ use todoctor::add_missing_days::add_missing_days;
 use todoctor::blame::blame;
 use todoctor::check_git_repository::check_git_repository;
 use todoctor::copy_dir_recursive::copy_dir_recursive;
+use todoctor::escape_json_values::escape_json_values;
 use todoctor::exec::exec;
 use todoctor::get_comments::get_comments;
 use todoctor::get_current_directory::get_current_directory;
@@ -357,8 +358,11 @@ async fn main() {
         "version": version,
     });
 
-    let json_string: String = serde_json::to_string(&json_data)
-        .expect("Error: Could not serialize data");
+    let mut escaped_json_data = json_data.clone();
+    escape_json_values(&mut escaped_json_data);
+
+    let escaped_json_string = serde_json::to_string(&escaped_json_data)
+        .expect("Error: Could not serializing JSON");
 
     let dist_path: PathBuf =
         get_dist_path().expect("Error: Could not get current dist path.");
@@ -374,8 +378,10 @@ async fn main() {
             .expect("Error reading index.html");
 
         if let Some(pos) = index_content.find("</head>") {
-            let script_tag: String =
-                format!("<script>window.data = {};</script>", json_string);
+            let script_tag: String = format!(
+                "<script>window.data = {};</script>",
+                escaped_json_string
+            );
             index_content.insert_str(pos, &script_tag);
 
             fs::write(&index_path, index_content)

@@ -3,13 +3,44 @@
 
   export let title = ''
   export let content: string[] = []
+
+  let processLine = (line: string) => {
+    let parts: Array<{ bold: boolean; text: string }> = []
+
+    let regex = /<b>(.*?)<\/b>/gi
+
+    let lastIndex = 0
+    let match
+
+    while ((match = regex.exec(line)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push({ text: line.slice(lastIndex, match.index), bold: false })
+      }
+      parts.push({ text: match[1], bold: true })
+      ;({ lastIndex } = regex)
+    }
+
+    if (lastIndex < line.length) {
+      parts.push({ text: line.slice(lastIndex), bold: false })
+    }
+
+    return parts
+  }
 </script>
 
 <div class="note">
   <Typography size="l" tag="h3" mbe="s">{title}</Typography>
+
   {#each content as line}
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    <Typography size="m" tag="p" mbe="2xs">{@html line}</Typography>
+    <Typography size="m" tag="p" mbe="2xs">
+      {#each processLine(line) as part}
+        {#if part.bold}
+          <b>{part.text}</b>
+        {:else}
+          {part.text}
+        {/if}
+      {/each}
+    </Typography>
   {/each}
 </div>
 
