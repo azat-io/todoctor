@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.1.12...v0.2.0)
+
+### 🚀 Features
+
+- Support include and exclude keywords options ([68027cb](https://github.com/azat-io/todoctor/commit/68027cb))
+- Add output directory option ([26bdf71](https://github.com/azat-io/todoctor/commit/26bdf71))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.12
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.11...v0.1.12)
