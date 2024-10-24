@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v1.0.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v0.2.0...v1.0.0)
+
+### 🔥 Stable Release
+
 ## v0.2.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.1.12...v0.2.0)

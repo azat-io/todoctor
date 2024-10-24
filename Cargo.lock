@@ -1646,7 +1646,7 @@ dependencies = [
 
 [[package]]
 name = "todoctor"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "chrono",
  "clap 4.5.20",
