@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/install-dependencies
 
       - name: Build Docs
-        run: pnpm run build:docs
+        run: pnpm run docs:build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3
