@@ -422,7 +422,10 @@ async fn generate_output(
             let json_path = Path::new(output_directory).join("report.json");
             let mut file = File::create(&json_path)
                 .expect("Failed to create JSON report file");
-            file.write_all(json_data.to_string().as_bytes())
+            let formatted_json = serde_json::to_string_pretty(&json_data)
+                .expect("Failed to format JSON data");
+
+            file.write_all(formatted_json.as_bytes())
                 .expect("Failed to write JSON data");
         }
     }
