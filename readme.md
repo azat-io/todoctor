@@ -128,7 +128,7 @@ The list includes the comment text, the file path, and additional metadata, such
 
 Todoctor supports the following command-line options:
 
-### --month \<N>
+### --month
 
 Specifies the number of months to include when tracking TODOs in the repository. If not provided, defaults to 3 months.
 
@@ -189,6 +189,16 @@ Example:
 
 ```sh
 todoctor --exclude-keywords WARNING --exclude-keywords DEPRECATED
+```
+
+### --output-format
+
+You can specify the format of the report. Possible options are `html` and `json`. The default value is `html`.
+
+Example:
+
+```sh
+todoctor --output-format json
 ```
 
 ### --output

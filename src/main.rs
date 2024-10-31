@@ -1,8 +1,8 @@
-use clap::{ArgAction, CommandFactory, Parser};
+use clap::{ArgAction, CommandFactory, Parser, ValueEnum};
 use futures::future::join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use open;
-use serde_json::json;
+use serde_json::{json, Value};
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, BufWriter, Write};
 use std::path::{Path, PathBuf};
@@ -33,6 +33,12 @@ use tokio::sync::Semaphore;
 
 const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
 
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
+enum OutputFormat {
+    Html,
+    Json,
+}
+
 #[derive(Parser, Debug)]
 #[command(
     name = "todoctor",
@@ -57,6 +63,10 @@ struct Cli {
     /// Keywords to exclude from tracking (can be used multiple times)
     #[arg(short = 'E', long, action = ArgAction::Append)]
     exclude_keywords: Vec<String>,
+
+    /// Output format
+    #[arg(short, long, default_value = "html")]
+    output_format: OutputFormat,
 
     /// Output directory
     #[arg(short, long, default_value = "todoctor")]
@@ -90,6 +100,8 @@ async fn main() {
         .get_many::<String>("exclude_keywords")
         .map(|values| values.map(String::from).collect())
         .unwrap_or_else(Vec::new);
+
+    let output_format = args.get_one::<OutputFormat>("output_format").unwrap();
 
     let output_directory = args.get_one::<String>("output").unwrap();
 
@@ -358,41 +370,60 @@ async fn main() {
         "version": version,
     });
 
-    let mut escaped_json_data = json_data.clone();
-    escape_json_values(&mut escaped_json_data);
+    generate_output(*output_format, output_directory, json_data).await;
+}
 
-    let escaped_json_string = serde_json::to_string(&escaped_json_data)
-        .expect("Error: Could not serializing JSON");
+async fn generate_output(
+    output_format: OutputFormat,
+    output_directory: &str,
+    json_data: Value,
+) {
+    match output_format {
+        OutputFormat::Html => {
+            let dist_path: PathBuf = get_dist_path()
+                .expect("Error: Could not get current dist path.");
 
-    let dist_path: PathBuf =
-        get_dist_path().expect("Error: Could not get current dist path.");
-
-    copy_dir_recursive(&dist_path, Path::new(output_directory))
-        .await
-        .expect("Error copying directory");
-
-    let index_path = Path::new(output_directory).join("index.html");
-    if fs::metadata(&index_path).await.is_ok() {
-        let mut index_content = fs::read_to_string(&index_path)
-            .await
-            .expect("Error reading index.html");
-
-        if let Some(pos) = index_content.find("</head>") {
-            let script_tag: String = format!(
-                "<script>window.data = {};</script>",
-                escaped_json_string
-            );
-            index_content.insert_str(pos, &script_tag);
-
-            fs::write(&index_path, index_content)
+            copy_dir_recursive(&dist_path, Path::new(output_directory))
                 .await
-                .expect("Error writing modified index.html");
-        } else {
-            eprintln!("Error: No </head> tag found in index.html");
-        }
-    }
+                .expect("Error copying directory");
 
-    if let Err(e) = open::that(&index_path) {
-        eprintln!("Error: Cannot open index.html: {:?}", e);
+            let mut escaped_json_data = json_data.clone();
+            escape_json_values(&mut escaped_json_data);
+
+            let escaped_json_string = serde_json::to_string(&escaped_json_data)
+                .expect("Error: Could not serializing JSON");
+
+            let index_path = Path::new(output_directory).join("index.html");
+            if fs::metadata(&index_path).await.is_ok() {
+                let mut index_content = fs::read_to_string(&index_path)
+                    .await
+                    .expect("Error reading index.html");
+
+                if let Some(pos) = index_content.find("</head>") {
+                    let script_tag = format!(
+                        "<script>window.data = {};</script>",
+                        escaped_json_string
+                    );
+                    index_content.insert_str(pos, &script_tag);
+
+                    fs::write(&index_path, index_content)
+                        .await
+                        .expect("Error writing modified index.html");
+                } else {
+                    eprintln!("Error: No </head> tag found in index.html");
+                }
+
+                if let Err(e) = open::that(&index_path) {
+                    eprintln!("Error: Cannot open index.html: {:?}", e);
+                }
+            }
+        }
+        OutputFormat::Json => {
+            let json_path = Path::new(output_directory).join("report.json");
+            let mut file = File::create(&json_path)
+                .expect("Failed to create JSON report file");
+            file.write_all(json_data.to_string().as_bytes())
+                .expect("Failed to write JSON data");
+        }
     }
 }
