@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v1.1.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.0.0...v1.1.0)
+
+### 🚀 Features
+
+- Add output format option ([a7e9baa](https://github.com/azat-io/todoctor/commit/a7e9baa))
+- Format json output ([d9c50c3](https://github.com/azat-io/todoctor/commit/d9c50c3))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.0.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v0.2.0...v1.0.0)
