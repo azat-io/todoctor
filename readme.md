@@ -51,6 +51,8 @@ The program will automatically collect data and display the history of `TODO` / 
 
 ## Report
 
+See an [example report](https://todoctor.azat.io).
+
 ### Todos Graph
 
 After running the tool, it generates a detailed graph showing the evolution of TODO comments over time. The graph visualizes how many todo comments were added, resolved, or modified across the project's history.

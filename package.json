@@ -25,6 +25,7 @@
     "build": "pnpm run /^build:/",
     "build:lib": "cargo build --release && node ./scripts/build.js",
     "build:preview": "vite build",
+    "build:docs": "DOCS=true vite build",
     "release": "pnpm release:check && pnpm release:version",
     "release:check": "pnpm test && pnpm run build",
     "release:version": "changelogen --output changelog.md --release --push",

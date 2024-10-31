@@ -21,6 +21,6 @@ export interface Data {
   history: HistoryItem[]
   currentPath: string
   data: DataItem[]
-  version: string
+  version?: string
   name: string
 }

@@ -9,7 +9,7 @@
     "license",
     "pnpm-lock.yaml",
     "preview/elements/avatar.svelte",
-    "preview/mock/api.mock.ts",
+    "preview/mock/data.ts",
     "tsconfig.json"
   ],
   "words": [

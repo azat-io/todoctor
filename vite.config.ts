@@ -7,8 +7,11 @@ import { browserslistToTargets } from 'lightningcss'
 import { minify } from 'html-minifier-terser'
 import browserslist from 'browserslist'
 import { defineConfig } from 'vite'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import os from 'node:os'
+
+import { data } from './preview/mock/data'
 
 let htmlMinify = (): Plugin => ({
   transformIndexHtml: async html => {
@@ -30,18 +33,58 @@ let htmlMinify = (): Plugin => ({
   name: 'vite-plugin-html-minify',
 })
 
+let injectBeforeHead = (html: string) => ({
+  transformIndexHtml: (htmlValue: string) =>
+    htmlValue.replace('</head>', html + '</head>'),
+  name: 'vite-plugin-inject-before-head',
+})
+
+let createFilePlugin = (filename: string, content: string): Plugin => ({
+  generateBundle: async () => {
+    let outputDir = path.resolve(import.meta.dirname, 'dist')
+
+    try {
+      await fs.mkdir(outputDir, { recursive: true })
+      let filePath = path.join(outputDir, filename)
+
+      await fs.writeFile(filePath, content, 'utf8')
+    } catch (error) {
+      console.error(`Creation file ${filename}:`, error)
+    }
+  },
+  name: 'vite-plugin-create-file',
+  apply: 'build',
+})
+
+let isDocs = process.env.DOCS === 'true'
+
 export default defineConfig({
   plugins: [
     mockDevServer({
       include: ['preview/mock/**/*.mock.ts'],
       prefix: ['^/data.json$'],
     }),
-    singleFile({
-      inlinePattern: ['**/*.js', '**/*.css'],
-      useRecommendedBuildConfig: true,
-      removeViteModuleLoader: true,
-      deleteInlinedFiles: true,
-    }),
+    ...(isDocs
+      ? [
+          injectBeforeHead(
+            `<script>window.data = ${JSON.stringify(data)};</script>`,
+          ),
+          injectBeforeHead(
+            '<script defer src="https://analytics.azat.io/script.js" data-website-id="43d46bcc-915b-46c0-92b4-9e290eb8a5dc"></script></head>',
+          ),
+          createFilePlugin(
+            '_redirects',
+            'https://todoctor.netlify.app/* https://todoctor.azat.io/:splat 301!',
+          ),
+        ]
+      : [
+          singleFile({
+            inlinePattern: ['**/*.js', '**/*.css'],
+            useRecommendedBuildConfig: true,
+            removeViteModuleLoader: true,
+            deleteInlinedFiles: true,
+          }),
+        ]),
     htmlMinify(),
     svelte(),
   ],
