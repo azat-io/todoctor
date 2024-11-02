@@ -65,7 +65,7 @@ struct Cli {
     exclude_keywords: Vec<String>,
 
     /// Output format
-    #[arg(short, long, default_value = "html")]
+    #[arg(short = 'f', long, default_value = "html")]
     output_format: OutputFormat,
 
     /// Output directory
