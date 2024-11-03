@@ -1,10 +1,10 @@
 use clap::{ArgAction, CommandFactory, Parser, ValueEnum};
-use futures::future::join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use open;
 use serde_json::{json, Value};
+use std::collections::HashMap;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, BufWriter, Write};
+use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::process;
 use std::sync::Arc;
@@ -13,13 +13,15 @@ use todoctor::blame::blame;
 use todoctor::check_git_repository::check_git_repository;
 use todoctor::copy_dir_recursive::copy_dir_recursive;
 use todoctor::escape_json_values::escape_json_values;
-use todoctor::exec::exec;
 use todoctor::get_comments::get_comments;
 use todoctor::get_current_directory::get_current_directory;
 use todoctor::get_dist_path::get_dist_path;
+use todoctor::get_file_by_commit::get_file_by_commit;
 use todoctor::get_files_list::get_files_list;
 use todoctor::get_history::get_history;
+use todoctor::get_last_commit_hash::get_last_commit_hash;
 use todoctor::get_line_from_position::get_line_from_position;
+use todoctor::get_modified_files::get_modified_files;
 use todoctor::get_project_name::get_project_name;
 use todoctor::get_todoctor_version::get_todoctor_version;
 use todoctor::identify_not_ignored_file::identify_not_ignored_file;
@@ -29,9 +31,7 @@ use todoctor::prepare_blame_data::{prepare_blame_data, PreparedBlameData};
 use todoctor::remove_duplicate_dates::remove_duplicate_dates;
 use todoctor::types::{TodoData, TodoHistory, TodoWithBlame};
 use tokio::fs;
-use tokio::sync::Semaphore;
-
-const HISTORY_TEMP_FILE: &str = "todo_history_temp.json";
+use tokio::sync::Mutex;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 enum OutputFormat {
@@ -120,17 +120,23 @@ async fn main() {
         })
         .collect();
 
+    let todo_counts = Arc::new(Mutex::new(HashMap::new()));
+    let todo_counts_clone = Arc::clone(&todo_counts);
+
+    let mut todo_history_data: Vec<TodoHistory> = Vec::new();
+
     let todo_data_tasks: Vec<_> = files
         .into_iter()
         .map(|source_file_name: String| {
             let include_keywords = include_keywords.clone();
             let exclude_keywords = exclude_keywords.clone();
+            let todo_counts = Arc::clone(&todo_counts_clone);
 
             tokio::spawn(async move {
                 match fs::read_to_string(&source_file_name).await {
                     Ok(source) => {
                         let comments = get_comments(&source, &source_file_name);
-                        comments
+                        let todos: Vec<TodoData> = comments
                             .into_iter()
                             .filter_map(|comment| {
                                 let include_keywords_refs: Vec<&str> =
@@ -162,7 +168,15 @@ async fn main() {
                                     None
                                 }
                             })
-                            .collect::<Vec<TodoData>>()
+                            .collect();
+
+                        if todos.len() > 0 {
+                            let mut counts = todo_counts.lock().await;
+                            counts
+                                .insert(source_file_name.clone(), todos.len());
+                        }
+
+                        todos
                     }
                     Err(e) => {
                         eprintln!(
@@ -182,6 +196,9 @@ async fn main() {
             todo_data.extend(result);
         }
     }
+
+    let counts = todo_counts.lock().await;
+    drop(counts);
 
     let todo_with_blame_tasks: Vec<_> = todo_data
         .into_iter()
@@ -222,16 +239,11 @@ async fn main() {
     let mut history: Vec<(String, String)> = get_history(Some(*months)).await;
     history = remove_duplicate_dates(history);
 
-    let temp_file =
-        File::create(HISTORY_TEMP_FILE).expect("Failed to create temp file");
-    let mut writer = BufWriter::new(temp_file);
-
     if history.len() > 1 {
         history.remove(0);
     }
 
     let history_len = history.len();
-    let semaphore = Arc::new(Semaphore::new(24));
 
     let progress_bar = ProgressBar::new(history_len as u64);
 
@@ -240,6 +252,8 @@ async fn main() {
         .expect("Failed to create progress bar template")
         .progress_chars("▇▇ ");
     progress_bar.set_style(progress_style);
+
+    let mut previous_commit_hash: Option<String> = get_last_commit_hash().await;
 
     for (_index, (commit_hash, date)) in history.iter().enumerate() {
         progress_bar.inc(1);
@@ -250,6 +264,7 @@ async fn main() {
             get_files_list(Some(commit_hash.as_str())).await.unwrap();
 
         let supported_files: Vec<_> = files_list
+            .clone()
             .into_iter()
             .filter(|file| {
                 identify_not_ignored_file(file, &ignores)
@@ -257,110 +272,83 @@ async fn main() {
             })
             .collect();
 
-        let file_tasks: Vec<_> = supported_files
-            .into_iter()
-            .map(|file_path| {
-                let semaphore = semaphore.clone();
-                let commit_hash = commit_hash.clone();
-
-                let include_keywords = include_keywords.clone();
-                let exclude_keywords = exclude_keywords.clone();
-
-                tokio::spawn(async move {
-                    let permit = semaphore.acquire_owned().await.unwrap();
-
-                    if let Ok(file_content) = exec(&[
-                        "git",
-                        "show",
-                        &format!("{}:{}", commit_hash, file_path),
-                    ])
-                    .await
-                    {
-                        let comments = get_comments(&file_content, &file_path);
-
-                        let include_keywords_refs: Vec<&str> = include_keywords
-                            .iter()
-                            .map(|s| s.as_str())
-                            .collect();
-                        let exclude_keywords_refs: Vec<&str> = exclude_keywords
-                            .iter()
-                            .map(|s| s.as_str())
-                            .collect();
-
-                        let todos: Vec<_> = comments
-                            .into_iter()
-                            .filter(|comment| {
-                                identify_todo_comment(
-                                    &comment.text,
-                                    Some(&include_keywords_refs),
-                                    Some(&exclude_keywords_refs),
-                                )
-                                .is_some()
-                            })
-                            .collect();
-
-                        drop(permit);
-                        Some(todos.len())
-                    } else {
-                        drop(permit);
-                        None
-                    }
+        let modified_files = if let Some(prev_hash) = &previous_commit_hash {
+            get_modified_files(prev_hash, &commit_hash)
+                .await
+                .into_iter()
+                .filter(|file| {
+                    identify_not_ignored_file(file, &ignores)
+                        && identify_supported_file(file)
                 })
-            })
-            .collect();
-
-        let results = join_all(file_tasks).await;
-
-        let todo_count: usize = results
-            .into_iter()
-            .filter_map(|res| res.ok().flatten())
-            .sum();
-
-        let todo_history = TodoHistory {
-            date: date.clone(),
-            count: todo_count,
+                .collect::<Vec<_>>()
+        } else {
+            supported_files.clone()
         };
 
-        let json_entry =
-            serde_json::to_string(&todo_history).expect("Failed to serialize");
-        writeln!(writer, "{}", json_entry)
-            .expect("Failed to write to temp file");
+        for file_path in &modified_files {
+            let file_content_result =
+                get_file_by_commit(&commit_hash, &file_path).await;
+
+            match file_content_result {
+                Ok(file_content) => {
+                    let comments = get_comments(&file_content, file_path);
+
+                    let include_keywords_refs: Vec<&str> =
+                        include_keywords.iter().map(|s| s.as_str()).collect();
+                    let exclude_keywords_refs: Vec<&str> =
+                        exclude_keywords.iter().map(|s| s.as_str()).collect();
+
+                    let todos: Vec<_> = comments
+                        .into_iter()
+                        .filter(|comment| {
+                            identify_todo_comment(
+                                &comment.text,
+                                Some(&include_keywords_refs),
+                                Some(&exclude_keywords_refs),
+                            )
+                            .is_some()
+                        })
+                        .collect();
+
+                    let new_count = todos.len();
+
+                    {
+                        let mut counts = todo_counts.lock().await;
+                        if new_count > 0 {
+                            counts.insert(file_path.clone(), new_count);
+                        } else {
+                            counts.remove(file_path);
+                        }
+                    }
+                }
+                Err(_) => {
+                    let mut counts = todo_counts.lock().await;
+                    counts.remove(file_path);
+                }
+            };
+        }
+
+        let counts = todo_counts.lock().await;
+        let total_todo_count: usize = counts.values().sum();
+        drop(counts);
+
+        todo_history_data.push(TodoHistory {
+            date: date.clone(),
+            count: total_todo_count,
+        });
+
+        previous_commit_hash = Some(commit_hash.clone());
     }
 
     progress_bar.finish_with_message("All commits processed!");
 
-    writer.flush().expect("Failed to flush writer");
-
-    if fs::metadata(output_directory).await.is_ok() {
-        fs::remove_dir_all(output_directory)
-            .await
-            .expect("Error: Failed to remove directory");
-    }
-    fs::create_dir_all(output_directory)
-        .await
-        .expect("Error creating directory");
+    todo_history_data =
+        add_missing_days(todo_history_data, *months, todos_with_blame.len());
 
     let current_directory = get_current_directory()
         .expect("Error: Could not get current directory.");
     let project_name =
         get_project_name().unwrap_or_else(|| "Unknown Project".to_string());
-
-    let file = File::open(HISTORY_TEMP_FILE).expect("Failed to open file");
-    let reader = BufReader::new(file);
-
-    let mut todo_history_data: Vec<TodoHistory> = Vec::new();
-    for line in reader.lines() {
-        let entry: TodoHistory =
-            serde_json::from_str(&line.expect("Error reading line"))
-                .expect("Error deserializing JSON");
-        todo_history_data.push(entry);
-    }
-    todo_history_data =
-        add_missing_days(todo_history_data, *months, todos_with_blame.len());
-
-    fs::remove_file(HISTORY_TEMP_FILE)
-        .await
-        .expect("Error: Failed to remove temporary file");
 
     let json_data = json!({
         "currentPath": current_directory,
