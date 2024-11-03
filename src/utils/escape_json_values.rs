@@ -1,4 +1,4 @@
-use crate::escape_html::escape_html;
+use crate::utils::escape_html;
 use serde_json::Value;
 
 pub fn escape_json_values(json_value: &mut Value) {

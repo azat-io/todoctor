@@ -1,5 +1,4 @@
-use std::env;
-use std::path::PathBuf;
+use std::{env, path::PathBuf};
 
 pub fn get_current_directory() -> Option<PathBuf> {
     match env::current_dir() {

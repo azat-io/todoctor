@@ -1,4 +1,4 @@
-use crate::blame::BlameData;
+use crate::git::get_blame_data::BlameData;
 use chrono::{DateTime, Duration, Utc};
 use serde::Serialize;
 

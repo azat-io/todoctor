@@ -11,7 +11,7 @@ pub struct BlameData {
     pub author: String,
 }
 
-pub async fn blame(path: &str, line: u32) -> Option<BlameData> {
+pub async fn get_blame_data(path: &str, line: u32) -> Option<BlameData> {
     let result = match exec(&[
         "git",
         "blame",

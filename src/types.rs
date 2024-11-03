@@ -1,5 +1,12 @@
-use crate::prepare_blame_data::PreparedBlameData;
+use crate::comments::prepare_blame_data::PreparedBlameData;
+use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
+
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
+pub enum OutputFormat {
+    Html,
+    Json,
+}
 
 #[derive(Debug, Serialize)]
 pub struct TodoData {

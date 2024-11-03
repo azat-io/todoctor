@@ -1,4 +1,4 @@
-use todoctor::identify_todo_comment::identify_todo_comment;
+use todoctor::comments::identify_todo_comment;
 
 #[tokio::test]
 async fn test_primary_keyword_found() {

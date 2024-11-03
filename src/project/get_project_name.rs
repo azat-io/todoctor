@@ -1,4 +1,4 @@
-use crate::get_current_directory::get_current_directory;
+use crate::fs::get_current_directory;
 
 pub fn get_project_name() -> Option<String> {
     if let Some(current_dir) = get_current_directory() {

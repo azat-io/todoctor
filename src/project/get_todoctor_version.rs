@@ -1,4 +1,4 @@
-use crate::get_dist_path::get_dist_path;
+use crate::fs::get_dist_path;
 use serde_json::Value;
 use tokio::fs;
 
