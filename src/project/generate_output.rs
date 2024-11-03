@@ -54,7 +54,15 @@ pub async fn generate_output(
             }
         }
         OutputFormat::Json => {
-            let json_path = Path::new(output_directory).join("report.json");
+            if let Err(e) = fs::create_dir_all(output_directory).await {
+                eprintln!(
+                    "Error creating output directory {}: {:?}",
+                    output_directory, e
+                );
+                return;
+            }
+
+            let json_path = Path::new(output_directory).join("index.json");
             let mut file = File::create(&json_path)
                 .expect("Failed to create JSON report file");
             let formatted_json = serde_json::to_string_pretty(&json_data)
