@@ -193,7 +193,7 @@ todoctor --exclude-keywords WARNING --exclude-keywords DEPRECATED
 
 ### --output-format
 
-You can specify the format of the report. Possible options are `html` and `json`. The default value is `html`.
+You can specify the format of the report. Possible options are `html`, `json` and `csv`. The default value is `html`.
 
 Example:
 

@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 pub enum OutputFormat {
     Html,
     Json,
+    Csv,
 }
 
 #[derive(Debug, Serialize)]
