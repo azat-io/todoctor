@@ -1,6 +1,6 @@
 {
   "name": "todoctor",
-  "description": "CLI tool to track and visualize TODO comments in Git repositories",
+  "description": "CLI tool to analyze and report TODO comments in JavaScript and TypeScript Git repositories",
   "type": "module",
   "version": "1.1.0",
   "repository": "azat-io/todoctor",
