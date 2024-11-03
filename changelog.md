@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.1.0...v1.2.0)
+
+### 🚀 Features
+
+- Add csv output format ([c0ad6e6](https://github.com/azat-io/todoctor/commit/c0ad6e6))
+
+### 🏎 Performance Improvements
+
+- Process only modified files when traversing history ([49f285e](https://github.com/azat-io/todoctor/commit/49f285e))
+
+### 🐞 Bug Fixes
+
+- Fix short variant of output format command ([4cea228](https://github.com/azat-io/todoctor/commit/4cea228))
+- Create directory for json output ([f15a43b](https://github.com/azat-io/todoctor/commit/f15a43b))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.1.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.0.0...v1.1.0)
