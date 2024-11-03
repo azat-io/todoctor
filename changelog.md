@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.2.0...v1.3.0)
+
+### 🚀 Features
+
+- Split binaries into multiple packages ([059f104](https://github.com/azat-io/todoctor/commit/059f104))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.2.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.1.0...v1.2.0)
