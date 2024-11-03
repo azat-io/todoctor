@@ -7,6 +7,22 @@ settings:
 importers:
 
   .:
+    optionalDependencies:
+      '@todoctor/darwin-arm64':
+        specifier: workspace:^
+        version: link:packages/darwin-arm64
+      '@todoctor/darwin-x64':
+        specifier: workspace:^
+        version: link:packages/darwin-x64
+      '@todoctor/linux-arm64':
+        specifier: workspace:^
+        version: link:packages/linux-arm64
+      '@todoctor/linux-x64':
+        specifier: workspace:^
+        version: link:packages/linux-x64
+      '@todoctor/win32-x64':
+        specifier: workspace:^
+        version: link:packages/win32-x64
     devDependencies:
       '@azat-io/eslint-config-typescript':
         specifier: ^1.10.0
@@ -167,6 +183,16 @@ importers:
       vite-plugin-singlefile:
         specifier: ^2.0.2
         version: 2.0.2(rollup@4.24.0)(vite@5.4.10(@types/node@22.7.9)(lightningcss@1.27.0)(terser@5.36.0))
+
+  packages/darwin-arm64: {}
+
+  packages/darwin-x64: {}
+
+  packages/linux-arm64: {}
+
+  packages/linux-x64: {}
+
+  packages/win32-x64: {}
 
 packages:
 

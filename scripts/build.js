@@ -1,37 +1,33 @@
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import fs from 'node:fs'
 import os from 'node:os'
 
+import { platforms } from './platforms.js'
+
 let platform = os.platform()
 let arch = os.arch()
 
-let platformMap = {
-  win32: 'windows',
-  darwin: 'macos',
-  linux: 'linux',
-}
+let userPlatform = platforms.find(p => p.name === platform)
 
-let archMap = {
-  arm64: 'arm64',
-  x64: 'x64',
-}
-
-let filename = fileURLToPath(import.meta.url)
-let dirname = path.dirname(filename)
-
-let platformName = platformMap[platform]
-let archName = archMap[arch]
-
-if (!platformName || !archName) {
+if (!userPlatform?.arch.includes(arch)) {
   console.error(`Unsupported platform or architecture: ${platform}, ${arch}`)
   process.exit(1)
 }
 
-let binaryName = platform === 'win32' ? 'todoctor.exe' : 'todoctor'
+let binaryName = ['todoctor', userPlatform.extension].filter(Boolean).join('.')
 
-let sourcePath = path.join(dirname, '..', 'target', 'release', binaryName)
-let destDir = path.join(dirname, '../bin/', platformName, archName)
+let sourcePath = path.join(
+  import.meta.dirname,
+  '..',
+  'target',
+  'release',
+  binaryName,
+)
+let destDir = path.join(
+  import.meta.dirname,
+  '../packages/',
+  `${platform}-${arch}`,
+)
 let destPath = path.join(destDir, binaryName)
 
 if (!fs.existsSync(destDir)) {

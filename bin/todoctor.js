@@ -1,42 +1,37 @@
 #!/usr/bin/env node
 
+import { createRequire } from 'node:module'
 import { spawn } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
-import fs from 'node:fs'
 
+let require = createRequire(import.meta.url)
 let filename = fileURLToPath(import.meta.url)
 let dirname = path.dirname(filename)
 
 let platform = os.platform()
 let arch = os.arch()
 
-export let binaries = {
-  'win32:x64': 'windows/x64/todoctor.exe',
-  'darwin:arm64': 'macos/arm64/todoctor',
-  'linux:arm64': 'linux/arm64/todoctor',
-  'darwin:x64': 'macos/x64/todoctor',
-  'linux:x64': 'linux/x64/todoctor',
-}
+let packageName = `@todoctor/${platform}-${arch}`
+let binaryPath
 
-let key = `${platform}:${arch}`
-let relativePath = binaries[key]
-
-if (!relativePath) {
-  console.error(`Unsupported platform or architecture: ${platform}, ${arch}`)
+try {
+  let packageBinaryFile = 'todoctor'
+  if (platform === 'win32') {
+    packageBinaryFile += '.exe'
+  }
+  binaryPath = require.resolve(`${packageName}/${packageBinaryFile}`)
+} catch (error) {
+  console.error(`Failed to find binary for ${packageName}`)
+  console.error(error)
   process.exit(1)
 }
 
-let binaryPath = path.join(dirname, relativePath)
-
-if (!fs.existsSync(binaryPath)) {
-  console.error(`Binary not found: ${binaryPath}`)
-  process.exit(1)
-}
-
+let distPath = path.join(dirname, '../dist')
 let args = process.argv.slice(2)
-let child = spawn(binaryPath, args, { stdio: 'inherit' })
+let env = { ...process.env, DIST_PATH: distPath }
+let child = spawn(binaryPath, args, { stdio: 'inherit', env })
 
 child.on('exit', code => {
   process.exit(code)

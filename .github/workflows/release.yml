@@ -88,23 +88,23 @@ jobs:
         run: |
           if [[ "${{ matrix.platform }}" == "ubuntu-latest" ]]; then
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
-              mkdir -p ./bin/linux/x64
-              cp target/x86_64-unknown-linux-gnu/release/todoctor ./bin/linux/x64/todoctor
-              chmod +x ./bin/linux/x64/todoctor
+              mkdir -p ./packages/linux-x64
+              cp target/x86_64-unknown-linux-gnu/release/todoctor ./packages/linux-x64/todoctor
+              chmod +x ./packages/linux-x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              mkdir -p ./bin/linux/arm64
-              cp target/aarch64-unknown-linux-gnu/release/todoctor ./bin/linux/arm64/todoctor
-              chmod +x ./bin/linux/arm64/todoctor
+              mkdir -p ./packages/linux-arm64
+              cp target/aarch64-unknown-linux-gnu/release/todoctor ./packages/linux-arm64/todoctor
+              chmod +x ./packages/linux-arm64/todoctor
             fi
           elif [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
             if [[ "${{ matrix.arch }}" == "x64" ]]; then
-              mkdir -p ./bin/macos/x64
-              cp target/x86_64-apple-darwin/release/todoctor ./bin/macos/x64/todoctor
-              chmod +x ./bin/macos/x64/todoctor
+              mkdir -p ./packages/darwin-x64
+              cp target/x86_64-apple-darwin/release/todoctor ./packages/darwin-x64/todoctor
+              chmod +x ./packages/darwin-x64/todoctor
             elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              mkdir -p ./bin/macos/arm64
-              cp target/aarch64-apple-darwin/release/todoctor ./bin/macos/arm64/todoctor
-              chmod +x ./bin/macos/arm64/todoctor
+              mkdir -p ./packages/darwin-arm64
+              cp target/aarch64-apple-darwin/release/todoctor ./packages/darwin-arm64/todoctor
+              chmod +x ./packages/darwin-arm64/todoctor
             fi
           fi
         shell: bash
@@ -112,8 +112,8 @@ jobs:
       - name: Move Binaries to Bin Folder (Windows)
         if: runner.os == 'Windows'
         run: |
-          mkdir bin\windows\x64
-          copy target\x86_64-pc-windows-msvc\release\todoctor.exe bin\windows\x64\todoctor.exe
+          mkdir packages\win32-x64
+          copy target\x86_64-pc-windows-msvc\release\todoctor.exe packages\win32-x64\todoctor.exe
         shell: cmd
 
       - name: Upload Binaries
@@ -174,17 +174,17 @@ jobs:
 
       - name: Set Execute Permissions on Binaries
         run: |
-          chmod +x ./bin/linux/x64/todoctor
-          chmod +x ./bin/linux/arm64/todoctor
-          chmod +x ./bin/macos/x64/todoctor
-          chmod +x ./bin/macos/arm64/todoctor
+          chmod +x ./packages/linux-x64/todoctor
+          chmod +x ./packages/linux-arm64/todoctor
+          chmod +x ./packages/darwin-x64/todoctor
+          chmod +x ./packages/darwin-arm64/todoctor
 
       - name: Verify Binary Permissions
         run: |
-          ls -l ./bin/linux/x64/todoctor
-          ls -l ./bin/linux/arm64/todoctor
-          ls -l ./bin/macos/x64/todoctor
-          ls -l ./bin/macos/arm64/todoctor
+          ls -l ./packages/linux-x64/todoctor
+          ls -l ./packages/linux-arm64/todoctor
+          ls -l ./packages/darwin-x64/todoctor
+          ls -l ./packages/darwin-arm64/todoctor
 
       - name: Create GitHub Release
         run: pnpm run ci:changelog
@@ -194,8 +194,25 @@ jobs:
       - name: Configure NPM Auth
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
+      - name: Update Package Versions
+        shell: bash
+        run: node ./scripts/version.js
+
       - name: Clear Package JSON
         run: pnpm run ci:clear
 
-      - name: Publish to NPM
+      - name: Publish Root Package to NPM
         run: npm publish --access public --no-git-checks --provenance
+
+      - name: Publish Packages to NPM
+        run: |
+          for pkg in packages/*; do
+            if [ -d "$pkg" ]; then
+              echo "Publishing package $pkg"
+              cd "$pkg"
+              npm publish --access public --no-git-checks --provenance
+              cd -
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
