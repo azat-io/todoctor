@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.1
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.0...v1.3.1)
+
+### 🏎 Performance Improvements
+
+- Enable link-time optimization ([5e3762a](https://github.com/azat-io/todoctor/commit/5e3762a))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.3.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.2.0...v1.3.0)
