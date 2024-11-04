@@ -18,13 +18,15 @@ for (let platform of platforms) {
     })
 
     let name = `@todoctor/${platform.name}-${arch}`
+    let displayName = platform.name[0].toUpperCase() + platform.name.slice(1)
+    let displayArch = arch.toUpperCase()
 
     fs.writeFile(
       path.join(packageDir, 'package.json'),
       JSON.stringify(
         {
           name,
-          description: `Platform-specific binary for Todoctor (${platform.name}, ${arch})`,
+          description: `Platform-specific binary for Todoctor (${displayName}, ${displayArch})`,
           version: rootPackageJson.version,
           repository: rootPackageJson.repository,
           author: rootPackageJson.author,
@@ -41,7 +43,7 @@ for (let platform of platforms) {
     fs.writeFile(
       path.join(packageDir, 'readme.md'),
       [
-        `# Todoctor (${platform.name[0].toUpperCase() + platform.name.slice(1)}, ${arch.toUpperCase()})`,
+        `# Todoctor (${displayName}, ${displayArch})`,
         '',
         '<img',
         '  src="https://raw.githubusercontent.com/azat-io/todoctor/main/assets/logo-light.webp"',
