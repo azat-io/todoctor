@@ -4,7 +4,7 @@
   export let value = ''
   export let kind = ''
 
-  let highlightedParts: Array<{ highlighted: boolean; text: string }> = []
+  let highlightedParts: { highlighted: boolean; text: string }[]
 
   $: {
     let regex = new RegExp(`(${kind})`, 'i')
@@ -16,7 +16,7 @@
 </script>
 
 <Typography size="m">
-  {#each highlightedParts as part}
+  {#each highlightedParts as part (part.text)}
     {#if part.highlighted}
       <i>{part.text}</i>
     {:else}

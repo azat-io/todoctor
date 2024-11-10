@@ -1,12 +1,14 @@
 <script lang="ts">
   import type { ChartOptions, ChartData } from 'chart.js'
 
+  import { onMount } from 'svelte'
+
   import Chart from '~/elements/chart.svelte'
   import { theme } from '~/stores/theme'
 
   export let values: number[]
 
-  $: computedStyles = getComputedStyle(document.body)
+  let computedStyles = getComputedStyle(document.body)
 
   $: data = {
     datasets: [
@@ -27,7 +29,7 @@
     ],
   } as ChartData<'doughnut'>
 
-  theme.subscribe(() => {
+  let unsubscribe = theme.subscribe(() => {
     computedStyles = getComputedStyle(document.body)
   })
 
@@ -70,6 +72,8 @@
       },
     },
   } as ChartOptions<'doughnut'>
+
+  onMount(() => () => unsubscribe)
 </script>
 
 <Chart type="doughnut" height={null} {options} {data} />

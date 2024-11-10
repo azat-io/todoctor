@@ -6,23 +6,31 @@ import path from 'node:path'
 import { getPackageJson } from './get-package-json.js'
 import { platforms } from './platforms.js'
 
-let packagesDir = path.join(import.meta.dirname, '../packages')
+let packagesDirectory = path.join(import.meta.dirname, '../packages')
 let rootPackageJson = await getPackageJson()
+
+let packageTypes = []
 
 for (let platform of platforms) {
   for (let arch of platform.arch) {
-    let packageDir = path.join(packagesDir, `${platform.name}-${arch}`)
+    packageTypes.push([platform.name, arch])
+  }
+}
 
-    await fs.mkdir(packageDir, {
+await Promise.all(
+  packageTypes.map(async ([platform, arch]) => {
+    let packageDirectory = path.join(packagesDirectory, `${platform}-${arch}`)
+
+    await fs.mkdir(packageDirectory, {
       recursive: true,
     })
 
-    let name = `@todoctor/${platform.name}-${arch}`
-    let displayName = platform.name[0].toUpperCase() + platform.name.slice(1)
+    let name = `@todoctor/${platform}-${arch}`
+    let displayName = platform.toUpperCase() + platform.slice(1)
     let displayArch = arch.toUpperCase()
 
     fs.writeFile(
-      path.join(packageDir, 'package.json'),
+      path.join(packageDirectory, 'package.json'),
       JSON.stringify(
         {
           name,
@@ -41,7 +49,7 @@ for (let platform of platforms) {
     )
 
     fs.writeFile(
-      path.join(packageDir, 'readme.md'),
+      path.join(packageDirectory, 'readme.md'),
       [
         `# Todoctor (${displayName}, ${displayArch})`,
         '',
@@ -71,5 +79,5 @@ for (let platform of platforms) {
         'MIT &copy; [Azat S.](https://azat.io)',
       ].join('\n'),
     )
-  }
-}
+  }),
+)

@@ -2,45 +2,45 @@ import { readable, writable } from 'svelte/store'
 
 import type { Data } from '~/typings/index.d'
 
-let decodeHtmlEntities = (str: string): string => {
+let decodeHtmlEntities = (string: string): string => {
   let textArea = document.createElement('textarea')
-  textArea.innerHTML = str
+  textArea.innerHTML = string
   return textArea.value
 }
 
-let traverseAndDecode = <T>(obj: T): T => {
-  if (typeof obj === 'string') {
-    return decodeHtmlEntities(obj) as T
+let traverseAndDecode = <T>(object: T): T => {
+  if (typeof object === 'string') {
+    return decodeHtmlEntities(object) as T
   }
 
-  if (Array.isArray(obj)) {
-    return obj.map(item => traverseAndDecode(item)) as T
+  if (Array.isArray(object)) {
+    return object.map(item => traverseAndDecode(item) as T) as T
   }
 
-  if (typeof obj === 'object' && obj !== null) {
+  if (typeof object === 'object' && object !== null) {
     let result = {} as { [K in keyof T]: T[K] }
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        result[key] = traverseAndDecode(obj[key])
+    for (let key in object) {
+      if (key in object) {
+        result[key] = traverseAndDecode(object[key])
       }
     }
     return result
   }
 
-  return obj
+  return object
 }
 
 export let loading = writable(true)
 
 export let data = readable<Partial<Data>>({}, set => {
-  let fetchData = async () => {
+  let fetchData = async (): Promise<void> => {
     let dataValue: Data
     if (import.meta.env.MODE === 'production') {
       // @ts-ignore
-      dataValue = window.data
+      dataValue = globalThis.data as Data
     } else {
       let dataResponse = await fetch('/data.json')
-      dataValue = await dataResponse.json()
+      dataValue = (await dataResponse.json()) as Data
     }
     set(traverseAndDecode(dataValue))
     loading.set(false)

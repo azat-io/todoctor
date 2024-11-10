@@ -61,10 +61,10 @@
 <div class="wrapper">
   <table class="table">
     <thead>
-      {#each table.getHeaderGroups() as headerGroup}
+      {#each table.getHeaderGroups() as headerGroup, headerGroupIndex (headerGroupIndex)}
         <tr class="tr">
-          <th style="inline-size: 40px" class="th">#</th>
-          {#each headerGroup.headers as header}
+          <th style:inline-size="40px" class="th">#</th>
+          {#each headerGroup.headers as header, headerIndex (headerIndex)}
             <th
               style={header.getSize()
                 ? `inline-size: ${header.getSize()}px`
@@ -77,6 +77,7 @@
                   class:cursor-pointer={header.column.getCanSort()}
                   class:select-none={header.column.getCanSort()}
                   class="button"
+                  type="button"
                 >
                   <FlexRender
                     content={header.column.columnDef.header}
@@ -95,10 +96,10 @@
       {/each}
     </thead>
     <tbody>
-      {#each table.getRowModel().rows as row, index}
+      {#each table.getRowModel().rows as row, rowIndex (rowIndex)}
         <tr class="tr">
-          <td style="inline-size: 40px" class="td td-index">{index + 1}</td>
-          {#each row.getVisibleCells() as cell}
+          <td style:inline-size="40px" class="td td-index">{rowIndex + 1}</td>
+          {#each row.getVisibleCells() as cell, cellIndex (cellIndex)}
             <td style={`inline-size: ${cell.column.getSize()}px`} class="td">
               <FlexRender
                 content={cell.column.columnDef.cell}

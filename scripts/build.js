@@ -1,5 +1,5 @@
+import fs from 'node:fs/promises'
 import path from 'node:path'
-import fs from 'node:fs'
 import os from 'node:os'
 
 import { platforms } from './platforms.js'
@@ -7,11 +7,12 @@ import { platforms } from './platforms.js'
 let platform = os.platform()
 let arch = os.arch()
 
-let userPlatform = platforms.find(p => p.name === platform)
+let userPlatform = platforms.find(
+  currentPlatform => currentPlatform.name === platform,
+)
 
 if (!userPlatform?.arch.includes(arch)) {
-  console.error(`Unsupported platform or architecture: ${platform}, ${arch}`)
-  process.exit(1)
+  throw new Error(`Unsupported platform or architecture: ${platform}, ${arch}`)
 }
 
 let binaryName = ['todoctor', userPlatform.extension].filter(Boolean).join('.')
@@ -23,21 +24,20 @@ let sourcePath = path.join(
   'release',
   binaryName,
 )
-let destDir = path.join(
+let destinationDirectory = path.join(
   import.meta.dirname,
   '../packages/',
   `${platform}-${arch}`,
 )
-let destPath = path.join(destDir, binaryName)
+let destinationPath = path.join(destinationDirectory, binaryName)
 
-if (!fs.existsSync(destDir)) {
-  fs.mkdirSync(destDir, { recursive: true })
+if (!(await fs.exists(destinationDirectory))) {
+  await fs.mkdir(destinationDirectory, { recursive: true })
 }
 
 try {
-  fs.copyFileSync(sourcePath, destPath)
-  fs.chmodSync(destPath, 0o755)
+  await fs.copyFile(sourcePath, destinationPath)
+  await fs.chmod(destinationPath, 0o755)
 } catch (error) {
-  console.error(`Error copying file: ${error.message}`)
-  process.exit(1)
+  throw new Error(`Error copying file: ${error.message}`)
 }

@@ -10,12 +10,14 @@
   $: if ($data.name) {
     document.title = `${$data.name} | Todoctor`
   }
+
+  $: length = $data.data?.length ?? 0
 </script>
 
 <Header />
 <main>
   {#if !$loading}
-    {#if $data.data?.length}
+    {#if length}
       <Graph />
       <Info />
       <List />

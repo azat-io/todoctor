@@ -10,12 +10,12 @@
   $: todosByKind =
     $data.data?.reduce((accumulator: Record<string, number>, { kind }) => {
       if (kind in accumulator) {
-        accumulator[kind] = accumulator[kind] + 1
+        accumulator[kind] += 1
       } else {
         accumulator[kind] = 1
       }
       return accumulator
-    }, {}) || {}
+    }, {}) ?? {}
 
   $: todosEntries = Object.entries(todosByKind).sort(([, a], [, b]) => b - a)
 
@@ -42,7 +42,7 @@
     'senary',
   ]
 
-  $: notes = [] as {
+  let notes = [] as {
     content: string[]
     title: string
   }[]
@@ -69,7 +69,7 @@
     let todosByAuthors = $data.data.reduce(
       (accumulator: Record<string, number>, { blame }) => {
         if (blame.author in accumulator) {
-          accumulator[blame.author] = accumulator[blame.author] + 1
+          accumulator[blame.author] += 1
         } else {
           accumulator[blame.author] = 1
         }
@@ -128,7 +128,7 @@
       <div class="notes-wrapper">
         <Typography size="xl" tag="h2" mbe="l">Did You Know That?</Typography>
         <div class="notes">
-          {#each notes as { content, title }}
+          {#each notes as { content, title } (title)}
             <Note {title} {content} />
           {/each}
         </div>
@@ -143,12 +143,12 @@
       </div>
     </div>
     <div class="legend">
-      {#each finalTodosEntries as [kind], index}
+      {#each finalTodosEntries as [kind], index (kind)}
         <div class="legend-element">
           <div
             style={`--color: var(--color-additional-${colors[index]});`}
             class="legend-color"
-          ></div>
+          />
           <Typography size="s" tag="span">{kind.toUpperCase()}</Typography>
         </div>
       {/each}

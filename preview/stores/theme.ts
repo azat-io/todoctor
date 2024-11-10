@@ -1,16 +1,18 @@
 import { writable } from 'svelte/store'
 
 let userTheme =
-  localStorage.getItem('theme') ||
-  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  localStorage.getItem('theme') ??
+  (globalThis.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light')
 
 export let theme = writable(userTheme)
 
-export let toggleTheme = () => {
+export let toggleTheme = (): void => {
   theme.update(value => (value === 'dark' ? 'light' : 'dark'))
 }
 
 theme.subscribe(value => {
   localStorage.setItem('theme', value)
-  window.document.documentElement.setAttribute('data-theme', value)
+  globalThis.document.documentElement.dataset.theme = value
 })

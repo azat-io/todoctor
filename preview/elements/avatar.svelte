@@ -9,7 +9,7 @@
   let transformToCode = (string: string, length: number): number => {
     let hash = 0
 
-    for (let len = string.length, i = 0; i < len; i++) {
+    for (let stringLength = string.length, i = 0; i < stringLength; i++) {
       let chr = string.charCodeAt(i)
       hash = (hash << 5) - hash + chr
       hash |= 0

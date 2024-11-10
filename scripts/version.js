@@ -5,13 +5,10 @@ import { getPackageJson } from './get-package-json.js'
 
 let rootPackageJson = await getPackageJson()
 
-let { version } = rootPackageJson
+let { optionalDependencies, version } = rootPackageJson
 
 rootPackageJson.optionalDependencies = Object.fromEntries(
-  Object.keys(rootPackageJson.optionalDependencies).map(key => [
-    key,
-    `^${version}`,
-  ]),
+  Object.keys(optionalDependencies).map(key => [key, `^${version}`]),
 )
 
 await fs.writeFile(

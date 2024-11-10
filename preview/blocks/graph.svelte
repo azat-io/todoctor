@@ -8,8 +8,8 @@
     $data.history?.sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     ) ?? []
-  $: labels = history?.map(({ date }) => date)
-  $: values = history?.map(({ count }) => count)
+  $: labels = history.map(({ date }) => date)
+  $: values = history.map(({ count }) => count)
 </script>
 
 <div class="graph-wrapper">

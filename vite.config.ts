@@ -14,9 +14,9 @@ import os from 'node:os'
 import { data } from './preview/mock/data'
 
 let htmlMinify = (): Plugin => ({
-  transformIndexHtml: async html => {
+  transformIndexHtml: async (html): Promise<void> => {
     try {
-      return await minify(html, {
+      await minify(html, {
         removeStyleLinkTypeAttributes: true,
         removeScriptTypeAttributes: true,
         removeRedundantAttributes: true,
@@ -26,26 +26,26 @@ let htmlMinify = (): Plugin => ({
         minifyCSS: true,
         minifyJS: true,
       })
-    } catch (_error) {
-      return html
+    } catch (error) {
+      console.error('HTML minification failed', error)
     }
   },
   name: 'vite-plugin-html-minify',
 })
 
-let injectBeforeHead = (html: string) => ({
+let injectBeforeHead = (html: string): Plugin => ({
   transformIndexHtml: (htmlValue: string) =>
-    htmlValue.replace('</head>', html + '</head>'),
+    htmlValue.replace('</head>', `${html}</head>`),
   name: 'vite-plugin-inject-before-head',
 })
 
 let createFilePlugin = (filename: string, content: string): Plugin => ({
   generateBundle: async () => {
-    let outputDir = path.resolve(import.meta.dirname, 'dist')
+    let outputDirectory = path.resolve(import.meta.dirname, 'dist')
 
     try {
-      await fs.mkdir(outputDir, { recursive: true })
-      let filePath = path.join(outputDir, filename)
+      await fs.mkdir(outputDirectory, { recursive: true })
+      let filePath = path.join(outputDirectory, filename)
 
       await fs.writeFile(filePath, content, 'utf8')
     } catch (error) {
@@ -56,7 +56,7 @@ let createFilePlugin = (filename: string, content: string): Plugin => ({
   apply: 'build',
 })
 
-let isDocs = process.env.DOCS === 'true'
+let isDocumentation = process.env.DOCS === 'true'
 
 export default defineConfig({
   plugins: [
@@ -64,7 +64,7 @@ export default defineConfig({
       include: ['preview/mock/**/*.mock.ts'],
       prefix: ['^/data.json$'],
     }),
-    ...(isDocs
+    ...(isDocumentation
       ? [
           injectBeforeHead(
             `<script>window.data = ${JSON.stringify(data)};</script>`,

@@ -4,10 +4,15 @@
   export let title = ''
   export let content: string[] = []
 
-  let processLine = (line: string) => {
-    let parts: Array<{ bold: boolean; text: string }> = []
+  interface Part {
+    bold: boolean
+    text: string
+  }
 
-    let regex = /<b>(.*?)<\/b>/gi
+  let processLine = (line: string): Part[] => {
+    let parts: Part[] = []
+
+    let regex = /<b>(?<content>.*?)<\/b>/giu
 
     let lastIndex = 0
     let match
@@ -31,9 +36,9 @@
 <div class="note">
   <Typography size="l" tag="h3" mbe="s">{title}</Typography>
 
-  {#each content as line}
+  {#each content as line (line)}
     <Typography size="m" tag="p" mbe="2xs">
-      {#each processLine(line) as part}
+      {#each processLine(line) as part (part.text)}
         {#if part.bold}
           <b>{part.text}</b>
         {:else}

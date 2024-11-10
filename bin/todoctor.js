@@ -28,10 +28,13 @@ try {
   process.exit(1)
 }
 
-let distPath = path.join(dirname, '../dist')
-let args = process.argv.slice(2)
-let env = { ...process.env, DIST_PATH: distPath }
-let child = spawn(binaryPath, args, { stdio: 'inherit', env })
+let distributionPath = path.join(dirname, '../dist')
+let arguments_ = process.argv.slice(2)
+let environment = { ...process.env, DIST_PATH: distributionPath }
+let child = spawn(binaryPath, arguments_, {
+  stdio: 'inherit',
+  env: environment,
+})
 
 child.on('exit', code => {
   process.exit(code)

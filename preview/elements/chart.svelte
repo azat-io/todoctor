@@ -14,17 +14,17 @@
   export let options: ChartOptions<T>
   export let height: number | null = null
 
-  let canvasRef: HTMLCanvasElement
+  let canvasReference: HTMLCanvasElement
   let chart: Chart<T> | null = null
 
-  let resizeObserver: ResizeObserver
+  let resizeObserver: ResizeObserver | null = null
 
-  let createChart = () => {
+  let createChart = (): void => {
     if (chart) {
       chart.destroy()
     }
 
-    chart = new Chart(canvasRef, {
+    chart = new Chart(canvasReference, {
       options: {
         ...options,
         maintainAspectRatio: false,
@@ -42,8 +42,8 @@
       chart?.resize()
     })
 
-    if (canvasRef.parentElement) {
-      resizeObserver.observe(canvasRef.parentElement)
+    if (canvasReference.parentElement) {
+      resizeObserver.observe(canvasReference.parentElement)
     }
   })
 
@@ -63,7 +63,7 @@
   })
 </script>
 
-<canvas class="canvas" bind:this={canvasRef} {height}></canvas>
+<canvas class="canvas" bind:this={canvasReference} {height} />
 
 <style>
   .canvas {

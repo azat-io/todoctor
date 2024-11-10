@@ -12,7 +12,11 @@
         <Typography size="m">Released under the MIT License</Typography>
         <Typography size="m">Copyright © {currentYear} Azat S.</Typography>
       </div>
-      <a href="https://github.com/azat-io/todoctor" target="_blank">
+      <a
+        href="https://github.com/azat-io/todoctor"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <Typography size="m">Source code on GitHub</Typography>
       </a>
     </div>

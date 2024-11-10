@@ -7,6 +7,8 @@
 
   // eslint-disable-next-line no-unused-expressions
   $theme
+
+  let { version, name } = $data
 </script>
 
 <header class="header">
@@ -18,21 +20,25 @@
           <div>
             <div class="title-wrapper">
               <Typography size="2xl" tag="h1" bold>Todoctor</Typography>
-              {#if $data.version}
-                <sub class="version">v{$data.version}</sub>
+              {#if version}
+                <sub class="version">v{version}</sub>
               {/if}
             </div>
-            {#if $data.name}
-              <Typography size="m">{$data.name}</Typography>
+            {#if name}
+              <Typography size="m">{name}</Typography>
             {/if}
           </div>
         </div>
       </div>
       <div class="links">
-        <button on:click={toggleTheme} class="button">
+        <button on:click={toggleTheme} class="button" type="button">
           <Typography color="brand" size="m">Toggle Theme</Typography>
         </button>
-        <a href="https://github.com/azat-io/todoctor" target="_blank">
+        <a
+          href="https://github.com/azat-io/todoctor"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <Typography color="brand" size="m">GitHub</Typography>
         </a>
       </div>
