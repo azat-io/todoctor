@@ -31,7 +31,7 @@ let destinationDirectory = path.join(
 )
 let destinationPath = path.join(destinationDirectory, binaryName)
 
-if (!(await fs.exists(destinationDirectory))) {
+if (!(await fs.access(destinationDirectory))) {
   await fs.mkdir(destinationDirectory, { recursive: true })
 }
 

@@ -1,8 +1,12 @@
 <script lang="ts" generics="T extends ChartType">
   /* global T */
 
-  // eslint-disable-next-line no-unused-vars
-  import type { ChartOptions, ChartData, ChartType } from 'chart.js'
+  import type {
+    ChartConfiguration,
+    ChartOptions,
+    ChartData,
+    ChartType,
+  } from 'chart.js'
 
   import { registerables, Chart } from 'chart.js'
   import { onDestroy, onMount } from 'svelte'
@@ -29,10 +33,10 @@
         ...options,
         maintainAspectRatio: false,
         responsive: true,
-      },
-      type,
+      } as ChartOptions,
+      type: type as ChartType,
       data,
-    })
+    } as unknown as ChartConfiguration<T>)
   }
 
   onMount(() => {
@@ -49,6 +53,7 @@
 
   $: if (chart) {
     chart.data = data
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     chart.options = options
     chart.update()
   }

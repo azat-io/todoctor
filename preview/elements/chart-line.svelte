@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { ChartOptions, ChartData } from 'chart.js'
 
+  import { onDestroy } from 'svelte'
+
   import Chart from '~/elements/chart.svelte'
   import { theme } from '~/stores/theme'
 
@@ -10,7 +12,7 @@
   let max = Math.max(...values)
   let min = Math.min(...values)
 
-  $: computedStyles = getComputedStyle(document.body)
+  let computedStyles = getComputedStyle(document.body)
 
   $: data = {
     datasets: [
@@ -38,9 +40,11 @@
     labels,
   } as ChartData<'line'>
 
-  theme.subscribe(() => {
+  let unsubscribe = theme.subscribe(() => {
     computedStyles = getComputedStyle(document.body)
   })
+
+  onDestroy(unsubscribe)
 
   $: options = {
     scales: {

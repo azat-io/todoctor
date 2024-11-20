@@ -1,5 +1,3 @@
-/* eslint-disable perfectionist/sort-objects */
-
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -31,21 +29,23 @@ await Promise.all(
 
     fs.writeFile(
       path.join(packageDirectory, 'package.json'),
+      /* eslint-disable perfectionist/sort-objects */
       JSON.stringify(
         {
           name,
-          description: `Platform-specific binary for Todoctor (${displayName}, ${displayArch})`,
           version: rootPackageJson.version,
-          repository: rootPackageJson.repository,
-          author: rootPackageJson.author,
-          license: rootPackageJson.license,
+          description: `Platform-specific binary for Todoctor (${displayName}, ${displayArch})`,
           keywords: rootPackageJson.keywords,
+          repository: rootPackageJson.repository,
+          license: rootPackageJson.license,
+          author: rootPackageJson.author,
           os: [platform.name],
           cpu: [arch],
         },
         null,
         2,
       ),
+      /* eslint-enable perfectionist/sort-objects */
     )
 
     fs.writeFile(

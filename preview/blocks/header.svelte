@@ -5,7 +5,7 @@
   import Logo from '~/elements/logo.svelte'
   import { data } from '~/stores/data'
 
-  // eslint-disable-next-line no-unused-expressions
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   $theme
 
   let { version, name } = $data

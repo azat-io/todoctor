@@ -46,5 +46,6 @@ export let data = readable<Partial<Data>>({}, set => {
     loading.set(false)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   fetchData()
 })

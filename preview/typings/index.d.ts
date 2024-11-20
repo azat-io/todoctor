@@ -12,15 +12,15 @@ export interface DataItem {
   kind: string
 }
 
-export interface HistoryItem {
-  count: number
-  date: string
-}
-
 export interface Data {
   history: HistoryItem[]
   currentPath: string
   data: DataItem[]
   version?: string
   name: string
+}
+
+export interface HistoryItem {
+  count: number
+  date: string
 }
