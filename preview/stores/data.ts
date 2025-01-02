@@ -36,8 +36,9 @@ export let data = readable<Partial<Data>>({}, set => {
   let fetchData = async (): Promise<void> => {
     let dataValue: Data
     if (import.meta.env.MODE === 'production') {
-      // @ts-ignore
-      dataValue = globalThis.data as Data
+      dataValue = JSON.parse(
+        document.querySelector('#data')?.textContent ?? '{}',
+      ) as Data
     } else {
       let dataResponse = await fetch('/data.json')
       dataValue = (await dataResponse.json()) as Data

@@ -67,7 +67,7 @@ export default defineConfig({
     ...(isDocumentation
       ? [
           injectBeforeHead(
-            `<script>window.data = ${JSON.stringify(data)};</script>`,
+            `<script id="data" type="application/json">${JSON.stringify(data)}</script>`,
           ),
           injectBeforeHead(
             '<script defer src="https://analytics.azat.io/script.js" data-website-id="43d46bcc-915b-46c0-92b4-9e290eb8a5dc"></script></head>',

@@ -39,7 +39,7 @@ pub async fn generate_output(
 
                 if let Some(pos) = index_content.find("</head>") {
                     let script_tag = format!(
-                        "<script>window.data = {};</script>",
+                        "<script id=\"data\" type=\"application/json\">{};</script>",
                         escaped_json_string
                     );
                     index_content.insert_str(pos, &script_tag);
