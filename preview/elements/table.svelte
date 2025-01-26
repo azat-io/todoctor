@@ -142,10 +142,10 @@
     font: inherit;
     text-align: start;
     cursor: pointer;
+    outline: none;
     background-color: transparent;
     border: none;
     border-radius: var(--border-radius);
-    outline: none;
     transition: box-shadow 200ms;
 
     &:focus-visible {
@@ -169,8 +169,8 @@
 
   .td {
     padding: var(--space-2xs);
-    overflow-wrap: anywhere;
     vertical-align: top;
+    overflow-wrap: anywhere;
   }
 
   .td-index {

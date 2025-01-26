@@ -53,8 +53,8 @@ a {
   color: var(--color-content-brand);
   text-decoration: underline;
   text-underline-offset: 0.25em;
-  border-radius: var(--border-radius);
   outline: none;
+  border-radius: var(--border-radius);
   transition: box-shadow 200ms;
 
   &:focus-visible {

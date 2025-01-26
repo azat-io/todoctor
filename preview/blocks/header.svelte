@@ -5,7 +5,7 @@
   import Logo from '~/elements/logo.svelte'
   import { data } from '~/stores/data'
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  // eslint-disable-next-line typescript/no-unused-expressions
   $theme
 
   let { version, name } = $data
@@ -87,10 +87,10 @@
     color: var(--color-content-brand);
     text-decoration: underline;
     text-underline-offset: 0.25em;
+    outline: none;
     background: none;
     border: none;
     border-radius: var(--border-radius);
-    outline: none;
     transition: box-shadow 200ms;
 
     &:focus-visible {

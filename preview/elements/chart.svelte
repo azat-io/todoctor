@@ -53,7 +53,7 @@
 
   $: if (chart) {
     chart.data = data
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line typescript/no-unsafe-assignment
     chart.options = options
     chart.update()
   }
