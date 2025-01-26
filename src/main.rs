@@ -17,7 +17,7 @@ in your code, allowing you to observe changes over time."
 struct Cli {
     /// Number of months to process
     #[arg(short, long, default_value_t = 3, value_parser = clap::value_parser!(u32).range(1..))]
-    month: u32,
+    months: u32,
 
     /// Paths to ignore (can be used multiple times)
     #[arg(short, long, action = ArgAction::Append)]
@@ -62,7 +62,7 @@ async fn main() {
     let todos_with_blame = enrich_todo_data_with_blame(todo_data).await;
 
     let todo_history_data = collect_todo_history(
-        args.month,
+        args.months,
         &args.ignore,
         &args.include_keywords,
         &args.exclude_keywords,

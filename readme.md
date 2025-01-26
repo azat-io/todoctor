@@ -128,7 +128,7 @@ The list includes the comment text, the file path, and additional metadata, such
 
 Todoctor supports the following command-line options:
 
-### --month
+### --months
 
 Specifies the number of months to include when tracking TODOs in the repository. If not provided, defaults to 3 months.
 
