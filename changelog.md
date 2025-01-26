@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.2
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.1...v1.3.2)
+
+### 🐞 Bug Fixes
+
+- Fix months argument name ([2335d0e](https://github.com/azat-io/todoctor/commit/2335d0e))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.3.1
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.0...v1.3.1)
