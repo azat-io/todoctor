@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.5
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.4...v1.3.5)
+
+### 🐞 Bug Fixes
+
+- Fix setting platform in submodules ([637ec46](https://github.com/azat-io/todoctor/commit/637ec46))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.3.4
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.3...v1.3.4)
