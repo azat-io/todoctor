@@ -17,11 +17,7 @@ let packageName = `@todoctor/${platform}-${arch}`
 let binaryPath
 
 try {
-  let packageBinaryFile = 'todoctor'
-  if (platform === 'win32') {
-    packageBinaryFile += '.exe'
-  }
-  binaryPath = require.resolve(`${packageName}/${packageBinaryFile}`)
+  binaryPath = require.resolve(packageName)
 } catch (error) {
   console.error(`Failed to find binary for ${packageName}`)
   console.error(error)
