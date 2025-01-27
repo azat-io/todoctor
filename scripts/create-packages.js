@@ -49,7 +49,7 @@ await Promise.all(
               default: `./${packageBinaryFile}`,
             },
           },
-          os: [platform.name],
+          os: [platform],
           cpu: [arch],
         },
         null,
