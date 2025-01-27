@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v1.3.3
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.2...v1.3.3)
+
+### 🐞 Bug Fixes
+
+- Fix getting data from script tag ([735e1bd](https://github.com/azat-io/todoctor/commit/735e1bd))
+- Fix loading todoctor from modules ([846cba0](https://github.com/azat-io/todoctor/commit/846cba0))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.3.2
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.1...v1.3.2)
