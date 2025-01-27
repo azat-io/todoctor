@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.4
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.3...v1.3.4)
+
+### 🐞 Bug Fixes
+
+- Fix submodule resolving ([14ea934](https://github.com/azat-io/todoctor/commit/14ea934))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.3.3
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.2...v1.3.3)
