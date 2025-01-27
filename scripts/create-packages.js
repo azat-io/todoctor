@@ -26,6 +26,11 @@ await Promise.all(
     let name = `@todoctor/${platform}-${arch}`
     let displayName = platform.toUpperCase() + platform.slice(1)
     let displayArch = arch.toUpperCase()
+    let packageBinaryFile = 'todoctor'
+
+    if (platform === 'win32') {
+      packageBinaryFile += '.exe'
+    }
 
     fs.writeFile(
       path.join(packageDirectory, 'package.json'),
@@ -39,6 +44,11 @@ await Promise.all(
           repository: rootPackageJson.repository,
           license: rootPackageJson.license,
           author: rootPackageJson.author,
+          exports: {
+            '.': {
+              default: `./${packageBinaryFile}`,
+            },
+          },
           os: [platform.name],
           cpu: [arch],
         },
