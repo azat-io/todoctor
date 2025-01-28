@@ -24,7 +24,7 @@ await Promise.all(
     })
 
     let name = `@todoctor/${platform}-${arch}`
-    let displayName = platform.toUpperCase() + platform.slice(1)
+    let displayName = platform.toUpperCase()[0] + platform.slice(1)
     let displayArch = arch.toUpperCase()
     let packageBinaryFile = 'todoctor'
 
