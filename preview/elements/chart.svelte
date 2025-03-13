@@ -1,6 +1,4 @@
 <script lang="ts" generics="T extends ChartType">
-  /* global T */
-
   import type {
     ChartConfiguration,
     ChartOptions,
@@ -14,12 +12,12 @@
   Chart.register(...registerables)
 
   export let type: T
-  export let data: ChartData<T>
-  export let options: ChartOptions<T>
+  export let data: ChartData
+  export let options: ChartOptions
   export let height: number | null = null
 
   let canvasReference: HTMLCanvasElement
-  let chart: Chart<T> | null = null
+  let chart: Chart | null = null
 
   let resizeObserver: ResizeObserver | null = null
 
@@ -34,9 +32,9 @@
         maintainAspectRatio: false,
         responsive: true,
       } as ChartOptions,
-      type: type as ChartType,
+      type,
       data,
-    } as unknown as ChartConfiguration<T>)
+    } as unknown as ChartConfiguration)
   }
 
   onMount(() => {
@@ -53,7 +51,7 @@
 
   $: if (chart) {
     chart.data = data
-    // eslint-disable-next-line typescript/no-unsafe-assignment
+
     chart.options = options
     chart.update()
   }

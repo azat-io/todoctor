@@ -1,6 +1,4 @@
-<script generics="T extends Object" lang="ts">
-  /* global T */
-
+<script generics="T extends object" lang="ts">
   import type {
     TableOptions,
     SortingState,
@@ -18,7 +16,7 @@
   let sorting: SortingState = []
 
   let setSorting: OnChangeFn<SortingState> = updater => {
-    if (updater instanceof Function) {
+    if (typeof updater === 'function') {
       sorting = updater(sorting)
     } else {
       sorting = updater
