@@ -47,6 +47,7 @@
     "test:format:js": "prettier --check \"**/*.{svelte,js,ts,css,json,md,yml}\"",
     "test:format:rust": "cargo fmt -- --check",
     "test:js": "eslint .",
+    "test:packages": "pnpm dedupe --check",
     "test:spelling": "cspell \"**/*\"",
     "test:svelte": "svelte-check",
     "test:types": "tsc --noEmit --pretty",
