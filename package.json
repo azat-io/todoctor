@@ -60,6 +60,8 @@
     "@commitlint/config-conventional": "^19.8.0",
     "@dicebear/core": "^9.2.2",
     "@dicebear/open-peeps": "^9.2.2",
+    "@humanwhocodes/crosspost": "^0.12.0",
+    "@humanwhocodes/social-changelog": "^0.4.0",
     "@svelte-plugins/tooltips": "^3.0.3",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
     "@tanstack/svelte-table": "9.0.0-alpha.10",
