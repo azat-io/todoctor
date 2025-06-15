@@ -223,8 +223,8 @@ jobs:
         run: |
           pnpm social-changelog \
             --org azat-io \
-            --repo eslint-plugin-perfectionist \
-            --name "ESLint Plugin Perfectionist" \
+            --repo todoctor \
+            --name "Todoctor" \
             > social-post.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
