@@ -2,7 +2,7 @@ use oxc::{
     allocator::Allocator,
     ast::CommentKind,
     parser::{Parser, ParserReturn},
-    span::{SourceType, Span},
+    span::SourceType,
 };
 use std::path::Path;
 
@@ -17,25 +17,24 @@ pub fn get_comments(source: &str, source_filename: &str) -> Vec<CommentData> {
     let source_path = Path::new(source_filename);
     let allocator = Allocator::default();
     let source_type = SourceType::from_path(source_path).unwrap();
-    let mut errors = Vec::new();
 
     let ParserReturn {
-        trivias,
-        errors: parser_errors,
+        program,
+        errors: _parser_errors,
         ..
     } = Parser::new(&allocator, source, source_type).parse();
 
-    errors.extend(parser_errors);
-
-    let comments: Vec<CommentData> = trivias
-        .comments()
+    let comments: Vec<CommentData> = program
+        .comments
+        .iter()
         .map(|comment| {
-            let Span { start, end, .. } = comment.span;
-            let text = source[start as usize..end as usize].to_string();
+            let start = comment.span.start as usize;
+            let end = comment.span.end as usize;
+            let text = source[start..end].to_string();
             CommentData {
                 text,
-                start: start as usize,
-                end: end as usize,
+                start,
+                end,
                 kind: comment.kind,
             }
         })
