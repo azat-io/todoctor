@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.4.0
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.3.5...v1.4.0)
+
+### 🚀 Features
+
+- Update oxc ([fa4bf08](https://github.com/azat-io/todoctor/commit/fa4bf08))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.3.5
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.4...v1.3.5)
