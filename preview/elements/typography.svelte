@@ -70,7 +70,7 @@
   }
 
   .weight-normal {
-    font-weight: 400;
+    font-weight: normal;
   }
 
   .mbs-2xs {

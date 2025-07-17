@@ -1,6 +1,6 @@
 ::selection {
-  color: oklch(99% 0.01 196);
-  background-color: oklch(68% 0.15 150 / 99%);
+  color: oklch(99% 0.01 196deg);
+  background-color: oklch(68% 0.15 150deg / 99%);
 }
 
 * {
@@ -31,7 +31,7 @@ h3 {
 }
 
 button {
-  appearance: button;
+  appearance: auto;
 }
 
 button,

@@ -217,10 +217,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
 
-  .chart :global(.canvas) {
-    max-inline-size: calc(var(--size-chart) * 1.25);
-    max-block-size: calc(var(--size-chart) * 1.25);
+    & :global(.canvas) {
+      max-inline-size: calc(var(--size-chart) * 1.25);
+      max-block-size: calc(var(--size-chart) * 1.25);
+    }
   }
 </style>

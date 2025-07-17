@@ -155,7 +155,7 @@
   .th {
     padding: var(--space-s) var(--space-2xs);
     font: var(--font-m);
-    font-weight: 700;
+    font-weight: bold;
     text-align: start;
     background: var(--color-background-secondary);
   }

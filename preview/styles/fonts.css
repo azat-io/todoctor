@@ -1,6 +1,5 @@
 :root {
   --font-family-base: georgia, serif;
-
   --font-size-2xs: clamp(0.88rem, -0.9vi + 1.11rem, 0.39rem);
   --font-size-xs: clamp(0.9rem, -0.65vi + 1.06rem, 0.54rem);
   --font-size-s: clamp(0.92rem, -0.29vi + 0.99rem, 0.76rem);
@@ -8,7 +7,6 @@
   --font-size-l: clamp(0.96rem, 0.97vi + 0.71rem, 1.49rem);
   --font-size-xl: clamp(0.98rem, 2.01vi + 0.47rem, 2.08rem);
   --font-size-2xl: clamp(0.99rem, 3.49vi + 0.12rem, 2.92rem);
-
   --font-2xs: 400 var(--font-size-2xs) / 1.75 var(--font-family-base);
   --font-xs: 400 var(--font-size-xs) / 1.75 var(--font-family-base);
   --font-s: 400 var(--font-size-s) / 1.75 var(--font-family-base);
