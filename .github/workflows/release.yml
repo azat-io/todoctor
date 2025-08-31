@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           fetch-depth: 0
 
@@ -38,7 +38,7 @@ jobs:
 
       - name: Set up MSVC Environment
         if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@460a772e4cf7358f9f2f23773240813e40e7a894 # v1.13.0
         with:
           arch: ${{ matrix.arch }}
 
@@ -118,7 +118,7 @@ jobs:
         shell: cmd
 
       - name: Upload Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: todoctor-${{ matrix.platform }}-${{ matrix.arch }}
           path: '**/*'
@@ -130,7 +130,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           fetch-depth: 0
 
@@ -144,31 +144,31 @@ jobs:
         run: pnpm run build:preview
 
       - name: Download Binaries for Linux x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: todoctor-ubuntu-latest-x64
           path: .
 
       - name: Download Binaries for Linux arm64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: todoctor-ubuntu-latest-arm64
           path: .
 
       - name: Download Binaries for macOS x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: todoctor-macos-latest-x64
           path: .
 
       - name: Download Binaries for macOS arm64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: todoctor-macos-latest-arm64
           path: .
 
       - name: Download Binaries for Windows x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: todoctor-windows-latest-x64
           path: .
