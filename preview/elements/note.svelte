@@ -9,7 +9,7 @@
     text: string
   }
 
-  let processLine = (line: string): Part[] => {
+  function processLine(line: string): Part[] {
     let parts: Part[] = []
 
     let regex = /<b>(?<content>.*?)<\/b>/giu

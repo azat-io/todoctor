@@ -5,7 +5,7 @@
   import { data } from '~/stores/data'
 
   $: history =
-    $data.history?.sort(
+    $data.history?.toSorted(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     ) ?? []
   $: labels = history.map(({ date }) => date)

@@ -6,7 +6,7 @@
 
   export let data: string = ''
 
-  let transformToCode = (string: string, length: number): number => {
+  function transformToCode(string: string, length: number): number {
     let hash = 0
 
     for (let stringLength = string.length, i = 0; i < stringLength; i++) {

@@ -2,13 +2,7 @@ import { readable, writable } from 'svelte/store'
 
 import type { Data } from '~/typings/index.d'
 
-let decodeHtmlEntities = (string: string): string => {
-  let textArea = document.createElement('textarea')
-  textArea.innerHTML = string
-  return textArea.value
-}
-
-let traverseAndDecode = <T>(object: T): T => {
+function traverseAndDecode<T>(object: T): T {
   if (typeof object === 'string') {
     return decodeHtmlEntities(object) as T
   }
@@ -30,10 +24,16 @@ let traverseAndDecode = <T>(object: T): T => {
   return object
 }
 
+function decodeHtmlEntities(string: string): string {
+  let textArea = document.createElement('textarea')
+  textArea.innerHTML = string
+  return textArea.value
+}
+
 export let loading = writable(true)
 
 export let data = readable<Partial<Data>>({}, set => {
-  let fetchData = async (): Promise<void> => {
+  async function fetchData(): Promise<void> {
     let dataValue: Data
     if (import.meta.env.MODE === 'production') {
       dataValue = JSON.parse(

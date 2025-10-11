@@ -8,7 +8,7 @@ let userTheme =
 
 export let theme = writable(userTheme)
 
-export let toggleTheme = (): void => {
+export function toggleTheme(): void {
   theme.update(value => (value === 'dark' ? 'light' : 'dark'))
 }
 

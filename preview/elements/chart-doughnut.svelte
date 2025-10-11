@@ -12,7 +12,7 @@
   let data: ChartData<'doughnut'>
   let options: ChartOptions<'doughnut'>
 
-  let updateChartData = (): void => {
+  function updateChartData(): void {
     if (!computedStyles || !values) {
       return
     }
@@ -81,7 +81,7 @@
     } as ChartOptions<'doughnut'>
   }
 
-  let updateStyles = (): void => {
+  function updateStyles(): void {
     computedStyles = getComputedStyle(document.body)
     updateChartData()
   }

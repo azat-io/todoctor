@@ -21,7 +21,7 @@
 
   let resizeObserver: ResizeObserver | null = null
 
-  let createChart = (): void => {
+  function createChart(): void {
     if (chart) {
       chart.destroy()
     }
@@ -66,7 +66,7 @@
   })
 </script>
 
-<canvas class="canvas" bind:this={canvasReference} {height} />
+<canvas class="canvas" bind:this={canvasReference} {height}></canvas>
 
 <style>
   .canvas {

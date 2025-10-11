@@ -39,5 +39,7 @@ try {
   await fs.copyFile(sourcePath, destinationPath)
   await fs.chmod(destinationPath, 0o755)
 } catch (error) {
-  throw new Error(`Error copying file: ${error.message}`)
+  throw new Error(`Error copying file: ${error.message}`, {
+    cause: error,
+  })
 }

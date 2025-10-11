@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 
+import { mockDevServerPlugin as mockDevelopmentServer } from 'vite-plugin-mock-dev-server'
 import { viteSingleFile as singleFile } from 'vite-plugin-singlefile'
-import mockDevServer from 'vite-plugin-mock-dev-server'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { browserslistToTargets } from 'lightningcss'
 import { minify } from 'html-minifier-terser'
@@ -13,56 +13,63 @@ import os from 'node:os'
 
 import { data } from './preview/mock/data'
 
-let htmlMinify = (): Plugin => ({
-  transformIndexHtml: async (html): Promise<void> => {
-    try {
-      await minify(html, {
-        removeStyleLinkTypeAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeRedundantAttributes: true,
-        collapseWhitespace: true,
-        useShortDoctype: true,
-        removeComments: true,
-        minifyCSS: true,
-        minifyJS: true,
-      })
-    } catch (error) {
-      console.error('HTML minification failed', error)
-    }
-  },
-  name: 'vite-plugin-html-minify',
-})
+function htmlMinify(): Plugin {
+  return {
+    transformIndexHtml: async (html): Promise<void> => {
+      try {
+        await minify(html, {
+          removeStyleLinkTypeAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeRedundantAttributes: true,
+          collapseWhitespace: true,
+          useShortDoctype: true,
+          removeComments: true,
+          minifyCSS: true,
+          minifyJS: true,
+        })
+      } catch (error) {
+        console.error('HTML minification failed', error)
+      }
+    },
+    name: 'vite-plugin-html-minify',
+  }
+}
 
-let injectBeforeHead = (html: string): Plugin => ({
-  transformIndexHtml: (htmlValue: string) =>
-    htmlValue.replace('</head>', `${html}</head>`),
-  name: 'vite-plugin-inject-before-head',
-})
+function createFilePlugin(filename: string, content: string): Plugin {
+  return {
+    generateBundle: async () => {
+      let outputDirectory = path.resolve(import.meta.dirname, 'dist')
 
-let createFilePlugin = (filename: string, content: string): Plugin => ({
-  generateBundle: async () => {
-    let outputDirectory = path.resolve(import.meta.dirname, 'dist')
+      try {
+        await fs.mkdir(outputDirectory, { recursive: true })
+        let filePath = path.join(outputDirectory, filename)
 
-    try {
-      await fs.mkdir(outputDirectory, { recursive: true })
-      let filePath = path.join(outputDirectory, filename)
+        await fs.writeFile(filePath, content, 'utf8')
+      } catch (error) {
+        console.error(`Creation file ${filename}:`, error)
+      }
+    },
+    name: 'vite-plugin-create-file',
+    apply: 'build',
+  }
+}
 
-      await fs.writeFile(filePath, content, 'utf8')
-    } catch (error) {
-      console.error(`Creation file ${filename}:`, error)
-    }
-  },
-  name: 'vite-plugin-create-file',
-  apply: 'build',
-})
+function injectBeforeHead(html: string): Plugin {
+  return {
+    transformIndexHtml: (htmlValue: string) =>
+      htmlValue.replace('</head>', `${html}</head>`),
+    name: 'vite-plugin-inject-before-head',
+  }
+}
 
 let isDocumentation = process.env.DOCS === 'true'
 
 export default defineConfig({
   plugins: [
-    mockDevServer({
-      include: ['preview/mock/**/*.mock.ts'],
-      prefix: ['^/data.json$'],
+    mockDevelopmentServer({
+      include: ['**/*.mock.ts'],
+      prefix: ['/data.json'],
+      dir: 'preview/mock',
     }),
     ...(isDocumentation
       ? [

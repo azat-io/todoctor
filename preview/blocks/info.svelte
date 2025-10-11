@@ -17,7 +17,9 @@
       return accumulator
     }, {}) ?? {}
 
-  $: todosEntries = Object.entries(todosByKind).sort(([, a], [, b]) => b - a)
+  $: todosEntries = Object.entries(todosByKind).toSorted(
+    ([, a], [, b]) => b - a,
+  )
 
   $: finalTodosEntries = (() => {
     if (todosEntries.length > 5) {
@@ -148,7 +150,7 @@
           <div
             style={`--color: var(--color-additional-${colors[index]});`}
             class="legend-color"
-          />
+          ></div>
           <Typography size="s" tag="span">{kind.toUpperCase()}</Typography>
         </div>
       {/each}

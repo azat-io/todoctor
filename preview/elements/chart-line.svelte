@@ -16,7 +16,7 @@
   let max = Math.max(...values)
   let min = Math.min(...values)
 
-  let updateChartData = (): void => {
+  function updateChartData(): void {
     if (!computedStyles) {
       return
     }
@@ -144,7 +144,7 @@
     } as ChartOptions<'line'>
   }
 
-  let updateStyles = (): void => {
+  function updateStyles(): void {
     computedStyles = getComputedStyle(document.body)
     updateChartData()
   }
