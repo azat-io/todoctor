@@ -14,5 +14,5 @@ export function toggleTheme(): void {
 
 theme.subscribe(value => {
   localStorage.setItem('theme', value)
-  globalThis.document.documentElement.dataset.theme = value
+  globalThis.document.documentElement.dataset['theme'] = value
 })

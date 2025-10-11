@@ -1,20 +1,7 @@
 {
+  "extends": "@azat-io/typescript-config",
   "include": ["**/*.svelte", "**/*.ts"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "bundler",
-    "verbatimModuleSyntax": true,
-    "strictNullChecks": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "module": "esnext",
-    "target": "esnext",
-    "types": ["node"],
-    "allowJs": true,
-    "baseUrl": ".",
-    "strict": true,
-    "noEmit": true,
     "paths": {
       "~/elements/*": ["./preview/elements/*"],
       "~/typings/*": ["./preview/typings/*"],

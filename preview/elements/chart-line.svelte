@@ -16,6 +16,39 @@
   let max = Math.max(...values)
   let min = Math.min(...values)
 
+  let monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  function formatLabel(index: number): string | null {
+    let label = labels[index]
+    if (!label) {
+      return null
+    }
+
+    let date = new Date(label)
+    if (Number.isNaN(date.getTime())) {
+      return null
+    }
+
+    if (date.getDate() === 1) {
+      return monthNames[date.getMonth()] ?? null
+    }
+
+    return null
+  }
+
   function updateChartData(): void {
     if (!computedStyles) {
       return
@@ -48,58 +81,6 @@
     } as ChartData<'line'>
 
     options = {
-      scales: {
-        x: {
-          ticks: {
-            callback: (_value, index) => {
-              let date = new Date(labels[index])
-              let monthNames = [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              ]
-
-              if (date.getDate() === 1) {
-                return monthNames[date.getMonth()]
-              }
-              return null
-            },
-            font: {
-              family: computedStyles.getPropertyValue('--font-family-base'),
-              size: 16,
-            },
-            color: computedStyles.getPropertyValue('--color-content-primary'),
-            autoSkip: false,
-            maxRotation: 0,
-          },
-          grid: {
-            color: computedStyles.getPropertyValue('--color-border-primary'),
-          },
-        },
-        y: {
-          ticks: {
-            font: {
-              family: computedStyles.getPropertyValue('--font-family-base'),
-              size: 16,
-            },
-            color: computedStyles.getPropertyValue('--color-content-primary'),
-          },
-          grid: {
-            color: computedStyles.getPropertyValue('--color-border-primary'),
-          },
-          min: min === 0 ? 0 : min / 2,
-          max: max + min / 2,
-        },
-      },
       plugins: {
         tooltip: {
           callbacks: {
@@ -141,6 +122,37 @@
           display: false,
         },
       },
+      scales: {
+        x: {
+          ticks: {
+            font: {
+              family: computedStyles.getPropertyValue('--font-family-base'),
+              size: 16,
+            },
+            color: computedStyles.getPropertyValue('--color-content-primary'),
+            callback: (_value, index) => formatLabel(index),
+            autoSkip: false,
+            maxRotation: 0,
+          },
+          grid: {
+            color: computedStyles.getPropertyValue('--color-border-primary'),
+          },
+        },
+        y: {
+          ticks: {
+            font: {
+              family: computedStyles.getPropertyValue('--font-family-base'),
+              size: 16,
+            },
+            color: computedStyles.getPropertyValue('--color-content-primary'),
+          },
+          grid: {
+            color: computedStyles.getPropertyValue('--color-border-primary'),
+          },
+          min: min === 0 ? 0 : min / 2,
+          max: max + min / 2,
+        },
+      },
     } as ChartOptions<'line'>
   }
 
@@ -150,58 +162,6 @@
   }
 
   $: options = {
-    scales: {
-      x: {
-        ticks: {
-          callback: (_value, index) => {
-            let date = new Date(labels[index])
-            let monthNames = [
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apr',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec',
-            ]
-
-            if (date.getDate() === 1) {
-              return monthNames[date.getMonth()]
-            }
-            return null
-          },
-          font: {
-            family: computedStyles?.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          color: computedStyles?.getPropertyValue('--color-content-primary'),
-          autoSkip: false,
-          maxRotation: 0,
-        },
-        grid: {
-          color: computedStyles?.getPropertyValue('--color-border-primary'),
-        },
-      },
-      y: {
-        ticks: {
-          font: {
-            family: computedStyles?.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          color: computedStyles?.getPropertyValue('--color-content-primary'),
-        },
-        grid: {
-          color: computedStyles?.getPropertyValue('--color-border-primary'),
-        },
-        min: min === 0 ? 0 : min / 2,
-        max: max + min / 2,
-      },
-    },
     plugins: {
       tooltip: {
         callbacks: {
@@ -237,6 +197,37 @@
       },
       legend: {
         display: false,
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            family: computedStyles?.getPropertyValue('--font-family-base'),
+            size: 16,
+          },
+          color: computedStyles?.getPropertyValue('--color-content-primary'),
+          callback: (_value, index) => formatLabel(index),
+          autoSkip: false,
+          maxRotation: 0,
+        },
+        grid: {
+          color: computedStyles?.getPropertyValue('--color-border-primary'),
+        },
+      },
+      y: {
+        ticks: {
+          font: {
+            family: computedStyles?.getPropertyValue('--font-family-base'),
+            size: 16,
+          },
+          color: computedStyles?.getPropertyValue('--color-content-primary'),
+        },
+        grid: {
+          color: computedStyles?.getPropertyValue('--color-border-primary'),
+        },
+        min: min === 0 ? 0 : min / 2,
+        max: max + min / 2,
       },
     },
   } as ChartOptions<'line'>

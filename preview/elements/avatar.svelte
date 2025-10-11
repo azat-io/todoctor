@@ -7,6 +7,10 @@
   export let data: string = ''
 
   function transformToCode(string: string, length: number): number {
+    if (length <= 0) {
+      return 0
+    }
+
     let hash = 0
 
     for (let stringLength = string.length, i = 0; i < stringLength; i++) {
@@ -17,40 +21,67 @@
     return Math.abs(hash) % length
   }
 
-  let properties = openPeeps.schema.properties as {
-    facialHair: { items: { enum: string[] } }
-    face: { items: { enum: string[] } }
-    head: { items: { enum: string[] } }
+  function isString(value: unknown): value is string {
+    return typeof value === 'string'
   }
 
-  let faceItems = properties.face.items.enum as unknown as Options['face']
-  let selectedFace = transformToCode(data, faceItems!.length)
-  let face = [faceItems![selectedFace]]
+  function pickOption<T extends string>(items: T[], seed: string): T[] {
+    if (items.length === 0) {
+      return []
+    }
 
-  let headItems = properties.head.items.enum as unknown as Options['head']
-  let selectedHead = transformToCode(data, headItems!.length)
-  let head = [headItems![selectedHead]]
+    let index = transformToCode(seed, items.length)
+    let value = items[index]
 
-  let facialHairItems = properties.facialHair.items
-    .enum as unknown as Options['facialHair']
-  let selectedFacialHair = transformToCode(data, facialHairItems!.length)
-  let facialHair = [facialHairItems![selectedFacialHair]]
+    return value === undefined ? [] : [value]
+  }
+
+  type OptionArray<K extends keyof Options> = Extract<
+    NonNullable<Options[K]>,
+    string[]
+  >
+
+  let properties = openPeeps.schema.properties as {
+    facialHair: { items: { enum?: unknown[] } }
+    face: { items: { enum?: unknown[] } }
+    head: { items: { enum?: unknown[] } }
+  }
+
+  let faceItems = (properties.face.items.enum ?? []).filter(isString)
+  let headItems = (properties.head.items.enum ?? []).filter(isString)
+  let facialHairItems = (properties.facialHair.items.enum ?? []).filter(
+    isString,
+  )
+
+  let faceOptions = pickOption(faceItems, data) as OptionArray<'face'>
+  let headOptions = pickOption(headItems, data) as OptionArray<'head'>
+  let facialHairOptions = pickOption(
+    facialHairItems,
+    data,
+  ) as OptionArray<'facialHair'>
 
   let skinColorItems = ['694d3d', 'ae5d29', 'd08b5b', 'edb98a', 'ffdbb4']
-  let selectedSkinColor = transformToCode(data, skinColorItems.length)
-  let skinColor = [skinColorItems[selectedSkinColor]]
+  let skinColor: string[] = []
+  if (skinColorItems.length > 0) {
+    let index = transformToCode(data, skinColorItems.length)
+    let [fallback] = skinColorItems
+    let value = skinColorItems[index] ?? fallback
+    if (value !== undefined) {
+      skinColor = [value]
+    }
+  }
 
   let avatar = createAvatar(openPeeps, {
+    facialHair: facialHairOptions.length > 0 ? facialHairOptions : undefined,
+    face: faceOptions.length > 0 ? faceOptions : undefined,
+    head: headOptions.length > 0 ? headOptions : undefined,
     backgroundColor: ['a6e8b3'],
     facialHairProbability: 0,
     randomizeIds: false,
-    facialHair,
     scale: 100,
     radius: 50,
     skinColor,
     size: 42,
-    face,
-    head,
   }).toDataUri()
 </script>
 

@@ -9,11 +9,11 @@
 
   $: todosByKind =
     $data.data?.reduce((accumulator: Record<string, number>, { kind }) => {
-      if (kind in accumulator) {
-        accumulator[kind] += 1
-      } else {
-        accumulator[kind] = 1
+      if (!kind) {
+        return accumulator
       }
+
+      accumulator[kind] = (accumulator[kind] ?? 0) + 1
       return accumulator
     }, {}) ?? {}
 
@@ -44,54 +44,93 @@
     'senary',
   ]
 
-  let notes = [] as {
+  let notes: {
     content: string[]
     title: string
   }[]
 
-  $: if ($data.data) {
-    let { length } = $data.data
+  let pluralLabels: Record<Intl.LDMLPluralRule, string> = {
+    other: 'todos',
+    zero: 'todos',
+    many: 'todos',
+    two: 'todos',
+    few: 'todos',
+    one: 'todo',
+  }
 
-    let oldestDate = new Date(
-      $data.data.toSorted(
-        (a, b) =>
-          new Date(a.blame.date).getTime() - new Date(b.blame.date).getTime(),
-      )[0].blame.date,
-    )
-    let oldestRelative = formatDistanceToNow(oldestDate)
+  function toTimestamp(value: string): number {
+    let time = new Date(value).getTime()
+    return Number.isNaN(time) ? Number.POSITIVE_INFINITY : time
+  }
 
-    let dates = $data.data.map(todo => new Date(todo.blame.date))
+  function toDateOrNull(value: string): Date | null {
+    let timestamp = toTimestamp(value)
+    if (!Number.isFinite(timestamp)) {
+      return null
+    }
+    return new Date(timestamp)
+  }
+
+  $: notes = (() => {
+    let todos = $data.data
+    if (!todos?.length) {
+      return []
+    }
+
+    let { length } = todos
+
+    let oldestRelative = (() => {
+      let sortedTodos = todos.toSorted(
+        (a, b) => toTimestamp(a.blame.date) - toTimestamp(b.blame.date),
+      )
+
+      let [oldestTodo] = sortedTodos
+      if (!oldestTodo) {
+        return '0 days'
+      }
+
+      let date = toDateOrNull(oldestTodo.blame.date)
+      if (!date) {
+        return '0 days'
+      }
+
+      return formatDistanceToNow(date)
+    })()
+
+    let dates = todos
+      .map(todo => toDateOrNull(todo.blame.date))
+      .filter((date): date is Date => date instanceof Date)
+
     let today = new Date()
     let totalDays = dates.reduce(
       (sum, date) => sum + differenceInDays(today, date),
       0,
     )
-    let averageAge = Math.round(totalDays / dates.length)
+    let averageAge = dates.length > 0 ? Math.round(totalDays / dates.length) : 0
 
-    let todosByAuthors = $data.data.reduce(
-      (accumulator: Record<string, number>, { blame }) => {
-        if (blame.author in accumulator) {
-          accumulator[blame.author] += 1
-        } else {
-          accumulator[blame.author] = 1
+    let todosByAuthors = todos.reduce<Record<string, number>>(
+      (accumulator, { blame }) => {
+        let author = blame.author.trim()
+        if (author.length === 0) {
+          return accumulator
         }
+
+        accumulator[author] = (accumulator[author] ?? 0) + 1
         return accumulator
       },
       {},
     )
-    let [[topAuthor, topAuthorTodos]] = Object.entries(todosByAuthors).toSorted(
+
+    let authorEntries = Object.entries(todosByAuthors).toSorted(
       ([, a], [, b]) => b - a,
     )
-    let todosFormatted = {
-      other: 'todos',
-      many: 'todos',
-      zero: 'todos',
-      few: 'todos',
-      two: 'todos',
-      one: 'todo',
-    }[new Intl.PluralRules('en-US').select(topAuthorTodos)]
+    let [topAuthorEntry] = authorEntries
+    let topAuthor = topAuthorEntry?.[0] ?? 'Unknown'
+    let topAuthorTodos = topAuthorEntry?.[1] ?? 0
+    let pluralForm = new Intl.PluralRules('en-US').select(topAuthorTodos)
+    let todosFormatted = pluralLabels[pluralForm]
 
-    notes = [
+    return [
       {
         content: [
           `Currently, there are <b>${length}</b> todos in this project.`,
@@ -121,7 +160,7 @@
         title: 'Top Author of Todos',
       },
     ]
-  }
+  })()
 </script>
 
 <div class="wrapper">

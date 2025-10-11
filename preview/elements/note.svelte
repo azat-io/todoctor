@@ -21,7 +21,8 @@
       if (match.index > lastIndex) {
         parts.push({ text: line.slice(lastIndex, match.index), bold: false })
       }
-      parts.push({ text: match[1], bold: true })
+      let boldText = match.groups?.['content'] ?? match[1] ?? ''
+      parts.push({ text: boldText, bold: true })
       ;({ lastIndex } = regex)
     }
 

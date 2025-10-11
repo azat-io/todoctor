@@ -62,7 +62,7 @@ function injectBeforeHead(html: string): Plugin {
   }
 }
 
-let isDocumentation = process.env.DOCS === 'true'
+let isDocumentation = process.env['DOCS'] === 'true'
 
 export default defineConfig({
   plugins: [
@@ -118,7 +118,7 @@ export default defineConfig({
     outDir: path.join(import.meta.dirname, 'dist'),
   },
   server: {
-    host: os.networkInterfaces().eth0?.[0].address,
+    host: os.networkInterfaces()['eth0']?.[0]?.address,
     port: 3000,
   },
   root: path.join(import.meta.dirname, 'preview'),
