@@ -58,6 +58,7 @@
     "@azat-io/stylelint-config": "^1.3.0",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/types": "^20.0.0",
     "@dicebear/core": "^9.2.4",
     "@dicebear/open-peeps": "^9.2.4",
     "@humanwhocodes/crosspost": "^0.17.0",

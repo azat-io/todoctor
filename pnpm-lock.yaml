@@ -20,6 +20,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.0.0
         version: 20.0.0
+      '@commitlint/types':
+        specifier: ^20.0.0
+        version: 20.0.0
       '@dicebear/core':
         specifier: ^9.2.4
         version: 9.2.4
