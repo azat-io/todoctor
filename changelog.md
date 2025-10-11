@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## v1.4.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.5...v1.4.0)
