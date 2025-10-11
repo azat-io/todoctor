@@ -115,8 +115,5 @@
   "cpu": [
     "x64",
     "arm64"
-  ],
-  "publishConfig": {
-    "access": "public"
-  }
+  ]
 }
