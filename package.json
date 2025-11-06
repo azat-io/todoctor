@@ -51,7 +51,7 @@
     "test:format:rust": "cargo fmt -- --check",
     "test:js": "eslint --concurrency auto .",
     "test:packages": "pnpm dedupe --check",
-    "test:spelling": "cspell \"**/*\"",
+    "test:spelling": "cspell --config cspell.config.ts \"**/*\"",
     "test:svelte": "svelte-check",
     "test:types": "tsc --noEmit --pretty",
     "test:unit": "cargo test"
@@ -79,7 +79,7 @@
     "chart.js": "^4.5.1",
     "clean-publish": "^6.0.1",
     "cross-env": "^10.1.0",
-    "cspell": "^9.2.2",
+    "cspell": "^9.3.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.39.1",
     "html-minifier-terser": "^7.2.0",
