@@ -77,11 +77,17 @@ export default defineConfig({
             `<script id="data" type="application/json">${JSON.stringify(data)}</script>`,
           ),
           injectBeforeHead(
-            '<script defer src="https://analytics.azat.io/script.js" data-website-id="43d46bcc-915b-46c0-92b4-9e290eb8a5dc"></script></head>',
+            '<script src="https://cdn.usefathom.com/script.js" data-site="RKLPHYLK" defer></script>',
           ),
           createFilePlugin(
             '_redirects',
             'https://todoctor.netlify.app/* https://todoctor.azat.io/:splat 301!',
+          ),
+          createFilePlugin(
+            '_headers',
+            `/*
+  content-security-policy: default-src 'self'; script-src 'self' cdn.usefathom.com 'unsafe-inline' 'unsafe-eval' data:; style-src 'self' 'unsafe-inline'; connect-src 'self' cdn.usefathom.com; img-src 'self' data: cdn.usefathom.com;
+  strict-transport-security: max-age=63072000; includeSubDomains; preload;`,
           ),
         ]
       : [

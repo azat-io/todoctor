@@ -71,7 +71,20 @@
             >
               {#if !header.isPlaceholder}
                 <button
-                  on:click={header.column.getToggleSortingHandler()}
+                  on:click={event => {
+                    let handler = header.column.getToggleSortingHandler()
+                    handler?.(event)
+
+                    if (globalThis.fathom) {
+                      let columnName =
+                        typeof header.column.columnDef.header === 'string'
+                          ? header.column.columnDef.header.toLowerCase()
+                          : 'unknown'
+                      globalThis.fathom.trackEvent(
+                        `table: sort by ${columnName}`,
+                      )
+                    }
+                  }}
                   class:cursor-pointer={header.column.getCanSort()}
                   class:select-none={header.column.getCanSort()}
                   class="button"

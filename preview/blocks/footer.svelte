@@ -13,6 +13,11 @@
         <Typography size="m">Copyright © {currentYear} Azat S.</Typography>
       </div>
       <a
+        on:click={() => {
+          if (globalThis.fathom) {
+            globalThis.fathom.trackEvent('click: footer github')
+          }
+        }}
         href="https://github.com/azat-io/todoctor"
         rel="noopener noreferrer"
         target="_blank"

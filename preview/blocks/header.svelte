@@ -31,10 +31,24 @@
         </div>
       </div>
       <div class="links">
-        <button on:click={toggleTheme} class="button" type="button">
+        <button
+          on:click={() => {
+            toggleTheme()
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('settings: theme toggled')
+            }
+          }}
+          class="button"
+          type="button"
+        >
           <Typography color="brand" size="m">Toggle Theme</Typography>
         </button>
         <a
+          on:click={() => {
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('click: header github')
+            }
+          }}
           href="https://github.com/azat-io/todoctor"
           rel="noopener noreferrer"
           target="_blank"
