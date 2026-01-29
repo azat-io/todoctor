@@ -14,7 +14,10 @@
   <Typography size="m">
     {`${relativeValue} ago`}
   </Typography>
-  <Typography color="secondary" size="s">
+  <Typography
+    color="secondary"
+    size="s"
+  >
     {formattedValue}
   </Typography>
 </div>

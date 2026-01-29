@@ -241,9 +241,11 @@ jobs:
             --file social-post.txt
         env:
           TWITTER_API_CONSUMER_KEY: ${{ secrets.TWITTER_API_CONSUMER_KEY }}
-          TWITTER_API_CONSUMER_SECRET: ${{ secrets.TWITTER_API_CONSUMER_SECRET }}
+          TWITTER_API_CONSUMER_SECRET:
+            ${{ secrets.TWITTER_API_CONSUMER_SECRET }}
           TWITTER_ACCESS_TOKEN_KEY: ${{ secrets.TWITTER_ACCESS_TOKEN_KEY }}
-          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          TWITTER_ACCESS_TOKEN_SECRET:
+            ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
           BLUESKY_HOST: ${{ secrets.BLUESKY_HOST }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}

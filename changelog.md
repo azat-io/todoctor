@@ -18,7 +18,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix setting platform in submodules ([637ec46](https://github.com/azat-io/todoctor/commit/637ec46))
+- Fix setting platform in submodules
+  ([637ec46](https://github.com/azat-io/todoctor/commit/637ec46))
 
 ### ❤️ Contributors
 
@@ -30,7 +31,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix submodule resolving ([14ea934](https://github.com/azat-io/todoctor/commit/14ea934))
+- Fix submodule resolving
+  ([14ea934](https://github.com/azat-io/todoctor/commit/14ea934))
 
 ### ❤️ Contributors
 
@@ -42,8 +44,10 @@
 
 ### 🐞 Bug Fixes
 
-- Fix getting data from script tag ([735e1bd](https://github.com/azat-io/todoctor/commit/735e1bd))
-- Fix loading todoctor from modules ([846cba0](https://github.com/azat-io/todoctor/commit/846cba0))
+- Fix getting data from script tag
+  ([735e1bd](https://github.com/azat-io/todoctor/commit/735e1bd))
+- Fix loading todoctor from modules
+  ([846cba0](https://github.com/azat-io/todoctor/commit/846cba0))
 
 ### ❤️ Contributors
 
@@ -55,7 +59,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix months argument name ([2335d0e](https://github.com/azat-io/todoctor/commit/2335d0e))
+- Fix months argument name
+  ([2335d0e](https://github.com/azat-io/todoctor/commit/2335d0e))
 
 ### ❤️ Contributors
 
@@ -67,7 +72,8 @@
 
 ### 🏎 Performance Improvements
 
-- Enable link-time optimization ([5e3762a](https://github.com/azat-io/todoctor/commit/5e3762a))
+- Enable link-time optimization
+  ([5e3762a](https://github.com/azat-io/todoctor/commit/5e3762a))
 
 ### ❤️ Contributors
 
@@ -79,7 +85,8 @@
 
 ### 🚀 Features
 
-- Split binaries into multiple packages ([059f104](https://github.com/azat-io/todoctor/commit/059f104))
+- Split binaries into multiple packages
+  ([059f104](https://github.com/azat-io/todoctor/commit/059f104))
 
 ### ❤️ Contributors
 
@@ -91,16 +98,20 @@
 
 ### 🚀 Features
 
-- Add csv output format ([c0ad6e6](https://github.com/azat-io/todoctor/commit/c0ad6e6))
+- Add csv output format
+  ([c0ad6e6](https://github.com/azat-io/todoctor/commit/c0ad6e6))
 
 ### 🏎 Performance Improvements
 
-- Process only modified files when traversing history ([49f285e](https://github.com/azat-io/todoctor/commit/49f285e))
+- Process only modified files when traversing history
+  ([49f285e](https://github.com/azat-io/todoctor/commit/49f285e))
 
 ### 🐞 Bug Fixes
 
-- Fix short variant of output format command ([4cea228](https://github.com/azat-io/todoctor/commit/4cea228))
-- Create directory for json output ([f15a43b](https://github.com/azat-io/todoctor/commit/f15a43b))
+- Fix short variant of output format command
+  ([4cea228](https://github.com/azat-io/todoctor/commit/4cea228))
+- Create directory for json output
+  ([f15a43b](https://github.com/azat-io/todoctor/commit/f15a43b))
 
 ### ❤️ Contributors
 
@@ -112,8 +123,10 @@
 
 ### 🚀 Features
 
-- Add output format option ([a7e9baa](https://github.com/azat-io/todoctor/commit/a7e9baa))
-- Format json output ([d9c50c3](https://github.com/azat-io/todoctor/commit/d9c50c3))
+- Add output format option
+  ([a7e9baa](https://github.com/azat-io/todoctor/commit/a7e9baa))
+- Format json output
+  ([d9c50c3](https://github.com/azat-io/todoctor/commit/d9c50c3))
 
 ### ❤️ Contributors
 
@@ -131,8 +144,10 @@
 
 ### 🚀 Features
 
-- Support include and exclude keywords options ([68027cb](https://github.com/azat-io/todoctor/commit/68027cb))
-- Add output directory option ([26bdf71](https://github.com/azat-io/todoctor/commit/26bdf71))
+- Support include and exclude keywords options
+  ([68027cb](https://github.com/azat-io/todoctor/commit/68027cb))
+- Add output directory option
+  ([26bdf71](https://github.com/azat-io/todoctor/commit/26bdf71))
 
 ### ❤️ Contributors
 
@@ -144,7 +159,8 @@
 
 ### 🐞 Bug Fixes
 
-- Replace pnpm with npm for package publish ([e84be4d](https://github.com/azat-io/todoctor/commit/e84be4d))
+- Replace pnpm with npm for package publish
+  ([e84be4d](https://github.com/azat-io/todoctor/commit/e84be4d))
 
 ### ❤️ Contributors
 
@@ -156,7 +172,8 @@
 
 ### 🐞 Bug Fixes
 
-- Set access rights when building package ([e4197a5](https://github.com/azat-io/todoctor/commit/e4197a5))
+- Set access rights when building package
+  ([e4197a5](https://github.com/azat-io/todoctor/commit/e4197a5))
 
 ### ❤️ Contributors
 
@@ -168,7 +185,8 @@
 
 ### 🐞 Bug Fixes
 
-- Add missed bin script extension ([40a45f5](https://github.com/azat-io/todoctor/commit/40a45f5))
+- Add missed bin script extension
+  ([40a45f5](https://github.com/azat-io/todoctor/commit/40a45f5))
 
 ### ❤️ Contributors
 
@@ -180,7 +198,8 @@
 
 ### 🐞 Bug Fixes
 
-- Add missed postinstall script ([339f93c](https://github.com/azat-io/todoctor/commit/339f93c))
+- Add missed postinstall script
+  ([339f93c](https://github.com/azat-io/todoctor/commit/339f93c))
 
 ### ❤️ Contributors
 
@@ -192,7 +211,8 @@
 
 ### 🐞 Bug Fixes
 
-- Ensure binaries are executable ([76eae0d](https://github.com/azat-io/todoctor/commit/76eae0d))
+- Ensure binaries are executable
+  ([76eae0d](https://github.com/azat-io/todoctor/commit/76eae0d))
 
 ### ❤️ Contributors
 
@@ -204,7 +224,8 @@
 
 ### 🐞 Bug Fixes
 
-- Add missed bin extension ([b3b4137](https://github.com/azat-io/todoctor/commit/b3b4137))
+- Add missed bin extension
+  ([b3b4137](https://github.com/azat-io/todoctor/commit/b3b4137))
 
 ### ❤️ Contributors
 
@@ -216,7 +237,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix binary installation ([2fbdaf1](https://github.com/azat-io/todoctor/commit/2fbdaf1))
+- Fix binary installation
+  ([2fbdaf1](https://github.com/azat-io/todoctor/commit/2fbdaf1))
 
 ### ❤️ Contributors
 
@@ -228,7 +250,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix binaries folder structure ([64ed151](https://github.com/azat-io/todoctor/commit/64ed151))
+- Fix binaries folder structure
+  ([64ed151](https://github.com/azat-io/todoctor/commit/64ed151))
 
 ### ❤️ Contributors
 
@@ -240,7 +263,8 @@
 
 ### 🐞 Bug Fixes
 
-- Build bin for different arch ([e1e8394](https://github.com/azat-io/todoctor/commit/e1e8394))
+- Build bin for different arch
+  ([e1e8394](https://github.com/azat-io/todoctor/commit/e1e8394))
 
 ### ❤️ Contributors
 
@@ -252,7 +276,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix todo comments identification ([d8a9cc6](https://github.com/azat-io/todoctor/commit/d8a9cc6))
+- Fix todo comments identification
+  ([d8a9cc6](https://github.com/azat-io/todoctor/commit/d8a9cc6))
 
 ### ❤️ Contributors
 
@@ -264,7 +289,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix getting dist dir ([1c707a0](https://github.com/azat-io/todoctor/commit/1c707a0))
+- Fix getting dist dir
+  ([1c707a0](https://github.com/azat-io/todoctor/commit/1c707a0))
 
 ### ❤️ Contributors
 
@@ -276,10 +302,14 @@
 
 ### 🚀 Features
 
-- Add month cli argument ([edf5b95](https://github.com/azat-io/todoctor/commit/edf5b95))
-- Add ignore cli argument ([6e6aac0](https://github.com/azat-io/todoctor/commit/6e6aac0))
-- Improve todo comment identification ([72f597a](https://github.com/azat-io/todoctor/commit/72f597a))
-- Add no todos block ([e282509](https://github.com/azat-io/todoctor/commit/e282509))
+- Add month cli argument
+  ([edf5b95](https://github.com/azat-io/todoctor/commit/edf5b95))
+- Add ignore cli argument
+  ([6e6aac0](https://github.com/azat-io/todoctor/commit/6e6aac0))
+- Improve todo comment identification
+  ([72f597a](https://github.com/azat-io/todoctor/commit/72f597a))
+- Add no todos block
+  ([e282509](https://github.com/azat-io/todoctor/commit/e282509))
 
 ### ❤️ Contributors
 

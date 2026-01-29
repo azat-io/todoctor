@@ -92,8 +92,15 @@
 
 <div class="list">
   <Container>
-    <Typography size="xl" tag="h2" mbe="l">List of Todos</Typography>
-    <Table data={preparedData} {columns} />
+    <Typography
+      size="xl"
+      tag="h2"
+      mbe="l">List of Todos</Typography
+    >
+    <Table
+      data={preparedData}
+      {columns}
+    />
   </Container>
 </div>
 

@@ -35,10 +35,18 @@
 </script>
 
 <div class="note">
-  <Typography size="l" tag="h3" mbe="s">{title}</Typography>
+  <Typography
+    size="l"
+    tag="h3"
+    mbe="s">{title}</Typography
+  >
 
   {#each content as line (line)}
-    <Typography size="m" tag="p" mbe="2xs">
+    <Typography
+      size="m"
+      tag="p"
+      mbe="2xs"
+    >
       {#each processLine(line) as part (part.text)}
         {#if part.bold}
           <b>{part.text}</b>

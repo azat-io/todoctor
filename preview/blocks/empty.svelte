@@ -6,8 +6,15 @@
 <div class="wrapper">
   <Container>
     <div class="info">
-      <Typography size="xl" tag="h2" mbe="l">No Todos Found</Typography>
-      <Typography size="m" mbe="s">
+      <Typography
+        size="xl"
+        tag="h2"
+        mbe="l">No Todos Found</Typography
+      >
+      <Typography
+        size="m"
+        mbe="s"
+      >
         Great job! It looks like there are currently no TODO comments in your
         project.
       </Typography>

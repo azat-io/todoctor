@@ -137,4 +137,9 @@
   updateChartData()
 </script>
 
-<Chart type="doughnut" height={null} {options} {data} />
+<Chart
+  type="doughnut"
+  height={null}
+  {options}
+  {data}
+/>

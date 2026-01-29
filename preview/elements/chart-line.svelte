@@ -243,4 +243,9 @@
   updateChartData()
 </script>
 
-<Chart type="line" height={null} {options} {data} />
+<Chart
+  type="line"
+  height={null}
+  {options}
+  {data}
+/>

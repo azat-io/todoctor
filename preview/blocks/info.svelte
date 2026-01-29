@@ -167,15 +167,27 @@
   <Container>
     <div class="grid">
       <div class="notes-wrapper">
-        <Typography size="xl" tag="h2" mbe="l">Did You Know That?</Typography>
+        <Typography
+          size="xl"
+          tag="h2"
+          mbe="l">Did You Know That?</Typography
+        >
         <div class="notes">
           {#each notes as { content, title } (title)}
-            <Note {title} {content} />
+            <Note
+              {title}
+              {content}
+            />
           {/each}
         </div>
       </div>
       <div class="chart">
-        <Typography size="xl" tag="h2" mbe="l" align="center">
+        <Typography
+          size="xl"
+          tag="h2"
+          mbe="l"
+          align="center"
+        >
           Todos by Kind
         </Typography>
         {#if values.length}
@@ -190,7 +202,10 @@
             style={`--color: var(--color-additional-${colors[index]});`}
             class="legend-color"
           ></div>
-          <Typography size="s" tag="span">{kind.toUpperCase()}</Typography>
+          <Typography
+            size="s"
+            tag="span">{kind.toUpperCase()}</Typography
+          >
         </div>
       {/each}
     </div>

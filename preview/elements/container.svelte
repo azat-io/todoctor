@@ -2,7 +2,10 @@
   export let tag = 'div'
 </script>
 
-<svelte:element this={tag} class="container">
+<svelte:element
+  this={tag}
+  class="container"
+>
   <slot />
 </svelte:element>
 

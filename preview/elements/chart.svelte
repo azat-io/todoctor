@@ -1,4 +1,7 @@
-<script lang="ts" generics="T extends ChartType">
+<script
+  lang="ts"
+  generics="T extends ChartType"
+>
   import type {
     ChartConfiguration,
     ChartOptions,
@@ -66,7 +69,11 @@
   })
 </script>
 
-<canvas class="canvas" bind:this={canvasReference} {height}></canvas>
+<canvas
+  class="canvas"
+  bind:this={canvasReference}
+  {height}
+></canvas>
 
 <style>
   .canvas {

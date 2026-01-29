@@ -71,33 +71,33 @@ export default defineConfig({
       prefix: ['/data.json'],
       dir: 'preview/mock',
     }),
-    ...(isDocumentation
-      ? [
-          injectBeforeHead(
-            `<script id="data" type="application/json">${JSON.stringify(data)}</script>`,
-          ),
-          injectBeforeHead(
-            '<script src="https://cdn.usefathom.com/script.js" data-site="RKLPHYLK" defer></script>',
-          ),
-          createFilePlugin(
-            '_redirects',
-            'https://todoctor.netlify.app/* https://todoctor.azat.io/:splat 301!',
-          ),
-          createFilePlugin(
-            '_headers',
-            `/*
+    ...(isDocumentation ?
+      [
+        injectBeforeHead(
+          `<script id="data" type="application/json">${JSON.stringify(data)}</script>`,
+        ),
+        injectBeforeHead(
+          '<script src="https://cdn.usefathom.com/script.js" data-site="RKLPHYLK" defer></script>',
+        ),
+        createFilePlugin(
+          '_redirects',
+          'https://todoctor.netlify.app/* https://todoctor.azat.io/:splat 301!',
+        ),
+        createFilePlugin(
+          '_headers',
+          `/*
   content-security-policy: default-src 'self'; script-src 'self' cdn.usefathom.com 'unsafe-inline' 'unsafe-eval' data:; style-src 'self' 'unsafe-inline'; connect-src 'self' cdn.usefathom.com; img-src 'self' data: cdn.usefathom.com;
   strict-transport-security: max-age=63072000; includeSubDomains; preload;`,
-          ),
-        ]
-      : [
-          singleFile({
-            inlinePattern: ['**/*.js', '**/*.css'],
-            useRecommendedBuildConfig: true,
-            removeViteModuleLoader: true,
-            deleteInlinedFiles: true,
-          }),
-        ]),
+        ),
+      ]
+    : [
+        singleFile({
+          inlinePattern: ['**/*.js', '**/*.css'],
+          useRecommendedBuildConfig: true,
+          removeViteModuleLoader: true,
+          deleteInlinedFiles: true,
+        }),
+      ]),
     htmlMinify(),
     svelte(),
   ],

@@ -85,4 +85,7 @@
   }).toDataUri()
 </script>
 
-<img src={avatar} alt="Avatar" />
+<img
+  src={avatar}
+  alt="Avatar"
+/>

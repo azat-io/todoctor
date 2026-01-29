@@ -2,9 +2,9 @@ import { writable } from 'svelte/store'
 
 let userTheme =
   localStorage.getItem('theme') ??
-  (globalThis.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light')
+  (globalThis.matchMedia('(prefers-color-scheme: dark)').matches ?
+    'dark'
+  : 'light')
 
 export let theme = writable(userTheme)
 

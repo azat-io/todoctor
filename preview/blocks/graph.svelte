@@ -14,10 +14,17 @@
 
 <div class="graph-wrapper">
   <Container>
-    <Typography size="xl" tag="h2" mbe="l">Todos Graph</Typography>
+    <Typography
+      size="xl"
+      tag="h2"
+      mbe="l">Todos Graph</Typography
+    >
     <div class="chart-wrapper">
       {#if values.length > 0 && labels.length > 0}
-        <ChartLine {values} {labels} />
+        <ChartLine
+          {values}
+          {labels}
+        />
       {/if}
     </div>
   </Container>

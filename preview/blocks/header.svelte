@@ -19,7 +19,11 @@
           <Logo size={72} />
           <div>
             <div class="title-wrapper">
-              <Typography size="2xl" tag="h1" bold>Todoctor</Typography>
+              <Typography
+                size="2xl"
+                tag="h1"
+                bold>Todoctor</Typography
+              >
               {#if version}
                 <sub class="version">v{version}</sub>
               {/if}
@@ -41,7 +45,10 @@
           class="button"
           type="button"
         >
-          <Typography color="brand" size="m">Toggle Theme</Typography>
+          <Typography
+            color="brand"
+            size="m">Toggle Theme</Typography
+          >
         </button>
         <a
           on:click={() => {
@@ -53,7 +60,10 @@
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Typography color="brand" size="m">GitHub</Typography>
+          <Typography
+            color="brand"
+            size="m">GitHub</Typography
+          >
         </a>
       </div>
     </div>

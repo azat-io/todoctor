@@ -17,11 +17,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -45,11 +42,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -73,11 +67,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -101,11 +92,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -129,11 +117,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -157,11 +142,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -185,11 +167,8 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
+            api.github.com:443 github.com:443 registry.npmjs.org:443
+            release-assets.githubusercontent.com:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -213,16 +192,10 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            cli.codecov.io:443
-            github.com:443
-            index.crates.io:443
-            keybase.io:443
-            o26192.ingest.us.sentry.io:443
-            registry.npmjs.org:443
-            release-assets.githubusercontent.com:443
-            static.crates.io:443
-            static.rust-lang.org:443
+            api.github.com:443 cli.codecov.io:443 github.com:443
+            index.crates.io:443 keybase.io:443 o26192.ingest.us.sentry.io:443
+            registry.npmjs.org:443 release-assets.githubusercontent.com:443
+            static.crates.io:443 static.rust-lang.org:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1

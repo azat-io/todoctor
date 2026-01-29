@@ -1,4 +1,7 @@
-<script generics="T extends object" lang="ts">
+<script
+  generics="T extends object"
+  lang="ts"
+>
   import type {
     TableOptions,
     SortingState,
@@ -61,12 +64,15 @@
     <thead>
       {#each table.getHeaderGroups() as headerGroup, headerGroupIndex (headerGroupIndex)}
         <tr class="tr">
-          <th style:inline-size="40px" class="th">#</th>
+          <th
+            style:inline-size="40px"
+            class="th">#</th
+          >
           {#each headerGroup.headers as header, headerIndex (headerIndex)}
             <th
-              style={header.getSize()
-                ? `inline-size: ${header.getSize()}px`
-                : ''}
+              style={header.getSize() ?
+                `inline-size: ${header.getSize()}px`
+              : ''}
               class="th"
             >
               {#if !header.isPlaceholder}
@@ -77,9 +83,9 @@
 
                     if (globalThis.fathom) {
                       let columnName =
-                        typeof header.column.columnDef.header === 'string'
-                          ? header.column.columnDef.header.toLowerCase()
-                          : 'unknown'
+                        typeof header.column.columnDef.header === 'string' ?
+                          header.column.columnDef.header.toLowerCase()
+                        : 'unknown'
                       globalThis.fathom.trackEvent(
                         `table: sort by ${columnName}`,
                       )
@@ -109,9 +115,15 @@
     <tbody>
       {#each table.getRowModel().rows as row, rowIndex (rowIndex)}
         <tr class="tr">
-          <td style:inline-size="40px" class="td td-index">{rowIndex + 1}</td>
+          <td
+            style:inline-size="40px"
+            class="td td-index">{rowIndex + 1}</td
+          >
           {#each row.getVisibleCells() as cell, cellIndex (cellIndex)}
-            <td style={`inline-size: ${cell.column.getSize()}px`} class="td">
+            <td
+              style={`inline-size: ${cell.column.getSize()}px`}
+              class="td"
+            >
               <FlexRender
                 content={cell.column.columnDef.cell}
                 context={cell.getContext()}
