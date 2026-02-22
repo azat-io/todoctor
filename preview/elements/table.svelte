@@ -169,7 +169,10 @@
     background-color: transparent;
     border: none;
     border-radius: var(--border-radius);
-    transition: box-shadow 200ms;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: box-shadow 200ms;
+    }
 
     &:focus-visible {
       background-color: var(--color-overlay-brand);

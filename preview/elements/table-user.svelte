@@ -26,6 +26,7 @@
 <style>
   .user {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--space-xs);
     align-items: center;
   }

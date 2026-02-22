@@ -223,11 +223,11 @@
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: [content] 1fr;
     gap: var(--space-2xl);
 
     @container (inline-size >= 1280px) {
-      grid-template-columns: 1fr var(--size-chart);
+      grid-template-columns: [content] 1fr [chart] var(--size-chart);
     }
   }
 
@@ -243,6 +243,7 @@
 
   .legend-element {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--space-s);
     align-items: center;
   }
@@ -260,12 +261,12 @@
 
   .notes {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: [column] 1fr;
     gap: var(--space-l);
     min-block-size: var(--size-chart);
 
     @container (inline-size >= 600px) {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: [column-start] 1fr [column-end] 1fr;
     }
   }
 

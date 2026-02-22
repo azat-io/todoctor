@@ -55,7 +55,10 @@ a {
   text-underline-offset: 0.25em;
   outline: none;
   border-radius: var(--border-radius);
-  transition: box-shadow 200ms;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: box-shadow 200ms;
+  }
 
   &:focus-visible {
     text-decoration: none;
@@ -74,6 +77,6 @@ p {
 
 #root {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: [header] auto [content] 1fr [footer] auto;
   min-block-size: 100dvb;
 }

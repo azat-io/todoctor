@@ -91,12 +91,14 @@
 
   .start-wrapper {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--space-2xs);
     align-items: center;
   }
 
   .title-wrapper {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--space-s);
     align-items: start;
   }
@@ -115,7 +117,10 @@
     background: none;
     border: none;
     border-radius: var(--border-radius);
-    transition: box-shadow 200ms;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: box-shadow 200ms;
+    }
 
     &:focus-visible {
       text-decoration: none;
@@ -126,6 +131,7 @@
 
   .links {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--space-l);
   }
 </style>

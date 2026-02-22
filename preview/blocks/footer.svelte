@@ -35,6 +35,7 @@
 
   .wrapper {
     display: flex;
+    flex-wrap: nowrap;
     align-items: start;
     justify-content: space-between;
   }
