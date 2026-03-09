@@ -38,7 +38,7 @@ function htmlMinify(): Plugin {
 function createFilePlugin(filename: string, content: string): Plugin {
   return {
     generateBundle: async () => {
-      let outputDirectory = path.resolve(import.meta.dirname, 'dist')
+      let outputDirectory = 'dist'
 
       try {
         await fs.mkdir(outputDirectory, { recursive: true })
@@ -105,7 +105,7 @@ export default defineConfig({
     lightningcss: {
       targets: browserslistToTargets(
         browserslist(null, {
-          config: path.join(import.meta.dirname, '.browserslistrc'),
+          config: '.browserslistrc',
         }),
       ),
     },
@@ -121,15 +121,15 @@ export default defineConfig({
     rollupOptions: {
       external: ['data.json'],
     },
-    outDir: path.join(import.meta.dirname, 'dist'),
+    outDir: 'dist',
   },
   server: {
     host: os.networkInterfaces()['eth0']?.[0]?.address,
     port: 3000,
   },
-  root: path.join(import.meta.dirname, 'preview'),
   esbuild: {
     legalComments: 'none',
   },
+  root: 'preview',
   base: './',
 })
