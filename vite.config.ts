@@ -121,7 +121,7 @@ export default defineConfig({
     rollupOptions: {
       external: ['data.json'],
     },
-    outDir: 'dist',
+    outDir: path.join(import.meta.dirname, 'dist'),
   },
   server: {
     host: os.networkInterfaces()['eth0']?.[0]?.address,
