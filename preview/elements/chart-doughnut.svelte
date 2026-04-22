@@ -34,7 +34,7 @@
           data: values,
         },
       ],
-    } as ChartData<'doughnut'>
+    } satisfies ChartData<'doughnut'>
 
     options = {
       plugins: {

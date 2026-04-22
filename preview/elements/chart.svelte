@@ -37,7 +37,7 @@
       } as ChartOptions,
       type,
       data,
-    } as unknown as ChartConfiguration)
+    } satisfies ChartConfiguration)
   }
 
   onMount(() => {

@@ -78,7 +78,7 @@
         },
       ],
       labels,
-    } as ChartData<'line'>
+    } satisfies ChartData<'line'>
 
     options = {
       plugins: {
