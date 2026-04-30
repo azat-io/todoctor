@@ -47,24 +47,10 @@ pub async fn collect_todo_history(
 
         let _ = io::stdout().flush();
 
-        let files_list = match get_files_list(Some(commit_hash.as_str())).await {
-            Ok(files) => files,
-            Err(e) => {
-                eprintln!("Warning: Failed to get files for commit {}: {}", commit_hash, e);
-                continue;
-            }
-        };
-
-        let supported_files: Vec<_> = files_list
-            .clone()
-            .into_iter()
-            .filter(|file| {
-                identify_not_ignored_file(file, ignores)
-                    && identify_supported_file(file)
-            })
-            .collect();
-
-        let modified_files = if let Some(prev_hash) = &previous_commit_hash {
+        // get_files_list is only needed when previous_commit_hash is None
+        // (i.e. the first iteration, where we get all files in the commit)
+        let supported_files: Vec<_> = if let Some(prev_hash) = &previous_commit_hash {
+            // Common path: derive modified files from git diff, no get_files_list needed
             get_modified_files(prev_hash, commit_hash)
                 .await
                 .into_iter()
@@ -74,8 +60,23 @@ pub async fn collect_todo_history(
                 })
                 .collect::<Vec<_>>()
         } else {
-            supported_files.clone()
+            // First iteration: need to get all files in this commit
+            match get_files_list(Some(commit_hash.as_str())).await {
+                Ok(files_list) => files_list
+                    .into_iter()
+                    .filter(|file| {
+                        identify_not_ignored_file(file, ignores)
+                            && identify_supported_file(file)
+                    })
+                    .collect(),
+                Err(e) => {
+                    eprintln!("Warning: Failed to get files for commit {}: {}", commit_hash, e);
+                    continue;
+                }
+            }
         };
+
+        let modified_files = supported_files.clone();
 
         for file_path in &modified_files {
             let file_content_result =
