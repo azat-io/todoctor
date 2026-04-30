@@ -1,6 +1,6 @@
 {
   "name": "todoctor",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "CLI tool to analyze and report TODO comments in JavaScript and TypeScript Git repositories",
   "keywords": [
     "analysis",

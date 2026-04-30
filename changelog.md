@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.4.1
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.4.0...v1.4.1)
+
+### 🐞 Bug Fixes
+
+- Avoid panics in todo history collection
+  ([b0eb0c1](https://github.com/azat-io/todoctor/commit/b0eb0c1))
+- Prevent duplicate keys in preview each blocks
+  ([d41b8f3](https://github.com/azat-io/todoctor/commit/d41b8f3))
+- Fix loading favicon
+  ([3d19c1c](https://github.com/azat-io/todoctor/commit/3d19c1c))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+- AmSach <amansachan92905@gmail.com>
+
 ## v1.4.0
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.3.5...v1.4.0)
