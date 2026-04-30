@@ -45,10 +45,15 @@ pub async fn collect_todo_history(
     for (_index, (commit_hash, date)) in history.iter().enumerate() {
         progress_bar.inc(1);
 
-        io::stdout().flush().unwrap();
+        let _ = io::stdout().flush();
 
-        let files_list =
-            get_files_list(Some(commit_hash.as_str())).await.unwrap();
+        let files_list = match get_files_list(Some(commit_hash.as_str())).await {
+            Ok(files) => files,
+            Err(e) => {
+                eprintln!("Warning: Failed to get files for commit {}: {}", commit_hash, e);
+                continue;
+            }
+        };
 
         let supported_files: Vec<_> = files_list
             .clone()
