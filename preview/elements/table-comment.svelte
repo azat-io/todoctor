@@ -16,7 +16,7 @@
 </script>
 
 <Typography size="m">
-  {#each highlightedParts as part (part.text)}
+  {#each highlightedParts as part, partIndex (partIndex)}
     {#if part.highlighted}
       <i>{part.text}</i>
     {:else}

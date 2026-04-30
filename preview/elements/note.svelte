@@ -41,13 +41,13 @@
     mbe="s">{title}</Typography
   >
 
-  {#each content as line (line)}
+  {#each content as line, lineIndex (lineIndex)}
     <Typography
       size="m"
       tag="p"
       mbe="2xs"
     >
-      {#each processLine(line) as part (part.text)}
+      {#each processLine(line) as part, partIndex (partIndex)}
         {#if part.bold}
           <b>{part.text}</b>
         {:else}
