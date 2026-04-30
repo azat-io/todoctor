@@ -16,6 +16,5 @@ pub async fn make_dir(output_directory: &str) {
             "Error creating output directory {}: {:?}",
             output_directory, e
         );
-        return;
     }
 }

@@ -84,7 +84,7 @@ pub async fn generate_output(
                 if let Some(data_array) =
                     json_data_clone.get("data").and_then(|d| d.as_array())
                 {
-                    wtr.write_record(&[
+                    wtr.write_record([
                         "Path",
                         "Line",
                         "Kind",
@@ -128,7 +128,7 @@ pub async fn generate_output(
                             .and_then(|v| v.as_str())
                             .unwrap_or("");
 
-                        wtr.write_record(&[
+                        wtr.write_record([
                             path, &line, kind, comment, author, date, hash,
                         ])
                         .expect("Failed to write CSV record");

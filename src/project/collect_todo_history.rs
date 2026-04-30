@@ -42,7 +42,7 @@ pub async fn collect_todo_history(
 
     let mut previous_commit_hash: Option<String> = get_last_commit_hash().await;
 
-    for (_index, (commit_hash, date)) in history.iter().enumerate() {
+    for (commit_hash, date) in history.iter() {
         progress_bar.inc(1);
 
         let _ = io::stdout().flush();

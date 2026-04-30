@@ -25,7 +25,7 @@ pub fn prepare_blame_data(data: BlameData) -> PreparedBlameData {
     let total_offset_minutes =
         timezone_offset_hours * 60 + timezone_offset_minutes;
 
-    date = date + Duration::minutes(total_offset_minutes as i64);
+    date += Duration::minutes(total_offset_minutes as i64);
 
     let email = data.author_mail.replace("<", "").replace(">", "");
 

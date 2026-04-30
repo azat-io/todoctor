@@ -43,7 +43,7 @@ pub async fn enrich_todo_data_with_blame(
         }
     }
 
-    todos_with_blame.sort_by(|a, b| a.blame.date.cmp(&b.blame.date));
+    todos_with_blame.sort_by_key(|a| a.blame.date);
 
     todos_with_blame
 }

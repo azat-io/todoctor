@@ -40,8 +40,8 @@ pub async fn get_blame_data(path: &str, line: u32) -> Option<BlameData> {
         author: String::new(),
     };
 
-    let mut key_map: HashMap<&str, Box<dyn FnMut(&mut BlameData, String)>> =
-        HashMap::new();
+    type BlameSetter = Box<dyn FnMut(&mut BlameData, String)>;
+    let mut key_map: HashMap<&str, BlameSetter> = HashMap::new();
     key_map.insert("author-mail ", Box::new(|b, v| b.author_mail = v));
     key_map.insert("author-time ", Box::new(|b, v| b.author_time = v));
     key_map.insert("author-tz ", Box::new(|b, v| b.author_tz = v));
