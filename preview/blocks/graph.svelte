@@ -17,8 +17,10 @@
     <Typography
       size="xl"
       tag="h2"
-      mbe="l">Todos Graph</Typography
+      mbe="l"
     >
+      Todos Graph
+    </Typography>
     <div class="chart-wrapper">
       {#if values.length > 0 && labels.length > 0}
         <ChartLine
@@ -35,8 +37,8 @@
     margin-block: var(--space-xl) var(--space-2xl);
   }
 
-  .chart-wrapper :global(.canvas) {
+  .chart-wrapper :global(.canvas-wrapper) {
     inline-size: 100%;
-    block-size: 600px !important;
+    block-size: clamp(280px, 50cqi, 600px);
   }
 </style>

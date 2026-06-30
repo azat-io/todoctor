@@ -23,6 +23,15 @@
   let chart: Chart | null = null
 
   let resizeObserver: ResizeObserver | null = null
+  let resizeFrame: number | null = null
+
+  // Reapply `responsive`/`maintainAspectRatio` on every options change.
+  // Assigning `chart.options` drops them and breaks resize/aspect handling.
+  $: mergedOptions = {
+    ...options,
+    maintainAspectRatio: false,
+    responsive: true,
+  } as ChartOptions
 
   function createChart(): void {
     if (chart) {
@@ -30,11 +39,7 @@
     }
 
     chart = new Chart(canvasReference, {
-      options: {
-        ...options,
-        maintainAspectRatio: false,
-        responsive: true,
-      } as ChartOptions,
+      options: mergedOptions,
       type,
       data,
     } satisfies ChartConfiguration)
@@ -43,8 +48,16 @@
   onMount(() => {
     createChart()
 
+    // Coalesce resize work into one `chart.resize()` per animation frame.
+    // Deferring out of the observer callback prevents resize-time stutter.
     resizeObserver = new ResizeObserver(() => {
-      chart?.resize()
+      if (resizeFrame !== null) {
+        return
+      }
+      resizeFrame = requestAnimationFrame(() => {
+        resizeFrame = null
+        chart?.resize()
+      })
     })
 
     if (canvasReference.parentElement) {
@@ -55,11 +68,14 @@
   $: if (chart) {
     chart.data = data
 
-    chart.options = options
+    chart.options = mergedOptions
     chart.update()
   }
 
   onDestroy(() => {
+    if (resizeFrame !== null) {
+      cancelAnimationFrame(resizeFrame)
+    }
     if (chart) {
       chart.destroy()
     }
@@ -69,16 +85,20 @@
   })
 </script>
 
-<canvas
-  class="canvas"
-  bind:this={canvasReference}
-  {height}
-></canvas>
+<div class="canvas-wrapper">
+  <canvas
+    class="canvas"
+    bind:this={canvasReference}
+    {height}
+  ></canvas>
+</div>
 
 <style>
+  .canvas-wrapper {
+    position: relative;
+  }
+
   .canvas {
-    inline-size: 100%;
-    max-inline-size: 100%;
-    block-size: auto;
+    display: block;
   }
 </style>

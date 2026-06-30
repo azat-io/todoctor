@@ -275,9 +275,10 @@
     flex-direction: column;
     align-items: center;
 
-    & :global(.canvas) {
+    & :global(.canvas-wrapper) {
+      inline-size: 100%;
       max-inline-size: calc(var(--size-chart) * 1.25);
-      max-block-size: calc(var(--size-chart) * 1.25);
+      aspect-ratio: 1;
     }
   }
 </style>
