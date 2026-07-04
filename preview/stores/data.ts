@@ -14,7 +14,7 @@ function traverseAndDecode<T>(object: T): T {
   if (typeof object === 'object' && object !== null) {
     let result = {} as { [K in keyof T]: T[K] }
     for (let key in object) {
-      if (key in object) {
+      if (Object.hasOwn(object, key)) {
         result[key] = traverseAndDecode(object[key])
       }
     }
@@ -25,9 +25,9 @@ function traverseAndDecode<T>(object: T): T {
 }
 
 function decodeHtmlEntities(string: string): string {
-  let textArea = document.createElement('textarea')
-  textArea.innerHTML = string
-  return textArea.value
+  let parser = new DOMParser()
+  let parsed = parser.parseFromString(string, 'text/html')
+  return parsed.documentElement.textContent
 }
 
 export let loading = writable(true)

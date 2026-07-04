@@ -59,7 +59,7 @@
   }
 
   function toTimestamp(value: string): number {
-    let time = new Date(value).getTime()
+    let time = Date.parse(value)
     return Number.isNaN(time) ? Number.POSITIVE_INFINITY : time
   }
 
@@ -127,7 +127,8 @@
     let [topAuthorEntry] = authorEntries
     let topAuthor = topAuthorEntry?.[0] ?? 'Unknown'
     let topAuthorTodos = topAuthorEntry?.[1] ?? 0
-    let pluralForm = new Intl.PluralRules('en-US').select(topAuthorTodos)
+    let pluralRules = new Intl.PluralRules('en-US')
+    let pluralForm = pluralRules.select(topAuthorTodos)
     let todosFormatted = pluralLabels[pluralForm]
 
     return [

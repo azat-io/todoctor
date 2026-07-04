@@ -76,13 +76,12 @@
       size: 380,
     },
     {
-      sortingFn: (a, b) =>
-        new Date(a.original.date).getTime() -
-        new Date(b.original.date).getTime(),
       cell: props =>
         renderComponent(TableDate, {
           value: props.getValue() as string,
         }),
+      sortingFn: (a, b) =>
+        Date.parse(a.original.date) - Date.parse(b.original.date),
       accessorKey: 'date',
       header: 'Added',
       size: 130,

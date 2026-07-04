@@ -124,6 +124,8 @@
 
     &:focus-visible {
       text-decoration: none;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
       background: var(--color-overlay-brand);
       box-shadow: 0 0 0 2px var(--color-border-brand);
     }

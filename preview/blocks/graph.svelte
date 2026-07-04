@@ -6,7 +6,7 @@
 
   $: history =
     $data.history?.toSorted(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      (a, b) => Date.parse(a.date) - Date.parse(b.date),
     ) ?? []
   $: labels = history.map(({ date }) => date)
   $: values = history.map(({ count }) => count)

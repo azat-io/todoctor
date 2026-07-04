@@ -3,11 +3,14 @@
 
   import Typography from './typography.svelte'
 
-  export let value = new Date().toString()
+  let now = new Date()
+  let dateFormatter = new Intl.DateTimeFormat('en')
+
+  export let value = now.toString()
 
   $: relativeValue = formatDistanceToNow(new Date(value))
 
-  $: formattedValue = new Intl.DateTimeFormat('en').format(new Date(value))
+  $: formattedValue = dateFormatter.format(new Date(value))
 </script>
 
 <div class="date">

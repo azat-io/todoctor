@@ -2,7 +2,8 @@
   import Typography from '~/elements/typography.svelte'
   import Container from '~/elements/container.svelte'
 
-  let currentYear = new Date().getFullYear()
+  let now = new Date()
+  let currentYear = now.getFullYear()
 </script>
 
 <footer class="footer">

@@ -112,7 +112,7 @@
         </tr>
       {/each}
     </thead>
-    <tbody>
+    <tbody class="tbody">
       {#each table.getRowModel().rows as row, rowIndex (rowIndex)}
         <tr class="tr">
           <td
@@ -175,9 +175,15 @@
     }
 
     &:focus-visible {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
       background-color: var(--color-overlay-brand);
       box-shadow: 0 0 0 2px var(--color-border-brand);
     }
+  }
+
+  .tbody {
+    position: relative;
   }
 
   .th {
