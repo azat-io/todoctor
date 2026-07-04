@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.4.2
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.4.1...v1.4.2)
+
+### 🐞 Bug Fixes
+
+- Make preview chart responsive on window resize
+  ([8deb39b](https://github.com/azat-io/todoctor/commit/8deb39b))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.4.1
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.4.0...v1.4.1)
