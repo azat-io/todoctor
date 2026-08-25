@@ -1,62 +1,31 @@
 <script
-  generics="T extends object"
+  generics="T extends RowData"
   lang="ts"
 >
-  import type {
-    TableOptions,
-    SortingState,
-    OnChangeFn,
-    ColumnDef,
-  } from '@tanstack/svelte-table'
+  import type { ColumnDef, RowData } from '@tanstack/table-core'
 
-  import { getSortedRowModel, getCoreRowModel } from '@tanstack/table-core'
   import { createTable, FlexRender } from '@tanstack/svelte-table'
-  import { writable } from 'svelte/store'
 
-  export let data: T[] = []
-  export let columns: ColumnDef<T>[] = []
+  import type { Features } from '~/elements/table-features'
 
-  let sorting: SortingState = []
+  import { features } from '~/elements/table-features'
 
-  let setSorting: OnChangeFn<SortingState> = updater => {
-    if (typeof updater === 'function') {
-      sorting = updater(sorting)
-    } else {
-      sorting = updater
-    }
-    options.update(old => ({
-      ...old,
-      state: {
-        ...old.state,
-        sorting,
-      },
-    }))
+  interface Props {
+    columns?: ColumnDef<Features, T>[]
+    data?: T[]
   }
 
-  let options = writable<TableOptions<T>>({
-    getSortedRowModel: getSortedRowModel(),
-    getCoreRowModel: getCoreRowModel(),
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    debugTable: true,
-    columns,
-    data,
-  })
+  let { columns = [], data = [] }: Props = $props()
 
-  $: options.set({
-    getSortedRowModel: getSortedRowModel(),
-    getCoreRowModel: getCoreRowModel(),
-    state: {
-      sorting,
+  let table = createTable({
+    get columns() {
+      return columns
     },
-    onSortingChange: setSorting,
-    columns,
-    data,
+    get data() {
+      return data
+    },
+    features,
   })
-
-  $: table = createTable($options)
 </script>
 
 <div class="wrapper">
@@ -77,7 +46,7 @@
             >
               {#if !header.isPlaceholder}
                 <button
-                  on:click={event => {
+                  onclick={event => {
                     let handler = header.column.getToggleSortingHandler()
                     handler?.(event)
 
@@ -96,10 +65,7 @@
                   class="button"
                   type="button"
                 >
-                  <FlexRender
-                    content={header.column.columnDef.header}
-                    context={header.getContext()}
-                  />
+                  <FlexRender {header} />
                   {#if header.column.getIsSorted().toString() === 'asc'}
                     ▲
                   {:else if header.column.getIsSorted().toString() === 'desc'}
@@ -119,15 +85,12 @@
             style:inline-size="40px"
             class="td td-index">{rowIndex + 1}</td
           >
-          {#each row.getVisibleCells() as cell, cellIndex (cellIndex)}
+          {#each row.getAllCells() as cell, cellIndex (cellIndex)}
             <td
-              style={`inline-size: ${cell.column.getSize()}px`}
+              style:inline-size="{cell.column.getSize()}px"
               class="td"
             >
-              <FlexRender
-                content={cell.column.columnDef.cell}
-                context={cell.getContext()}
-              />
+              <FlexRender {cell} />
             </td>
           {/each}
         </tr>

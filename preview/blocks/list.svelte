@@ -3,6 +3,8 @@
 
   import { renderComponent } from '@tanstack/svelte-table'
 
+  import type { Features } from '~/elements/table-features'
+
   import TableComment from '~/elements/table-comment.svelte'
   import Typography from '~/elements/typography.svelte'
   import TableCode from '~/elements/table-code.svelte'
@@ -33,7 +35,7 @@
 
   $: ({ currentPath } = $data)
 
-  let columns: ColumnDef<Column>[] = [
+  let columns: ColumnDef<Features, Column>[] = [
     {
       cell: props =>
         renderComponent(TableUser, {
@@ -80,7 +82,7 @@
         renderComponent(TableDate, {
           value: props.getValue() as string,
         }),
-      sortingFn: (a, b) =>
+      sortFn: (a, b) =>
         Date.parse(a.original.date) - Date.parse(b.original.date),
       accessorKey: 'date',
       header: 'Added',

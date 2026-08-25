@@ -11,7 +11,10 @@
 
 <svelte:element
   this={tag}
-  class={`typography size-${size} color-${color} weight-${bold ? 'bold' : 'normal'} ${mbs ? `mbs-${mbs}` : ''}${mbe ? `mbe-${mbe}` : ''} align-${align} ${noWrap ? 'no-wrap' : ''}`}
+  class="typography size-{size} color-{color} weight-{bold ? 'bold' : (
+    'normal'
+  )} {mbs ? `mbs-${mbs}` : ''}{mbe ? `mbe-${mbe}` : ''} align-{align}"
+  class:no-wrap={noWrap}
 >
   <slot />
 </svelte:element>

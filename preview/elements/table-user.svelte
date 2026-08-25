@@ -7,7 +7,7 @@
 </script>
 
 <div class="user">
-  <Avatar data={`${email}__${author}`} />
+  <Avatar data="{email}__{author}" />
   <div class="info">
     <Typography
       size="m"

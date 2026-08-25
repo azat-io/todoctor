@@ -200,7 +200,7 @@
       {#each finalTodosEntries as [kind], index (kind)}
         <div class="legend-element">
           <div
-            style={`--color: var(--color-additional-${colors[index]});`}
+            style:--color="var(--color-additional-{colors[index]})"
             class="legend-color"
           ></div>
           <Typography

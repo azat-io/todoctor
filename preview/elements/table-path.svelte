@@ -6,6 +6,6 @@
   export let line = 0
 </script>
 
-<a href={`${currentPath}/${value}`}>
+<a href="{currentPath}/{value}">
   <Typography size="m">{`${value}:${line}`}</Typography>
 </a>

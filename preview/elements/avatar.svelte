@@ -1,8 +1,6 @@
 <script lang="ts">
-  import type { Options } from '@dicebear/open-peeps'
-
-  import * as openPeeps from '@dicebear/open-peeps'
-  import { createAvatar } from '@dicebear/core'
+  import definition from '@dicebear/styles/open-peeps.json'
+  import { Avatar, Style } from '@dicebear/core'
 
   export let data: string = ''
 
@@ -21,68 +19,37 @@
     return Math.abs(hash) % length
   }
 
-  function isString(value: unknown): value is string {
-    return typeof value === 'string'
-  }
-
-  function pickOption<T extends string>(items: T[], seed: string): T[] {
-    if (items.length === 0) {
-      return []
-    }
-
-    let index = transformToCode(seed, items.length)
-    let value = items[index]
-
+  function pickOption<T>(items: T[], seed: string): T[] {
+    let value = items[transformToCode(seed, items.length)]
     return value === undefined ? [] : [value]
   }
 
-  type OptionArray<K extends keyof Options> = Extract<
-    NonNullable<Options[K]>,
-    string[]
-  >
+  let style = new Style(definition)
 
-  let properties = openPeeps.schema.properties as {
-    facialHair: { items: { enum?: unknown[] } }
-    face: { items: { enum?: unknown[] } }
-    head: { items: { enum?: unknown[] } }
-  }
-
-  let faceItems = (properties.face.items.enum ?? []).filter(isString)
-  let headItems = (properties.head.items.enum ?? []).filter(isString)
-  let facialHairItems = (properties.facialHair.items.enum ?? []).filter(
-    isString,
-  )
-
-  let faceOptions = pickOption(faceItems, data) as OptionArray<'face'>
-  let headOptions = pickOption(headItems, data) as OptionArray<'head'>
-  let facialHairOptions = pickOption(
-    facialHairItems,
-    data,
-  ) as OptionArray<'facialHair'>
+  let expressionItems = Object.keys(
+    definition.components.expression.variants,
+  ) as (keyof typeof definition.components.expression.variants)[]
+  let headItems = Object.keys(
+    definition.components.head.variants,
+  ) as (keyof typeof definition.components.head.variants)[]
+  let facialHairItems = Object.keys(
+    definition.components.facialHair.variants,
+  ) as (keyof typeof definition.components.facialHair.variants)[]
 
   let skinColorItems = ['694d3d', 'ae5d29', 'd08b5b', 'edb98a', 'ffdbb4']
-  let skinColor: string[] = []
-  if (skinColorItems.length > 0) {
-    let index = transformToCode(data, skinColorItems.length)
-    let [fallback] = skinColorItems
-    let value = skinColorItems[index] ?? fallback
-    if (value !== undefined) {
-      skinColor = [value]
-    }
-  }
 
-  let avatar = createAvatar(openPeeps, {
-    facialHair: facialHairOptions.length > 0 ? facialHairOptions : undefined,
-    face: faceOptions.length > 0 ? faceOptions : undefined,
-    head: headOptions.length > 0 ? headOptions : undefined,
+  let avatarImage = new Avatar(style, {
+    facialHairVariant: pickOption(facialHairItems, data),
+    expressionVariant: pickOption(expressionItems, data),
+    skinColor: pickOption(skinColorItems, data),
+    headVariant: pickOption(headItems, data),
     backgroundColor: ['a6e8b3'],
     facialHairProbability: 0,
-    randomizeIds: false,
-    scale: 100,
-    radius: 50,
-    skinColor,
+    borderRadius: 50,
     size: 42,
-  }).toDataUri()
+  })
+
+  let avatar = avatarImage.toDataUri()
 </script>
 
 <img
