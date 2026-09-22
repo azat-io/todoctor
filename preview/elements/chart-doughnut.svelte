@@ -3,6 +3,7 @@
 
   import { onMount } from 'svelte'
 
+  import { createChartPlugins } from '~/elements/chart-plugins'
   import Chart from '~/elements/chart.svelte'
   import { theme } from '~/stores/theme'
 
@@ -35,50 +36,6 @@
         },
       ],
     } satisfies ChartData<'doughnut'>
-
-    options = {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            labelColor: context => ({
-              backgroundColor: (context.dataset.backgroundColor as string[])[
-                context.dataIndex
-              ],
-              borderColor: computedStyles?.getPropertyValue(
-                '--color-border-primary',
-              ),
-              borderRadius: 2,
-              borderWidth: 0,
-            }),
-          },
-          titleFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          bodyFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          backgroundColor: computedStyles.getPropertyValue(
-            '--color-background-secondary',
-          ),
-          footerFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-          },
-          borderColor: computedStyles.getPropertyValue(
-            '--color-border-primary',
-          ),
-          titleColor: computedStyles.getPropertyValue(
-            '--color-content-primary',
-          ),
-          bodyColor: computedStyles.getPropertyValue('--color-content-primary'),
-          borderWidth: 1,
-        },
-        legend: {
-          display: false,
-        },
-      },
-    } as ChartOptions<'doughnut'>
   }
 
   function updateStyles(): void {
@@ -87,44 +44,11 @@
   }
 
   $: options = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          labelColor: context => ({
-            backgroundColor: (context.dataset.backgroundColor as string[])[
-              context.dataIndex
-            ],
-            borderColor: computedStyles?.getPropertyValue(
-              '--color-border-primary',
-            ),
-            borderRadius: 2,
-            borderWidth: 0,
-          }),
-        },
-        titleFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-          size: 16,
-        },
-        bodyFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-          size: 16,
-        },
-        backgroundColor: computedStyles?.getPropertyValue(
-          '--color-background-secondary',
-        ),
-        footerFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-        },
-        borderColor: computedStyles?.getPropertyValue('--color-border-primary'),
-        titleColor: computedStyles?.getPropertyValue('--color-content-primary'),
-        bodyColor: computedStyles?.getPropertyValue('--color-content-primary'),
-        borderWidth: 1,
-      },
-      legend: {
-        display: false,
-      },
-    },
-  } as ChartOptions<'doughnut'>
+    plugins: createChartPlugins<'doughnut'>(
+      computedStyles,
+      item => (item.dataset.backgroundColor as string[])[item.dataIndex],
+    ),
+  }
 
   onMount(() => {
     updateStyles()

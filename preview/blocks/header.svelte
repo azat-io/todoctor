@@ -42,7 +42,7 @@
               globalThis.fathom.trackEvent('settings: theme toggled')
             }
           }}
-          class="button"
+          class="button link"
           type="button"
         >
           <Typography
@@ -110,25 +110,7 @@
 
   .button {
     padding-inline: 0;
-    color: var(--color-content-brand);
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-    outline: none;
-    background: none;
     border: none;
-    border-radius: var(--border-radius);
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition: box-shadow 200ms;
-    }
-
-    &:focus-visible {
-      text-decoration: none;
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-      background: var(--color-overlay-brand);
-      box-shadow: 0 0 0 2px var(--color-border-brand);
-    }
   }
 
   .links {

@@ -48,12 +48,14 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
-a {
+a,
+.link {
   display: inline-block;
   color: var(--color-content-brand);
   text-decoration: underline;
   text-underline-offset: 0.25em;
   outline: none;
+  background: none;
   border-radius: var(--border-radius);
 
   @media (prefers-reduced-motion: no-preference) {

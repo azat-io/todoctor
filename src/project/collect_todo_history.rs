@@ -7,7 +7,7 @@ use crate::git::{
     get_modified_files,
 };
 use crate::types::TodoHistory;
-use crate::utils::{add_missing_days, remove_duplicate_dates};
+use crate::utils::{add_missing_days, remove_duplicate_dates, to_str_refs};
 use indicatif::{ProgressBar, ProgressStyle};
 use std::collections::HashMap;
 use std::io::{self, Write};
@@ -22,6 +22,9 @@ pub async fn collect_todo_history(
     todo_counts: Arc<Mutex<HashMap<String, usize>>>,
 ) -> Vec<TodoHistory> {
     let mut todo_history_data: Vec<TodoHistory> = Vec::new();
+
+    let include_keywords_refs = to_str_refs(include_keywords);
+    let exclude_keywords_refs = to_str_refs(exclude_keywords);
 
     let mut history: Vec<(String, String)> = get_history(Some(months)).await;
     history = remove_duplicate_dates(history);
@@ -89,11 +92,6 @@ pub async fn collect_todo_history(
             match file_content_result {
                 Ok(file_content) => {
                     let comments = get_comments(&file_content, file_path);
-
-                    let include_keywords_refs: Vec<&str> =
-                        include_keywords.iter().map(|s| s.as_str()).collect();
-                    let exclude_keywords_refs: Vec<&str> =
-                        exclude_keywords.iter().map(|s| s.as_str()).collect();
 
                     let todos: Vec<_> = comments
                         .into_iter()

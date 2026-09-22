@@ -3,6 +3,7 @@
 
   import { onMount } from 'svelte'
 
+  import { createChartPlugins } from '~/elements/chart-plugins'
   import Chart from '~/elements/chart.svelte'
   import { theme } from '~/stores/theme'
 
@@ -79,81 +80,6 @@
       ],
       labels,
     } satisfies ChartData<'line'>
-
-    options = {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            labelColor: () => ({
-              backgroundColor: computedStyles?.getPropertyValue(
-                '--color-additional-primary',
-              ),
-              borderColor: computedStyles?.getPropertyValue(
-                '--color-border-primary',
-              ),
-              borderRadius: 2,
-              borderWidth: 0,
-            }),
-          },
-          titleFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          bodyFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-            size: 16,
-          },
-          backgroundColor: computedStyles.getPropertyValue(
-            '--color-background-secondary',
-          ),
-          footerFont: {
-            family: computedStyles.getPropertyValue('--font-family-base'),
-          },
-          borderColor: computedStyles.getPropertyValue(
-            '--color-border-primary',
-          ),
-          titleColor: computedStyles.getPropertyValue(
-            '--color-content-primary',
-          ),
-          bodyColor: computedStyles.getPropertyValue('--color-content-primary'),
-          borderWidth: 1,
-        },
-        legend: {
-          display: false,
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            font: {
-              family: computedStyles.getPropertyValue('--font-family-base'),
-              size: 16,
-            },
-            color: computedStyles.getPropertyValue('--color-content-primary'),
-            callback: (_value, index) => formatLabel(index),
-            autoSkip: false,
-            maxRotation: 0,
-          },
-          grid: {
-            color: computedStyles.getPropertyValue('--color-border-primary'),
-          },
-        },
-        y: {
-          ticks: {
-            font: {
-              family: computedStyles.getPropertyValue('--font-family-base'),
-              size: 16,
-            },
-            color: computedStyles.getPropertyValue('--color-content-primary'),
-          },
-          grid: {
-            color: computedStyles.getPropertyValue('--color-border-primary'),
-          },
-          min: min === 0 ? 0 : min / 2,
-          max: max + min / 2,
-        },
-      },
-    } as ChartOptions<'line'>
   }
 
   function updateStyles(): void {
@@ -162,43 +88,6 @@
   }
 
   $: options = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          labelColor: () => ({
-            backgroundColor: computedStyles?.getPropertyValue(
-              '--color-additional-primary',
-            ),
-            borderColor: computedStyles?.getPropertyValue(
-              '--color-border-primary',
-            ),
-            borderRadius: 2,
-            borderWidth: 0,
-          }),
-        },
-        titleFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-          size: 16,
-        },
-        bodyFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-          size: 16,
-        },
-        backgroundColor: computedStyles?.getPropertyValue(
-          '--color-background-secondary',
-        ),
-        footerFont: {
-          family: computedStyles?.getPropertyValue('--font-family-base'),
-        },
-        borderColor: computedStyles?.getPropertyValue('--color-border-primary'),
-        titleColor: computedStyles?.getPropertyValue('--color-content-primary'),
-        bodyColor: computedStyles?.getPropertyValue('--color-content-primary'),
-        borderWidth: 1,
-      },
-      legend: {
-        display: false,
-      },
-    },
     scales: {
       x: {
         ticks: {
@@ -230,7 +119,10 @@
         max: max + min / 2,
       },
     },
-  } as ChartOptions<'line'>
+    plugins: createChartPlugins<'line'>(computedStyles, () =>
+      computedStyles?.getPropertyValue('--color-additional-primary'),
+    ),
+  }
 
   onMount(() => {
     updateStyles()

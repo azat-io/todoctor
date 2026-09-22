@@ -1,5 +1,6 @@
 use crate::comments::{get_comments, identify_todo_comment};
 use crate::types::TodoData;
+use crate::utils::to_str_refs;
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::fs;
@@ -25,20 +26,13 @@ pub async fn collect_todo_data(
                 match fs::read_to_string(&source_file_name).await {
                     Ok(source) => {
                         let comments = get_comments(&source, &source_file_name);
+                        let include_keywords_refs =
+                            to_str_refs(&include_keywords);
+                        let exclude_keywords_refs =
+                            to_str_refs(&exclude_keywords);
                         let todos: Vec<TodoData> = comments
                             .into_iter()
                             .filter_map(|comment| {
-                                let include_keywords_refs: Vec<&str> =
-                                    include_keywords
-                                        .iter()
-                                        .map(|s| s.as_str())
-                                        .collect();
-                                let exclude_keywords_refs: Vec<&str> =
-                                    exclude_keywords
-                                        .iter()
-                                        .map(|s| s.as_str())
-                                        .collect();
-
                                 if let Some(comment_kind) =
                                     identify_todo_comment(
                                         &comment.text,
