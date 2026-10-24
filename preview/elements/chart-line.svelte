@@ -32,24 +32,6 @@
     'Dec',
   ]
 
-  function formatLabel(index: number): string | null {
-    let label = labels[index]
-    if (!label) {
-      return null
-    }
-
-    let date = new Date(label)
-    if (Number.isNaN(date.getTime())) {
-      return null
-    }
-
-    if (date.getDate() === 1) {
-      return monthNames[date.getMonth()] ?? null
-    }
-
-    return null
-  }
-
   function updateChartData(): void {
     if (!computedStyles) {
       return
@@ -80,6 +62,24 @@
       ],
       labels,
     } satisfies ChartData<'line'>
+  }
+
+  function formatLabel(index: number): string | null {
+    let label = labels[index]
+    if (!label) {
+      return null
+    }
+
+    let date = new Date(label)
+    if (Number.isNaN(date.getTime())) {
+      return null
+    }
+
+    if (date.getDate() === 1) {
+      return monthNames[date.getMonth()] ?? null
+    }
+
+    return null
   }
 
   function updateStyles(): void {

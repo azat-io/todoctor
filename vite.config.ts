@@ -127,9 +127,6 @@ export default defineConfig({
     host: os.networkInterfaces()['eth0']?.[0]?.address,
     port: 3000,
   },
-  esbuild: {
-    legalComments: 'none',
-  },
   root: 'preview',
   base: './',
 })

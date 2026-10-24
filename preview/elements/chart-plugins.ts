@@ -2,9 +2,17 @@ import type { PluginOptionsByType, TooltipItem, ChartType } from 'chart.js'
 
 type ChartPlugins<T extends ChartType> = Partial<PluginOptionsByType<T>>
 
-// Tooltip and legend options are the same for every chart type.
-// Only the color of the tooltip swatch differs, so each chart passes its own.
-// Colors are read on every call, which keeps the tooltip on the active theme.
+/**
+ * Tooltip and legend options are the same for every chart type. Only the color
+ * of the tooltip swatch differs, so each chart passes its own. Colors are read
+ * on every call, which keeps the tooltip on the active theme.
+ *
+ * @param computedStyles - Styles of the chart element, used to read theme CSS
+ *   variables.
+ * @param getLabelBackgroundColor - Returns the tooltip swatch color for an
+ *   item.
+ * @returns Tooltip and legend plugin options.
+ */
 export function createChartPlugins<T extends ChartType>(
   computedStyles: CSSStyleDeclaration | undefined,
   getLabelBackgroundColor: (item: TooltipItem<T>) => undefined | string,

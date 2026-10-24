@@ -58,17 +58,17 @@
     one: 'todo',
   }
 
-  function toTimestamp(value: string): number {
-    let time = Date.parse(value)
-    return Number.isNaN(time) ? Number.POSITIVE_INFINITY : time
-  }
-
   function toDateOrNull(value: string): Date | null {
     let timestamp = toTimestamp(value)
     if (!Number.isFinite(timestamp)) {
       return null
     }
     return new Date(timestamp)
+  }
+
+  function toTimestamp(value: string): number {
+    let time = Date.parse(value)
+    return Number.isNaN(time) ? Number.POSITIVE_INFINITY : time
   }
 
   $: notes = (() => {
