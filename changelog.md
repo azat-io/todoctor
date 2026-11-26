@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.4.3
+
+[compare changes](https://github.com/azat-io/todoctor/compare/v1.4.2...v1.4.3)
+
+### 🐞 Bug Fixes
+
+- Handle file names with spaces and special characters
+  ([47efae2](https://github.com/azat-io/todoctor/commit/47efae2))
+- Respect ignored paths for renamed and deleted files
+  ([5bbcbae](https://github.com/azat-io/todoctor/commit/5bbcbae))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+- Bardrop ([@bardrop](https://github.com/bardrop))
+
 ## v1.4.2
 
 [compare changes](https://github.com/azat-io/todoctor/compare/v1.4.1...v1.4.2)
