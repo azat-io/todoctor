@@ -8,22 +8,23 @@ pub async fn get_modified_files(
         "git",
         "diff",
         "--name-status",
+        "--no-renames",
+        "-z",
         previous_commit,
         current_commit,
     ])
     .await
     .expect("Failed to get modified files");
 
+    // With -z the output is "<status>\0<path>\0" for each file. Paths are
+    // not quoted, so names with spaces or non-ASCII characters stay intact.
+    // --no-renames reports a rename as a delete plus an add, so both the old
+    // and the new path are returned.
     output
-        .lines()
-        .map(|line| {
-            let parts: Vec<&str> = line.split_whitespace().collect();
-            if parts.len() == 2 {
-                parts[1].to_string()
-            } else {
-                "".to_string()
-            }
-        })
-        .filter(|s| !s.is_empty())
+        .split('\0')
+        .filter(|part| !part.is_empty())
+        .skip(1)
+        .step_by(2)
+        .map(|file| file.to_string())
         .collect()
 }
