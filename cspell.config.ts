@@ -4,6 +4,7 @@ export default defineConfig({
   words: [
     'azat',
     'browserslistrc',
+    'cacheinfo',
     'canonicalize',
     'changelogithub',
     'chartjs',
