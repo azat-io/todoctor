@@ -19,8 +19,10 @@ pub async fn get_modified_files(
     // With -z the output is "<status>\0<path>\0" for each file. Paths are
     // not quoted, so names with spaces or non-ASCII characters stay intact.
     // --no-renames reports a rename as a delete plus an add, so both the old
-    // and the new path are returned. Names that are not valid UTF-8 are
-    // skipped instead of failing the whole list.
+    // and the new path are returned. It also keeps every record at two
+    // fields, which the pairing below relies on: without it, rename and copy
+    // records ("R100\0<old>\0<new>\0") have three. Names that are not valid
+    // UTF-8 are skipped instead of failing the whole list.
     output
         .split(|byte| *byte == 0)
         .filter(|part| !part.is_empty())
