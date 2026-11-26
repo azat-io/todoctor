@@ -1,4 +1,4 @@
-use crate::exec::exec;
+use crate::exec::exec_bytes;
 
 pub async fn get_files_list(
     commit: Option<&str>,
@@ -9,10 +9,13 @@ pub async fn get_files_list(
         vec!["git", "ls-files", "-z"]
     };
 
-    let output = exec(&git_command).await?;
+    let output = exec_bytes(&git_command).await?;
+    // Names that are not valid UTF-8 cannot be read as source files here, so
+    // they are skipped instead of failing the whole list.
     let files: Vec<String> = output
-        .split('\0')
+        .split(|byte| *byte == 0)
         .filter(|file| !file.is_empty())
+        .filter_map(|file| std::str::from_utf8(file).ok())
         .map(|file| file.to_string())
         .collect();
     Ok(files)

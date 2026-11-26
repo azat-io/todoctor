@@ -8,6 +8,10 @@ fn git(dir: &PathBuf, args: &[&str]) -> String {
     let output = Command::new("git")
         .args(["-c", "user.name=Test", "-c", "user.email=test@example.com"])
         .args(args)
+        .env_remove("GIT_DIR")
+        .env_remove("GIT_WORK_TREE")
+        .env_remove("GIT_INDEX_FILE")
+        .env_remove("GIT_OBJECT_DIRECTORY")
         .current_dir(dir)
         .output()
         .expect("Failed to run git");
