@@ -9,8 +9,10 @@
       <Typography
         size="xl"
         tag="h2"
-        mbe="l">No Todos Found</Typography
+        mbe="l"
       >
+        No Todos Found
+      </Typography>
       <Typography
         size="m"
         mbe="s"

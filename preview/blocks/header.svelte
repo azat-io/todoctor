@@ -22,8 +22,10 @@
               <Typography
                 size="2xl"
                 tag="h1"
-                bold>Todoctor</Typography
+                bold
               >
+                Todoctor
+              </Typography>
               {#if version}
                 <sub class="version">v{version}</sub>
               {/if}
@@ -47,8 +49,10 @@
         >
           <Typography
             color="brand"
-            size="m">Toggle Theme</Typography
+            size="m"
           >
+            Toggle Theme
+          </Typography>
         </button>
         <a
           on:click={() => {
@@ -62,8 +66,10 @@
         >
           <Typography
             color="brand"
-            size="m">GitHub</Typography
+            size="m"
           >
+            GitHub
+          </Typography>
         </a>
       </div>
     </div>

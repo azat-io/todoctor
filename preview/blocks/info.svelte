@@ -171,8 +171,10 @@
         <Typography
           size="xl"
           tag="h2"
-          mbe="l">Did You Know That?</Typography
+          mbe="l"
         >
+          Did You Know That?
+        </Typography>
         <div class="notes">
           {#each notes as { content, title } (title)}
             <Note
@@ -191,7 +193,7 @@
         >
           Todos by Kind
         </Typography>
-        {#if values.length}
+        {#if values.length > 0}
           <ChartDoughnut {values} />
         {/if}
       </div>
@@ -205,8 +207,10 @@
           ></div>
           <Typography
             size="s"
-            tag="span">{kind.toUpperCase()}</Typography
+            tag="span"
           >
+            {kind.toUpperCase()}
+          </Typography>
         </div>
       {/each}
     </div>

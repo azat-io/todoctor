@@ -11,14 +11,18 @@
   <div class="info">
     <Typography
       size="m"
-      noWrap>{author}</Typography
+      noWrap
     >
+      {author}
+    </Typography>
     <a href="mailto:{email}">
       <Typography
         size="s"
         color="inherit"
-        noWrap>{email}</Typography
+        noWrap
       >
+        {email}
+      </Typography>
     </a>
   </div>
 </div>

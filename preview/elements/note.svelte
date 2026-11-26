@@ -38,8 +38,10 @@
   <Typography
     size="l"
     tag="h3"
-    mbe="s">{title}</Typography
+    mbe="s"
   >
+    {title}
+  </Typography>
 
   {#each content as line, lineIndex (lineIndex)}
     <Typography

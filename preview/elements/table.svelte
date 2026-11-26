@@ -6,12 +6,12 @@
 
   import { createTable, FlexRender } from '@tanstack/svelte-table'
 
-  import type { Features } from '~/elements/table-features'
+  import type { TableFeatures } from '~/elements/table-features'
 
-  import { features } from '~/elements/table-features'
+  import { tableFeatures } from '~/elements/table-features'
 
   interface Props {
-    columns?: ColumnDef<Features, T>[]
+    columns?: ColumnDef<TableFeatures, T>[]
     data?: T[]
   }
 
@@ -24,7 +24,7 @@
     get data() {
       return data
     },
-    features,
+    features: tableFeatures,
   })
 </script>
 
@@ -35,8 +35,10 @@
         <tr class="tr">
           <th
             style:inline-size="40px"
-            class="th">#</th
+            class="th"
           >
+            #
+          </th>
           {#each headerGroup.headers as header, headerIndex (headerIndex)}
             <th
               style={header.getSize() ?
@@ -83,8 +85,10 @@
         <tr class="tr">
           <td
             style:inline-size="40px"
-            class="td td-index">{rowIndex + 1}</td
+            class="td td-index"
           >
+            {rowIndex + 1}
+          </td>
           {#each row.getAllCells() as cell, cellIndex (cellIndex)}
             <td
               style:inline-size="{cell.column.getSize()}px"

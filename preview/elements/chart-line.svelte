@@ -3,7 +3,7 @@
 
   import { onMount } from 'svelte'
 
-  import { createChartPlugins } from '~/elements/chart-plugins'
+  import { createChartPlugins } from '~/elements/create-chart-plugins'
   import Chart from '~/elements/chart.svelte'
   import { theme } from '~/stores/theme'
 

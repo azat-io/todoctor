@@ -25,8 +25,10 @@
   let resizeObserver: ResizeObserver | null = null
   let resizeFrame: number | null = null
 
-  // Reapply `responsive`/`maintainAspectRatio` on every options change.
-  // Assigning `chart.options` drops them and breaks resize/aspect handling.
+  /**
+   * Reapply `responsive`/`maintainAspectRatio` on every options change.
+   * Assigning `chart.options` drops them and breaks resize/aspect handling.
+   */
   $: mergedOptions = {
     ...options,
     maintainAspectRatio: false,
@@ -48,8 +50,10 @@
   onMount(() => {
     createChart()
 
-    // Coalesce resize work into one `chart.resize()` per animation frame.
-    // Deferring out of the observer callback prevents resize-time stutter.
+    /**
+     * Coalesce resize work into one `chart.resize()` per animation frame.
+     * Deferring out of the observer callback prevents resize-time stutter.
+     */
     resizeObserver = new ResizeObserver(() => {
       if (resizeFrame !== null) {
         return

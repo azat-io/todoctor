@@ -18,11 +18,8 @@ pub fn get_comments(source: &str, source_filename: &str) -> Vec<CommentData> {
     let allocator = Allocator::default();
     let source_type = SourceType::from_path(source_path).unwrap();
 
-    let ParserReturn {
-        program,
-        errors: _parser_errors,
-        ..
-    } = Parser::new(&allocator, source, source_type).parse();
+    let ParserReturn { program, .. } =
+        Parser::new(&allocator, source, source_type).parse();
 
     let comments: Vec<CommentData> = program
         .comments

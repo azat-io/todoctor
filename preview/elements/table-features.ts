@@ -1,14 +1,14 @@
 import {
   sortFn_alphanumeric as sortFunctionAlphanumeric,
   sortFn_datetime as sortFunctionDatetime,
+  tableFeatures as createTableFeatures,
   sortFn_text as sortFunctionText,
   createSortedRowModel,
   columnSizingFeature,
   rowSortingFeature,
-  tableFeatures,
 } from '@tanstack/table-core'
 
-export let features = tableFeatures({
+export let tableFeatures = createTableFeatures({
   sortFns: {
     alphanumeric: sortFunctionAlphanumeric,
     datetime: sortFunctionDatetime,
@@ -19,4 +19,4 @@ export let features = tableFeatures({
   rowSortingFeature,
 })
 
-export type Features = typeof features
+export type TableFeatures = typeof tableFeatures

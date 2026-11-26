@@ -3,7 +3,7 @@
 
   import { renderComponent } from '@tanstack/svelte-table'
 
-  import type { Features } from '~/elements/table-features'
+  import type { TableFeatures } from '~/elements/table-features'
 
   import TableComment from '~/elements/table-comment.svelte'
   import Typography from '~/elements/typography.svelte'
@@ -35,7 +35,7 @@
 
   $: ({ currentPath } = $data)
 
-  let columns: ColumnDef<Features, Column>[] = [
+  let columns: ColumnDef<TableFeatures, Column>[] = [
     {
       cell: props =>
         renderComponent(TableUser, {
@@ -96,8 +96,10 @@
     <Typography
       size="xl"
       tag="h2"
-      mbe="l">List of Todos</Typography
+      mbe="l"
     >
+      List of Todos
+    </Typography>
     <Table
       data={preparedData}
       {columns}
