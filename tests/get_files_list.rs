@@ -41,6 +41,8 @@ async fn test_get_files_list_with_special_file_names() {
     git(&dir, &["init", "-q"]);
     fs::write(dir.join("café.ts"), "// TODO: one\n").unwrap();
     fs::write(dir.join("my file.ts"), "// TODO: two\n").unwrap();
+    // Windows does not allow `"` in file names.
+    #[cfg(unix)]
     fs::write(dir.join("a\"b.ts"), "// TODO: three\n").unwrap();
     git(&dir, &["add", "."]);
     git(&dir, &["commit", "-q", "-m", "init"]);
@@ -48,11 +50,10 @@ async fn test_get_files_list_with_special_file_names() {
 
     std::env::set_current_dir(&dir).unwrap();
 
-    let expected = vec![
-        "a\"b.ts".to_string(),
-        "café.ts".to_string(),
-        "my file.ts".to_string(),
-    ];
+    let mut expected = vec!["café.ts".to_string(), "my file.ts".to_string()];
+    if cfg!(unix) {
+        expected.insert(0, "a\"b.ts".to_string());
+    }
 
     let mut files = get_files_list(None).await.unwrap();
     files.sort();
